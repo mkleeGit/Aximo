@@ -1,0 +1,2824 @@
+{
+  "Application": {
+    "Screens": [
+      {
+        "Name": "Main",
+        "CanvasBufferSize": 7200,
+        "Components": [
+          {
+            "Type": "Box",
+            "Name": "MAIN_BACKGROUND",
+            "X": 1,
+            "Width": 480,
+            "Height": 272,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "Box",
+            "Name": "TITLE_BACKGROUND",
+            "Width": 480,
+            "Height": 39,
+            "Color": {
+              "Red": 41,
+              "Green": 119,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "Container",
+            "Name": "PowerON",
+            "X": 3,
+            "Y": 225,
+            "Width": 55,
+            "Height": 45,
+            "Components": [
+              {
+                "Type": "BoxWithBorder",
+                "Name": "PowerONBox",
+                "Width": 55,
+                "Height": 45,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "BorderSize": 3
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "PowerONButton",
+                "Width": 55,
+                "Height": 45,
+                "Alpha": 100,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 55,
+                    "Height": 45,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 3,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 119,
+                      "Blue": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textPowerON",
+                "X": 8,
+                "Y": 10,
+                "Width": 40,
+                "Height": 27,
+                "TextId": "__SingleUse_QEIH",
+                "TextRotation": "0",
+                "AutoSize": true
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "PowerOFF",
+            "X": 68,
+            "Y": 225,
+            "Width": 55,
+            "Height": 45,
+            "Components": [
+              {
+                "Type": "BoxWithBorder",
+                "Name": "PowerOFFBox",
+                "Width": 55,
+                "Height": 45,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "BorderSize": 3
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "PowerOFFButton",
+                "Width": 55,
+                "Height": 45,
+                "Alpha": 100,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 55,
+                    "Height": 45,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 3,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 119,
+                      "Blue": 225
+                    },
+                    "ColorBorderPressed": {
+                      "Red": 2,
+                      "Green": 5,
+                      "Blue": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textPowerOFF",
+                "X": 8,
+                "Y": 10,
+                "Width": 40,
+                "Height": 27,
+                "TextId": "__SingleUse_BIYJ",
+                "TextRotation": "0",
+                "AutoSize": true
+              }
+            ]
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textPower",
+            "X": 39,
+            "Y": 155,
+            "Width": 40,
+            "Height": 27,
+            "TextId": "__SingleUse_FCVV",
+            "TextRotation": "0",
+            "AutoSize": true
+          },
+          {
+            "Type": "Container",
+            "Name": "STATE",
+            "X": 1,
+            "Y": 39,
+            "Width": 284,
+            "Height": 89,
+            "Components": [
+              {
+                "Type": "TextArea",
+                "Name": "textEror",
+                "X": 4,
+                "Y": 56,
+                "Width": 52,
+                "Height": 27,
+                "TextId": "__SingleUse_IY0Q",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textState",
+                "X": 4,
+                "Y": 31,
+                "Width": 52,
+                "Height": 27,
+                "TextId": "__SingleUse_06B0",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textVoltage",
+                "X": 4,
+                "Y": 5,
+                "Width": 124,
+                "Height": 27,
+                "TextId": "__SingleUse_MHVP",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textErrorValue",
+                "X": 60,
+                "Y": 55,
+                "Width": 216,
+                "Height": 24,
+                "TextId": "__SingleUse_BR5X",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_EPI3",
+                  "UseBuffer": true,
+                  "BufferSize": 30
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textStateValue",
+                "X": 59,
+                "Y": 30,
+                "Width": 216,
+                "Height": 24,
+                "TextId": "__SingleUse_A4K0",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_1KJG",
+                  "UseBuffer": true,
+                  "BufferSize": 30
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textReadyStateValue",
+                "X": 135,
+                "Y": 5,
+                "Width": 120,
+                "Height": 24,
+                "TextId": "__SingleUse_BYII",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_55WG",
+                  "UseBuffer": true,
+                  "BufferSize": 30
+                }
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "Com_onoff",
+            "X": 394,
+            "Y": 79,
+            "Width": 86,
+            "Height": 30,
+            "Components": [
+              {
+                "Type": "BoxWithBorder",
+                "Name": "Com_onoff_box",
+                "Width": 86,
+                "Height": 30,
+                "Visible": false,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "BorderSize": 2
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "Com_onoff_Button",
+                "Width": 86,
+                "Height": 30,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 86,
+                    "Height": 30,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 119,
+                      "Blue": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textCom_onoff",
+                "X": -5,
+                "Y": 6,
+                "Width": 140,
+                "Height": 24,
+                "TextId": "__SingleUse_VZ84",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_NBDB",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "HomeOption",
+            "X": 256,
+            "Y": 161,
+            "Width": 224,
+            "Height": 111,
+            "Visible": false,
+            "Components": [
+              {
+                "Type": "TextArea",
+                "Name": "textHomeActPos",
+                "X": 18,
+                "Y": 82,
+                "Width": 99,
+                "Height": 27,
+                "TextId": "__SingleUse_YFKB",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textHomeSetPos",
+                "X": 18,
+                "Y": 48,
+                "Width": 99,
+                "Height": 27,
+                "TextId": "__SingleUse_DVMP",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textHomeSetPosvalue",
+                "X": 125,
+                "Y": 48,
+                "Width": 65,
+                "Height": 24,
+                "TextId": "__SingleUse_9LKX",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_RUMT",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textHomeActPosvalue",
+                "X": 126,
+                "Y": 81,
+                "Width": 65,
+                "Height": 24,
+                "TextId": "__SingleUse_1V50",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_SDNC",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "HomePosinputButton",
+                "X": 18,
+                "Y": 45,
+                "Width": 182,
+                "Height": 34,
+                "Alpha": 0,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 182,
+                    "Height": 34,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 5,
+                    "ColorReleased": {
+                      "Green": 102,
+                      "Blue": 153
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    },
+                    "ColorBorderReleased": {
+                      "Green": 51,
+                      "Blue": 102
+                    },
+                    "ColorBorderPressed": {
+                      "Red": 51,
+                      "Green": 102,
+                      "Blue": 153
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "Container",
+                "Name": "HomingSet",
+                "X": 57,
+                "Width": 110,
+                "Height": 35,
+                "Components": [
+                  {
+                    "Type": "FlexButton",
+                    "Name": "HomingSetbutton",
+                    "Width": 110,
+                    "Height": 35,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "BoxWithBorderButtonStyle",
+                        "Width": 110,
+                        "Height": 35,
+                        "LockToFlexButtonSize": true,
+                        "BorderSize": 2,
+                        "ColorReleased": {
+                          "Red": 255,
+                          "Green": 255,
+                          "Blue": 255
+                        },
+                        "ColorPressed": {
+                          "Red": 41,
+                          "Green": 119,
+                          "Blue": 255
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "TextHomingStart",
+                    "X": 10,
+                    "Y": 4,
+                    "Width": 87,
+                    "Height": 27,
+                    "TextId": "__SingleUse_6VPC",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "PosOption",
+            "X": 143,
+            "Y": 155,
+            "Width": 337,
+            "Height": 117,
+            "Components": [
+              {
+                "Type": "TextArea",
+                "Name": "textPosSetRpm",
+                "X": 131,
+                "Width": 99,
+                "Height": 27,
+                "TextId": "__SingleUse_FZ3N",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textPosActRpm",
+                "X": 131,
+                "Y": 30,
+                "Width": 99,
+                "Height": 27,
+                "TextId": "__SingleUse_P8JV",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textSetPos",
+                "X": 131,
+                "Y": 60,
+                "Width": 99,
+                "Height": 27,
+                "TextId": "__SingleUse_JB9A",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textActPos",
+                "X": 131,
+                "Y": 90,
+                "Width": 99,
+                "Height": 27,
+                "TextId": "__SingleUse_CU3K",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textPosSetRpmValue",
+                "X": 247,
+                "Width": 65,
+                "Height": 24,
+                "TextId": "__SingleUse_JJNS",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_YKCI",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textPosActRpmValue",
+                "X": 247,
+                "Y": 30,
+                "Width": 65,
+                "Height": 24,
+                "TextId": "__SingleUse_6N55",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_CO9D",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textPosSetPosValue",
+                "X": 239,
+                "Y": 60,
+                "Width": 91,
+                "Height": 24,
+                "TextId": "__SingleUse_OT9M",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_HDDF",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textPosActPosValue",
+                "X": 239,
+                "Y": 90,
+                "Width": 91,
+                "Height": 24,
+                "TextId": "__SingleUse_92KA",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_V7ZV",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "Container",
+                "Name": "PosStop",
+                "X": 22,
+                "Y": 70,
+                "Width": 80,
+                "Height": 40,
+                "Components": [
+                  {
+                    "Type": "FlexButton",
+                    "Name": "PosStopButton",
+                    "Width": 80,
+                    "Height": 40,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "BoxWithBorderButtonStyle",
+                        "Width": 80,
+                        "Height": 40,
+                        "LockToFlexButtonSize": true,
+                        "BorderSize": 3,
+                        "ColorReleased": {
+                          "Red": 255,
+                          "Green": 255,
+                          "Blue": 255
+                        },
+                        "ColorPressed": {
+                          "Red": 41,
+                          "Green": 119,
+                          "Blue": 255
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textPosStop",
+                    "X": 20,
+                    "Y": 8,
+                    "Width": 40,
+                    "Height": 27,
+                    "TextId": "__SingleUse_W10B",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  }
+                ]
+              },
+              {
+                "Type": "Container",
+                "Name": "PosStart",
+                "X": 22,
+                "Y": 10,
+                "Width": 80,
+                "Height": 40,
+                "Components": [
+                  {
+                    "Type": "FlexButton",
+                    "Name": "PosStartButton",
+                    "Width": 80,
+                    "Height": 40,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "BoxWithBorderButtonStyle",
+                        "Width": 80,
+                        "Height": 40,
+                        "LockToFlexButtonSize": true,
+                        "BorderSize": 3,
+                        "ColorReleased": {
+                          "Red": 255,
+                          "Green": 255,
+                          "Blue": 255
+                        },
+                        "ColorPressed": {
+                          "Red": 41,
+                          "Green": 119,
+                          "Blue": 255
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textPosStart",
+                    "X": 20,
+                    "Y": 8,
+                    "Width": 40,
+                    "Height": 27,
+                    "TextId": "__SingleUse_0XOO",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  }
+                ]
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "PosRpmpadshowButton",
+                "X": 130,
+                "Y": -1,
+                "Width": 200,
+                "Height": 27,
+                "Alpha": 0,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 200,
+                    "Height": 27,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 5,
+                    "ColorReleased": {
+                      "Green": 102,
+                      "Blue": 153
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    },
+                    "ColorBorderReleased": {
+                      "Green": 51,
+                      "Blue": 102
+                    },
+                    "ColorBorderPressed": {
+                      "Red": 51,
+                      "Green": 102,
+                      "Blue": 153
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "PosPospadshowButton",
+                "X": 127,
+                "Y": 58,
+                "Width": 200,
+                "Height": 29,
+                "Alpha": 0,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 200,
+                    "Height": 29,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 5,
+                    "ColorReleased": {
+                      "Green": 102,
+                      "Blue": 153
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    },
+                    "ColorBorderReleased": {
+                      "Green": 51,
+                      "Blue": 102
+                    },
+                    "ColorBorderPressed": {
+                      "Red": 51,
+                      "Green": 102,
+                      "Blue": 153
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "Reset",
+            "X": 285,
+            "Y": 41,
+            "Width": 80,
+            "Height": 40,
+            "Components": [
+              {
+                "Type": "FlexButton",
+                "Name": "ResetButton",
+                "Width": 80,
+                "Height": 40,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 80,
+                    "Height": 40,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 3,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 119,
+                      "Blue": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textReset",
+                "X": 20,
+                "Y": 7,
+                "Width": 40,
+                "Height": 27,
+                "TextId": "__SingleUse_5G79",
+                "TextRotation": "0",
+                "AutoSize": true
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "Enable",
+            "X": 3,
+            "Y": 181,
+            "Width": 120,
+            "Height": 39,
+            "Components": [
+              {
+                "Type": "BoxWithBorder",
+                "Name": "EnableBox",
+                "Width": 120,
+                "Height": 39,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "BorderSize": 2
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "EableButton",
+                "Width": 120,
+                "Height": 39,
+                "Alpha": 100,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 120,
+                    "Height": 39,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 3,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 119,
+                      "Blue": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textEnable",
+                "X": 6,
+                "Y": 7,
+                "Width": 107,
+                "Height": 27,
+                "TextId": "__SingleUse_DNBM",
+                "TextRotation": "0",
+                "AutoSize": true
+              }
+            ]
+          },
+          {
+            "Type": "Image",
+            "Name": "KEB_Image",
+            "Width": 85,
+            "Height": 39,
+            "RelativeFilename": "KEB.png"
+          },
+          {
+            "Type": "Container",
+            "Name": "MC_ON",
+            "X": 401,
+            "Y": 41,
+            "Width": 75,
+            "Height": 35,
+            "Components": [
+              {
+                "Type": "FlexButton",
+                "Name": "MC_ONbutton",
+                "Width": 68,
+                "Height": 30,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 68,
+                    "Height": 30,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    },
+                    "ColorBorderReleased": {
+                      "Green": 51,
+                      "Blue": 102
+                    },
+                    "ColorBorderPressed": {
+                      "Red": 51,
+                      "Green": 102,
+                      "Blue": 153
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "BoxWithBorder",
+                "Name": "MC_OnBox",
+                "Width": 75,
+                "Height": 35,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "BorderSize": 2
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textMC_ON",
+                "X": 2,
+                "Y": 5,
+                "Width": 69,
+                "Height": 24,
+                "TextId": "__SingleUse_SBQJ",
+                "TextRotation": "0",
+                "AutoSize": true
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "Mode",
+            "X": 2,
+            "Y": 122,
+            "Width": 274,
+            "Height": 33,
+            "Components": [
+              {
+                "Type": "FlexButton",
+                "Name": "MODEButton",
+                "Width": 61,
+                "Height": 33,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 61,
+                    "Height": 33,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 3,
+                    "ColorReleased": {
+                      "Red": 252,
+                      "Green": 252,
+                      "Blue": 252
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 119,
+                      "Blue": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textMODE",
+                "X": 11,
+                "Y": 4,
+                "Width": 40,
+                "Height": 27,
+                "TextId": "__SingleUse_ABXU",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textColons",
+                "X": 62,
+                "Y": 2,
+                "Width": 9,
+                "Height": 24,
+                "TextId": "__SingleUse_N14M",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textMODEState",
+                "X": 73,
+                "Y": 2,
+                "Width": 204,
+                "Height": 24,
+                "TextId": "__SingleUse_KMWH",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_4ZOE",
+                  "UseBuffer": true,
+                  "BufferSize": 20
+                }
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "Positionscreen",
+            "X": 106,
+            "Y": -6,
+            "Width": 100,
+            "Height": 38,
+            "Components": [
+              {
+                "Type": "FlexButton",
+                "Name": "PosScreenButton",
+                "Width": 100,
+                "Height": 38,
+                "Alpha": 0,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 100,
+                    "Height": 38,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 5,
+                    "ColorReleased": {
+                      "Green": 102,
+                      "Blue": 153
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    },
+                    "ColorBorderReleased": {
+                      "Green": 51,
+                      "Blue": 102
+                    },
+                    "ColorBorderPressed": {
+                      "Red": 51,
+                      "Green": 102,
+                      "Blue": 153
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "BoxWithBorder",
+                "Name": "PosScreenBox",
+                "Width": 100,
+                "Height": 38,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "BorderSize": 3
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textPosScreen",
+                "X": 6,
+                "Y": 8,
+                "Width": 87,
+                "Height": 27,
+                "TextId": "__SingleUse_61UY",
+                "TextRotation": "0",
+                "AutoSize": true
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "Homescreen",
+            "X": 223,
+            "Y": -6,
+            "Width": 100,
+            "Height": 38,
+            "Components": [
+              {
+                "Type": "FlexButton",
+                "Name": "HomeScreenButton",
+                "Width": 100,
+                "Height": 38,
+                "Alpha": 0,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 100,
+                    "Height": 38,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 5,
+                    "ColorReleased": {
+                      "Green": 102,
+                      "Blue": 153
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    },
+                    "ColorBorderReleased": {
+                      "Green": 51,
+                      "Blue": 102
+                    },
+                    "ColorBorderPressed": {
+                      "Red": 51,
+                      "Green": 102,
+                      "Blue": 153
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "BoxWithBorder",
+                "Name": "HomeScreenBox",
+                "Width": 100,
+                "Height": 38,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "BorderSize": 3
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textHomeScreen",
+                "X": 18,
+                "Y": 8,
+                "Width": 67,
+                "Height": 27,
+                "TextId": "__SingleUse_1N3V",
+                "TextRotation": "0",
+                "AutoSize": true
+              }
+            ]
+          },
+          {
+            "Type": "Container",
+            "Name": "Settingscreen",
+            "X": 395,
+            "Y": -6,
+            "Width": 81,
+            "Height": 38,
+            "Components": [
+              {
+                "Type": "FlexButton",
+                "Name": "Settingshowbutton",
+                "X": 2,
+                "Width": 79,
+                "Height": 38,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 79,
+                    "Height": 38,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 3,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 119,
+                      "Blue": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textsettingtitle",
+                "X": 21,
+                "Y": 8,
+                "Width": 40,
+                "Height": 27,
+                "TextId": "__SingleUse_S8QG",
+                "TextRotation": "0",
+                "AutoSize": true
+              }
+            ]
+          },
+          {
+            "Type": "ModalWindow",
+            "Name": "Setting",
+            "Width": 480,
+            "Height": 272,
+            "Visible": false,
+            "FileName": "__generated\\alternate_theme_images_containers_large_narrow_outlined_light.png",
+            "ModalX": 84,
+            "ModalY": 1,
+            "ModalWidth": 312,
+            "ModalHeight": 270,
+            "Alpha": 150,
+            "Components": [
+              {
+                "Type": "TextArea",
+                "Name": "textIP",
+                "X": 26,
+                "Y": 15,
+                "Width": 27,
+                "Height": 18,
+                "TextId": "__SingleUse_QKB3",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textsettingMinpos",
+                "X": 26,
+                "Y": 97,
+                "Width": 78,
+                "Height": 18,
+                "TextId": "__SingleUse_36GT",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textSettingMaxpos",
+                "X": 26,
+                "Y": 67,
+                "Width": 81,
+                "Height": 18,
+                "TextId": "__SingleUse_WT0J",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textGearRatio",
+                "X": 25,
+                "Y": 145,
+                "Width": 104,
+                "Height": 18,
+                "TextId": "__SingleUse_KWPH",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "GearDenominator_button",
+                "X": 146,
+                "Y": 163,
+                "Width": 105,
+                "Height": 25,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 105,
+                    "Height": 25,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "GearNumerator_button",
+                "X": 146,
+                "Y": 125,
+                "Width": 105,
+                "Height": 25,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 105,
+                    "Height": 25,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textGearNum_value",
+                "X": 156,
+                "Y": 128,
+                "Width": 90,
+                "Height": 18,
+                "TextId": "__SingleUse_BD09",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_8Q96",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textMaxrpm",
+                "X": 26,
+                "Y": 39,
+                "Width": 117,
+                "Height": 18,
+                "TextId": "__SingleUse_PE1M",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textGearDeno_value",
+                "X": 154,
+                "Y": 166,
+                "Width": 90,
+                "Height": 18,
+                "TextId": "__SingleUse_2UVS",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_5U36",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "Line",
+                "Name": "line1",
+                "X": 135,
+                "Y": 149,
+                "Width": 134,
+                "Height": 15,
+                "StartX": 5.0,
+                "StartY": 7.0,
+                "EndX": 125.0,
+                "EndY": 7.0,
+                "LineWidth": 5.0,
+                "LineEndingStyle": "Round"
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textIP0",
+                "X": 62,
+                "Y": 15,
+                "Width": 30,
+                "Height": 18,
+                "TextId": "__SingleUse_0LTE",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_V2VD",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textIP1",
+                "X": 102,
+                "Y": 15,
+                "Width": 30,
+                "Height": 18,
+                "TextId": "__SingleUse_7RDT",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_H6SP",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textIP2",
+                "X": 142,
+                "Y": 15,
+                "Width": 30,
+                "Height": 18,
+                "TextId": "__SingleUse_PZCS",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_2HF9",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textIP3",
+                "X": 183,
+                "Y": 15,
+                "Width": 30,
+                "Height": 18,
+                "TextId": "__SingleUse_4VOZ",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_HR4Y",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "settingMaxposbutton",
+                "X": 111,
+                "Y": 66,
+                "Width": 75,
+                "Height": 20,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 75,
+                    "Height": 20,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 116,
+                      "Blue": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "settingMinposbutton",
+                "X": 111,
+                "Y": 96,
+                "Width": 75,
+                "Height": 20,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 75,
+                    "Height": 20,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 116,
+                      "Blue": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textsettingMaxposvalue",
+                "X": 118,
+                "Y": 67,
+                "Width": 60,
+                "Height": 18,
+                "TextId": "__SingleUse_SS0A",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_UQ7V",
+                  "UseBuffer": true,
+                  "BufferSize": 15
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textsettingMinposvalue",
+                "X": 118,
+                "Y": 98,
+                "Width": 60,
+                "Height": 18,
+                "TextId": "__SingleUse_XBX9",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_KADZ",
+                  "UseBuffer": true,
+                  "BufferSize": 15
+                }
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "SettingRpmButton",
+                "X": 146,
+                "Y": 39,
+                "Width": 75,
+                "Height": 20,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 75,
+                    "Height": 20,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textsettingMaxrpmvalue",
+                "X": 154,
+                "Y": 40,
+                "Width": 60,
+                "Height": 18,
+                "TextId": "__SingleUse_J0QV",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_TOLI",
+                  "UseBuffer": true,
+                  "BufferSize": 15
+                }
+              },
+              {
+                "Type": "ButtonWithIcon",
+                "Name": "settingclosebutton",
+                "X": 276,
+                "Y": 1,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_outline_pressed.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_outline_normal.png",
+                "IconPressed": "__generated\\icon_theme_images_content_clear_50_50_FFFFFF.svg.png",
+                "IconReleased": "__generated\\icon_theme_images_navigation_close_50_50_000000.svg.png",
+                "IconX": -7,
+                "IconY": -7,
+                "IconHeight": 50,
+                "IconWidth": 50,
+                "Preset": "alternate_theme\\presets\\button\\icon\\rounded\\micro_outline_normal.json"
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "SettingSavebutton",
+                "X": 229,
+                "Y": 235,
+                "Width": 76,
+                "Height": 28,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 76,
+                    "Height": 28,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 153,
+                      "Blue": 204
+                    },
+                    "ColorBorderReleased": {
+                      "Green": 51,
+                      "Blue": 102
+                    },
+                    "ColorBorderPressed": {
+                      "Red": 51,
+                      "Green": 102,
+                      "Blue": 153
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textSettingSave",
+                "X": 246,
+                "Y": 239,
+                "Width": 39,
+                "Height": 18,
+                "TextId": "__SingleUse_L7G2",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textIP0dot",
+                "X": 94,
+                "Y": 15,
+                "Width": 5,
+                "Height": 18,
+                "TextId": "__SingleUse_BUMY",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textIP1dot",
+                "X": 134,
+                "Y": 15,
+                "Width": 5,
+                "Height": 18,
+                "TextId": "__SingleUse_ZRTI",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textIP2dot",
+                "X": 175,
+                "Y": 15,
+                "Width": 5,
+                "Height": 18,
+                "TextId": "__SingleUse_LBNE",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textmm1",
+                "X": 189,
+                "Y": 67,
+                "Width": 30,
+                "Height": 18,
+                "TextId": "__SingleUse_MDU8",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textmm2",
+                "X": 188,
+                "Y": 98,
+                "Width": 30,
+                "Height": 18,
+                "TextId": "__SingleUse_MS94",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textDiameter",
+                "X": 28,
+                "Y": 199,
+                "Width": 90,
+                "Height": 18,
+                "TextId": "__SingleUse_0H9W",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "SettingDiameterButton",
+                "X": 126,
+                "Y": 196,
+                "Width": 105,
+                "Height": 25,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 105,
+                    "Height": 25,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Green": 153,
+                      "Blue": 204
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textDiametervalue",
+                "X": 134,
+                "Y": 199,
+                "Width": 90,
+                "Height": 18,
+                "TextId": "__SingleUse_HNZT",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_JV73",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textmm3",
+                "X": 234,
+                "Y": 200,
+                "Width": 30,
+                "Height": 18,
+                "TextId": "__SingleUse_GC18",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "FlexButton",
+                "Name": "ServconnetButton",
+                "X": 17,
+                "Y": 230,
+                "Width": 92,
+                "Height": 31,
+                "ButtonTrigger": {
+                  "Type": "ClickButtonTrigger"
+                },
+                "ButtonStyles": [
+                  {
+                    "Type": "BoxWithBorderButtonStyle",
+                    "Width": 92,
+                    "Height": 31,
+                    "LockToFlexButtonSize": true,
+                    "BorderSize": 2,
+                    "ColorReleased": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "ColorPressed": {
+                      "Red": 41,
+                      "Green": 119,
+                      "Blue": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textservconnect",
+                "X": 39,
+                "Y": 235,
+                "Width": 37,
+                "Height": 18,
+                "TextId": "__SingleUse_CVKH",
+                "TextRotation": "0",
+                "AutoSize": true
+              }
+            ]
+          },
+          {
+            "Type": "ModalWindow",
+            "Name": "Popup_PowerState",
+            "Width": 480,
+            "Height": 272,
+            "Visible": false,
+            "FileName": "__generated\\alternate_theme_images_containers_small_wide_outlined_light.png",
+            "ModalX": 133,
+            "ModalY": 61,
+            "ModalWidth": 214,
+            "ModalHeight": 150,
+            "Alpha": 150,
+            "Components": [
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "hidebutton",
+                "X": 57,
+                "Y": 102,
+                "Width": 100,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_36_tiny_rounded_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_36_tiny_rounded_inactive.png",
+                "TextId": "__SingleUse_RVYH",
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textArea11",
+                "X": 13,
+                "Y": 75,
+                "Width": 254,
+                "Height": 24,
+                "TextId": "__SingleUse_8LKU",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "ScalableImage",
+                "Name": "scalableImage1",
+                "X": 71,
+                "Y": 9,
+                "Width": 68,
+                "Height": 66,
+                "Filename": "free-icon-caution-sign-75243.png",
+                "ScalingAlgorithm": "Nearest-neighbor"
+              }
+            ]
+          },
+          {
+            "Type": "ModalWindow",
+            "Name": "Numkeypad",
+            "Width": 480,
+            "Height": 272,
+            "Visible": false,
+            "FileName": "__generated\\alternate_theme_images_containers_medium_narrow_outlined_light.png",
+            "ModalX": 120,
+            "ModalY": 1,
+            "ModalWidth": 240,
+            "ModalHeight": 270,
+            "Alpha": 150,
+            "Components": [
+              {
+                "Type": "ButtonWithIcon",
+                "Name": "keypadhidebutton",
+                "X": 202,
+                "Y": 2,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_outline_pressed.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_outline_normal.png",
+                "IconPressed": "__generated\\icon_theme_images_navigation_close_50_50_1C5699.svg.png",
+                "IconReleased": "__generated\\icon_theme_images_navigation_close_50_50_000000.svg.png",
+                "IconX": -7,
+                "IconY": -7,
+                "IconHeight": 50,
+                "IconWidth": 50,
+                "Preset": "alternate_theme\\presets\\button\\icon\\rounded\\micro_outline_normal.json"
+              },
+              {
+                "Type": "ButtonWithIcon",
+                "Name": "Backspacebutton",
+                "X": 152,
+                "Y": 46,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_outline_normal.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_outline_disabled.png",
+                "IconPressed": "__generated\\icon_theme_images_navigation_arrow_left_50_50_FF0000.svg.png",
+                "IconReleased": "__generated\\icon_theme_images_navigation_arrow_left_50_50_000000.svg.png",
+                "IconX": -7,
+                "IconY": -7,
+                "IconHeight": 50,
+                "IconWidth": 50
+              },
+              {
+                "Type": "BoxWithBorder",
+                "Name": "boxWithBorder4",
+                "X": 48,
+                "Y": 90,
+                "Width": 144,
+                "Height": 177,
+                "Color": {
+                  "Red": 230,
+                  "Green": 247,
+                  "Blue": 255
+                },
+                "BorderColor": {
+                  "Red": 43,
+                  "Green": 102,
+                  "Blue": 153
+                },
+                "BorderSize": 2
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbuttonminus",
+                "X": 60,
+                "Y": 221,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_93UE",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbuttondot",
+                "X": 60,
+                "Y": 221,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_IVSE",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbuttonent",
+                "X": 146,
+                "Y": 221,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_02NA",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton0",
+                "X": 103,
+                "Y": 221,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_A13S",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton1",
+                "X": 60,
+                "Y": 99,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_3YEN",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton2",
+                "X": 103,
+                "Y": 99,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_YNUO",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton3",
+                "X": 146,
+                "Y": 99,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_GTM4",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton4",
+                "X": 60,
+                "Y": 140,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_P0B1",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton5",
+                "X": 103,
+                "Y": 140,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_UEYT",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton6",
+                "X": 146,
+                "Y": 140,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_6GYQ",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton7",
+                "X": 60,
+                "Y": 180,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_C6J4",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton8",
+                "X": 103,
+                "Y": 180,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_3TMN",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "Numbutton9",
+                "X": 146,
+                "Y": 180,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_fill_normal.png",
+                "TextId": "__SingleUse_ELRU",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "BoxWithBorder",
+                "Name": "numbox",
+                "X": 48,
+                "Y": 49,
+                "Width": 98,
+                "Height": 33,
+                "Color": {
+                  "Red": 223,
+                  "Green": 241,
+                  "Blue": 245
+                },
+                "BorderColor": {
+                  "Red": 45,
+                  "Green": 89,
+                  "Blue": 122
+                },
+                "BorderSize": 2
+              },
+              {
+                "Type": "TextArea",
+                "Name": "Keypadinputvalue",
+                "X": 54,
+                "Y": 53,
+                "Width": 92,
+                "Height": 26,
+                "TextId": "textinputnum",
+                "TextRotation": "0",
+                "Wildcard1": {
+                  "TextId": "__SingleUse_GIXB",
+                  "UseBuffer": true,
+                  "BufferSize": 10
+                }
+              }
+            ]
+          },
+          {
+            "Type": "ModalWindow",
+            "Name": "RemoteAlarm",
+            "Width": 480,
+            "Height": 272,
+            "Visible": false,
+            "FileName": "__generated\\alternate_theme_images_containers_small_wide_outlined_light.png",
+            "ModalX": 133,
+            "ModalY": 61,
+            "ModalWidth": 214,
+            "ModalHeight": 150,
+            "Alpha": 150,
+            "Components": [
+              {
+                "Type": "TextArea",
+                "Name": "textremotealarm",
+                "X": 41,
+                "Y": 79,
+                "Width": 134,
+                "Height": 48,
+                "TextId": "__SingleUse_U5E9",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "ScalableImage",
+                "Name": "AlarmImage",
+                "X": 72,
+                "Y": 11,
+                "Width": 68,
+                "Height": 68,
+                "Filename": "free-icon-caution-sign-75243.png",
+                "ScalingAlgorithm": "Nearest-neighbor"
+              }
+            ]
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "PowerButtonON",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PowerONButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "PowerButtonON"
+            }
+          },
+          {
+            "InteractionName": "PowerButtonOFF",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PowerOFFButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "PowerButtonOFF"
+            }
+          },
+          {
+            "InteractionName": "HideButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "hidebutton"
+            },
+            "Action": {
+              "Type": "ActionHide",
+              "ActionComponent": "Popup_PowerState"
+            }
+          },
+          {
+            "InteractionName": "ComButtonONOFF",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Com_onoff_Button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "ComButtonONOFF"
+            }
+          },
+          {
+            "InteractionName": "Keypadhide",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "keypadhidebutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Keypadhide"
+            }
+          },
+          {
+            "InteractionName": "Num1Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton1"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num1Button"
+            }
+          },
+          {
+            "InteractionName": "Num2Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton2"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num2Button"
+            }
+          },
+          {
+            "InteractionName": "Num3Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton3"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num3Button"
+            }
+          },
+          {
+            "InteractionName": "Num4Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton4"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num4Button"
+            }
+          },
+          {
+            "InteractionName": "Num5Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton5"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num5Button"
+            }
+          },
+          {
+            "InteractionName": "Num6Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton6"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num6Button"
+            }
+          },
+          {
+            "InteractionName": "Num7Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton7"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num7Button"
+            }
+          },
+          {
+            "InteractionName": "Num8Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton8"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num8Button"
+            }
+          },
+          {
+            "InteractionName": "Num9Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton9"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num9Button"
+            }
+          },
+          {
+            "InteractionName": "Num0Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbutton0"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Num0Button"
+            }
+          },
+          {
+            "InteractionName": "MinusButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbuttonminus"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "MinusButton"
+            }
+          },
+          {
+            "InteractionName": "EntButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbuttonent"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "EntButton"
+            }
+          },
+          {
+            "InteractionName": "BackspaceButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Backspacebutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "BackspaceButton"
+            }
+          },
+          {
+            "InteractionName": "Resetbutton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "ResetButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Resetbutton"
+            }
+          },
+          {
+            "InteractionName": "EableButtonOn",
+            "HasCompletedTrigger": true,
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "EableButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "EableButtonOn"
+            }
+          },
+          {
+            "InteractionName": "ModeButtonOn",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "MODEButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "ModeButtonOn"
+            }
+          },
+          {
+            "InteractionName": "PositionScreenButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PosScreenButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "PositionScreenButton"
+            }
+          },
+          {
+            "InteractionName": "PositionStartButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PosStartButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "PositionStartButton"
+            }
+          },
+          {
+            "InteractionName": "PositionStopButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PosStopButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "PositionStopButton"
+            }
+          },
+          {
+            "InteractionName": "Posrpmpadshow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PosRpmpadshowButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Posrpmpadshow"
+            }
+          },
+          {
+            "InteractionName": "Pospospadshow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PosPospadshowButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "Pospospadshow"
+            }
+          },
+          {
+            "InteractionName": "MC_ON_Button",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "MC_ONbutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "MC_ON_Button"
+            }
+          },
+          {
+            "InteractionName": "SettingHideButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "settingclosebutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "SettingHideButton"
+            }
+          },
+          {
+            "InteractionName": "Settingshow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Settingshowbutton"
+            },
+            "Action": {
+              "Type": "ActionShow",
+              "ActionComponent": "Setting"
+            }
+          },
+          {
+            "InteractionName": "SettingMinposShow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "settingMinposbutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "SettingMinposShow"
+            }
+          },
+          {
+            "InteractionName": "SettingMaxposShow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "settingMaxposbutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "SettingMaxposShow"
+            }
+          },
+          {
+            "InteractionName": "SettingGearNumShow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "GearNumerator_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "SettingGearNumShow"
+            }
+          },
+          {
+            "InteractionName": "SettingGearDenShow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "GearDenominator_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "SettingGearDenShow"
+            }
+          },
+          {
+            "InteractionName": "SetttingShowButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Settingshowbutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "SetttingShowButton"
+            }
+          },
+          {
+            "InteractionName": "NumdotButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "Numbuttondot"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "NumdotButton"
+            }
+          },
+          {
+            "InteractionName": "SettingSaveButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "SettingSavebutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "SettingSaveButton"
+            }
+          },
+          {
+            "InteractionName": "HomingScreenButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "HomeScreenButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "HomingScreenButton"
+            }
+          },
+          {
+            "InteractionName": "HomePospadshow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "HomePosinputButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "HomePospadshow"
+            }
+          },
+          {
+            "InteractionName": "HomeSetbutton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "HomingSetbutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "HomeSetbutton"
+            }
+          },
+          {
+            "InteractionName": "ServconnectionButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "ServconnetButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "ServconnectionButton"
+            }
+          },
+          {
+            "InteractionName": "SettingDiameterShow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "SettingDiameterButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "SettingDiameterShow"
+            }
+          },
+          {
+            "InteractionName": "SettingRpmShow",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "SettingRpmButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "SettingRpmShow"
+            }
+          }
+        ]
+      }
+    ],
+    "CustomContainerDefinitions": [],
+    "Name": "MyApplication",
+    "Resolution": {
+      "Width": 480,
+      "Height": 272
+    },
+    "SelectedColorDepth": 16,
+    "StartupScreenName": "Main",
+    "SelectedStartupLanguage": "GB",
+    "TouchGfxPath": "../Middlewares/ST/touchgfx",
+    "UIPath": ".",
+    "AvailableColorDepths": [
+      16
+    ],
+    "AvailableLCDs": {
+      "16": "LCD16bpp"
+    },
+    "AvailableSections": [
+      "ExtFlashSection",
+      "IntFlashSection"
+    ],
+    "AvailableResolutions": [
+      {
+        "Width": 480,
+        "Height": 272
+      }
+    ],
+    "PhysicalButtons": [],
+    "FrameworkFeatures": {
+      "LCD16bpp": {
+        "Id": "LCD16bpp",
+        "IsEnabled": true
+      }
+    },
+    "GenerateAssetsCommand": "make -f simulator/gcc/Makefile assets -j8",
+    "PostGenerateCommand": "touchgfx update_project --project-file=simulator/msvs/Application.vcxproj",
+    "PostGenerateTargetCommand": "touchgfx update_project",
+    "CompileSimulatorCommand": "make -f simulator/gcc/Makefile -j8",
+    "RunSimulatorCommand": "build\\bin\\simulator.exe",
+    "LandscapeSkinX": 0,
+    "LandscapeSkinY": 0,
+    "PortraitSkinX": 0,
+    "PortraitSkinY": 0,
+    "DisplayOrientation": "Landscape",
+    "Family": "STM32F7",
+    "SubFamily": "STM32F7x6",
+    "Toolchain": "STM32CubeIDE",
+    "Platform": "m7",
+    "ProjectFile": "../240127_KEB.ioc",
+    "OptionalComponentsRoot": "../Middlewares/ST/touchgfx_components",
+    "OptionalComponents": [],
+    "AdditionalFeatures": []
+  },
+  "Version": "4.22.1"
+}

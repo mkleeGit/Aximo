@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="texts.xsd" Version="4.22.1">
+  <Languages>
+    <Language Id="GB" />
+  </Languages>
+  <Texts>
+    <TextGroup Id="Group1" />
+    <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_GC18" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">mm</Translation>
+      </Text>
+      <Text Id="__SingleUse_JV73" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">000000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_HNZT" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_0H9W" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">DIAMETER :</Translation>
+      </Text>
+      <Text Id="__SingleUse_FCVV" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">전원</Translation>
+      </Text>
+      <Text Id="__SingleUse_55WG" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">xxxxxxxxxx</Translation>
+      </Text>
+      <Text Id="__SingleUse_BYII" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_CVKH" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">서버 연결</Translation>
+      </Text>
+      <Text Id="__SingleUse_6VPC" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">위치 변경</Translation>
+      </Text>
+      <Text Id="__SingleUse_SDNC" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">00000</Translation>
+      </Text>
+      <Text Id="__SingleUse_1V50" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_RUMT" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">00000</Translation>
+      </Text>
+      <Text Id="__SingleUse_9LKX" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_DVMP" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">입력 위치 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_YFKB" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">현재 위치 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_1N3V" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">홈 모드</Translation>
+      </Text>
+      <Text Id="__SingleUse_U5E9" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">Using in &#10;remote mode</Translation>
+      </Text>
+      <Text Id="__SingleUse_IVSE" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">.</Translation>
+      </Text>
+      <Text Id="__SingleUse_MS94" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">mm</Translation>
+      </Text>
+      <Text Id="__SingleUse_MDU8" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">mm</Translation>
+      </Text>
+      <Text Id="__SingleUse_LBNE" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">.</Translation>
+      </Text>
+      <Text Id="__SingleUse_ZRTI" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">.</Translation>
+      </Text>
+      <Text Id="__SingleUse_BUMY" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">.</Translation>
+      </Text>
+      <Text Id="__SingleUse_HR4Y" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">XXX</Translation>
+      </Text>
+      <Text Id="__SingleUse_4VOZ" Alignment="Center" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_2HF9" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">XXX</Translation>
+      </Text>
+      <Text Id="__SingleUse_PZCS" Alignment="Center" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_H6SP" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">XXX</Translation>
+      </Text>
+      <Text Id="__SingleUse_7RDT" Alignment="Center" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_S8QG" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">설정</Translation>
+      </Text>
+      <Text Id="__SingleUse_L7G2" Alignment="Center" TypographyId="Setting_Text">
+        <Translation Language="GB">SAVE</Translation>
+      </Text>
+      <Text Id="__SingleUse_5U36" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">000000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_8Q96" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">000000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_TOLI" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_J0QV" Alignment="Center" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_KADZ" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_XBX9" Alignment="Center" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_UQ7V" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_SS0A" Alignment="Center" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_V2VD" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">XXX</Translation>
+      </Text>
+      <Text Id="__SingleUse_0LTE" Alignment="Center" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_2UVS" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_BD09" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_KWPH" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">GEAR RATIO :</Translation>
+      </Text>
+      <Text Id="__SingleUse_PE1M" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">MIN,MAX RPM :</Translation>
+      </Text>
+      <Text Id="__SingleUse_WT0J" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">MAX POS :</Translation>
+      </Text>
+      <Text Id="__SingleUse_36GT" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">MIN POS :</Translation>
+      </Text>
+      <Text Id="__SingleUse_QKB3" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">IP :</Translation>
+      </Text>
+      <Text Id="__SingleUse_SBQJ" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">MC ON</Translation>
+      </Text>
+      <Text Id="__SingleUse_NBDB" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">XXXXXXXXXX</Translation>
+      </Text>
+      <Text Id="__SingleUse_MHVP" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">전원 및 STO :</Translation>
+      </Text>
+      <Text Id="__SingleUse_V7ZV" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">0000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_HDDF" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">0000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_CO9D" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">00000</Translation>
+      </Text>
+      <Text Id="__SingleUse_YKCI" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">00000</Translation>
+      </Text>
+      <Text Id="__SingleUse_0XOO" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">시작</Translation>
+      </Text>
+      <Text Id="__SingleUse_W10B" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">정지</Translation>
+      </Text>
+      <Text Id="__SingleUse_92KA" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_OT9M" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_6N55" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_JJNS" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_P8JV" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">현재 속도 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_FZ3N" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">입력 속도 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_CU3K" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">현재 위치 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_JB9A" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">입력 위치 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_61UY" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">위치 모드</Translation>
+      </Text>
+      <Text Id="__SingleUse_4ZOE" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">xxxxxxxxxxxxxxxxx</Translation>
+      </Text>
+      <Text Id="__SingleUse_KMWH" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_N14M" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">:</Translation>
+      </Text>
+      <Text Id="__SingleUse_ABXU" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">모드</Translation>
+      </Text>
+      <Text Id="__SingleUse_DNBM" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">인버터 준비</Translation>
+      </Text>
+      <Text Id="__SingleUse_5G79" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">리셋</Translation>
+      </Text>
+      <Text Id="__SingleUse_EPI3" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">xxxxxxxxxxxxxxxxxx</Translation>
+      </Text>
+      <Text Id="__SingleUse_BR5X" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_1KJG" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">xxxxxxxxxxxxxxxxxx</Translation>
+      </Text>
+      <Text Id="__SingleUse_A4K0" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_GIXB" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">000000000</Translation>
+      </Text>
+      <Text Id="Rpmvaluetext" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">00000</Translation>
+      </Text>
+      <Text Id="__SingleUse_02NA" Alignment="Center" TypographyId="Typography_02">
+        <Translation Language="GB">ENT</Translation>
+      </Text>
+      <Text Id="textinputnum" Alignment="Center" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_93UE" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">-</Translation>
+      </Text>
+      <Text Id="__SingleUse_A13S" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">0</Translation>
+      </Text>
+      <Text Id="__SingleUse_ELRU" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">9</Translation>
+      </Text>
+      <Text Id="__SingleUse_C6J4" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">7</Translation>
+      </Text>
+      <Text Id="__SingleUse_UEYT" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">5</Translation>
+      </Text>
+      <Text Id="__SingleUse_6GYQ" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">6</Translation>
+      </Text>
+      <Text Id="__SingleUse_3TMN" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">8</Translation>
+      </Text>
+      <Text Id="__SingleUse_P0B1" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">4</Translation>
+      </Text>
+      <Text Id="__SingleUse_GTM4" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">3</Translation>
+      </Text>
+      <Text Id="__SingleUse_YNUO" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">2</Translation>
+      </Text>
+      <Text Id="__SingleUse_3YEN" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">1</Translation>
+      </Text>
+      <Text Id="__SingleUse_VZ84" Alignment="Center" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_8LKU" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">Please turn off the Power</Translation>
+      </Text>
+      <Text Id="__SingleUse_RVYH" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">OK</Translation>
+      </Text>
+      <Text Id="__SingleUse_06B0" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">상태 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_IY0Q" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">에러 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_BIYJ" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">끄기</Translation>
+      </Text>
+      <Text Id="__SingleUse_QEIH" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">켜기</Translation>
+      </Text>
+      <Text Id="ResourceId1" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">New Text</Translation>
+      </Text>
+      <Text Id="testText" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB" Alignment="Center">&lt;value&gt;</Translation>
+      </Text>
+    </TextGroup>
+  </Texts>
+  <Typographies>
+    <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Small" Font="verdana.ttf" Size="14" Bpp="4" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Typography_00" Font="calibri.ttf" Size="17" Bpp="4" Direction="RTL" FallbackCharacter="?" />
+    <Typography Id="Typography_01" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="address_text" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789" WildcardCharacterRanges="0-9" />
+    <Typography Id="velocity_text" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Typography_02" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789 :APM" WildcardCharacterRanges="0x00-0x7F" />
+    <Typography Id="Typography_03" Font="malgunbd.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789 :APM" WildcardCharacterRanges="0x00-0x7F" />
+    <Typography Id="Setting_Text" Font="verdana.ttf" Size="15" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789 :APM" WildcardCharacterRanges="0x00-0x7F" />
+  </Typographies>
+</TextDatabase>
