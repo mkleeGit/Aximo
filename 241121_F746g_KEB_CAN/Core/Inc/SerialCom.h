@@ -7,9 +7,9 @@
 #ifndef INC_SERIALCOM_H_
 #define INC_SERIALCOM_H_
 
-#include <stdbool.h>
 #include <KEB_PROTOCAL.h>
-#include "main.h"
+#include <stdbool.h>
+#include <main.h>
 #include "global.h"
 
 //char* SerialReadTx();

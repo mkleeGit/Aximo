@@ -5,7 +5,7 @@
  *      Author: Lee
  */
 
-#include "KEB_Protocal.h"
+#include <KEB_PROTOCAL.h>
 
 uint8_t cEOT = 0x04;
 uint8_t cSTX = 0x02;

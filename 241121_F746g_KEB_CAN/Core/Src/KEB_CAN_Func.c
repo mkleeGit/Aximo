@@ -5,7 +5,7 @@
  *      Author: LEEMINKOO
  */
 
-#include "KEB_CAN_Func.h"
+#include <KEB_CAN_Func.h>
 
 void KEB_CAN_Func_32dectohex(int idecvalue, uint8_t* uiarryhex, uint8_t num)
 {
@@ -38,7 +38,7 @@ uint16_t KEB_CAN_Func_hexto16uint(uint8_t* uiarryhex, uint8_t num)
 
 void KEB_CAN_Func_reverse_array(uint8_t *uiarryhex, uint8_t Num)
 {
-	uint8_t *temp = 0;
+	uint8_t temp = 0; //uint8_t *temp = 0;
 	uint8_t cnt;
 	if(Num == 0 && (Num % 2  != 0))
 	{
@@ -51,7 +51,7 @@ void KEB_CAN_Func_reverse_array(uint8_t *uiarryhex, uint8_t Num)
 		temp = uiarryhex[i];
 		uiarryhex[i] = uiarryhex[Num - 1];
 		uiarryhex[Num - 1] = temp;
-		Num = Num - 1;
+		Num--;//Num = Num - 1;
 	}
 }
 

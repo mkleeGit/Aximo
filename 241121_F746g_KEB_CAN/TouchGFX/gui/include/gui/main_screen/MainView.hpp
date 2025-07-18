@@ -13,11 +13,6 @@ public:
     virtual void setupScreen();
     virtual void tearDownScreen();
     virtual void List1ButtonOn();
-    virtual void List2ButtonOn();
-    virtual void List3ButtonOn();
-    virtual void List4ButtonOn();
-    virtual void List5ButtonOn();
-    virtual void List6ButtonOn();
     virtual void PowerButtonON();
     virtual void PowerButtonOFF();
     virtual void ComButtonONOFF();
@@ -37,7 +32,6 @@ public:
     virtual void MinusButton();
     virtual void EntButton();
     virtual void BackspaceButton();
-    virtual void VelSettingRpmButton();
     virtual void Resetbutton();
     virtual void EableButtonOn();
     virtual void ModeButtonOn();
@@ -45,26 +39,43 @@ public:
     virtual void PositionStartButton();
     virtual void PositionStopButton();
     virtual void Posrpmpadshow();
-    virtual void PosRpmSettingButton();
     virtual void Pospospadshow();
-    virtual void PosPosSettingButton();
     virtual void SettingMinposShow();
     virtual void SettingMaxposShow();
     virtual void SettingGearNumShow();
     virtual void SettingGearDenShow();
-    virtual void SetttingShowButton();
+    virtual void SettingShowButton();
     virtual void SettingSaveButton();
     virtual void MC_ON_Button();
-    virtual void Vel_SettingCWButton();
-    virtual void Vel_SettingCCWButton();
     virtual void HomingScreenButton();
     virtual void HomePospadshow();
-	virtual void HomeSettingPosButton();
 	virtual void HomeSetbutton();
 	virtual void ServconnectionButton();
 	virtual void SettingHideButton();
 	virtual void SettingDiameterShow();
 	virtual void SettingRpmShow();
+	virtual void SettingWireSetPadShow();
+	//Setting
+	virtual void SetType_D_Button();
+	virtual void SetType_D_ENC_Button();
+	virtual void SetType_INV_ENC_Button();
+	virtual void YoYoSelected();
+	virtual void YoYoDeselected();
+	virtual void SettingEncPulseSetPadShow();
+
+	//Direct
+	virtual void DirectMoveUpButton();
+	virtual void DirectMoveDownButton();
+	virtual void DirectMoveStopButton();
+
+	virtual void DirectHomeSetbutton();
+	virtual void DirectPosUpSetPadShowButton();
+	virtual void DirectPosDownSetPadShowButton();
+	virtual void DirectHomeSetPadShow();
+
+
+
+
     virtual void handleTickEvent();
 protected:
     typedef enum NumpadModeTypedef{
@@ -77,8 +88,15 @@ protected:
 		KEYPAD_Setting_GearDen = 7,
 		KEYPAD_Home_POS = 8,
 		KEYPAD_Setting_Diameter = 9,
-		KEYPAD_Setting_MinMaxVel
+		KEYPAD_Setting_MinMaxVel = 10,
+		KEYPAD_Direct_Up_POS = 11,
+    	KEYPAD_Direct_Down_POS = 12,
+		KEYPAD_Direct_Home_POS = 13,
+		KEYPAD_Wire = 14,
+		KEYPAD_Enc_Pulse
     }NumpadModeTypedef;
+
+    uint8_t u8Screenpage; // 1 : Position 2: Home
 
     int KeypadMode;
 
@@ -86,12 +104,12 @@ protected:
     int dot_value;
 
     //Setting Rpm Keypad
-    int temp_SetMinMaxRpm;
+    int32_t temp_SetMinMaxRpm;
     int oldtemp_SetMinMaxRpm;
 
     //Setting Pos Keypad
-    int temp_SetMaxPos;
-    int temp_SetMinPos;
+    int32_t temp_SetMaxPos;
+    int32_t temp_SetMinPos;
 
     int oldtemp_SetMaxPos;
     int oldtemp_SetMinPos;
@@ -103,10 +121,25 @@ protected:
     float oldtemp_SetGearNum;
     float oldtemp_SetGearDen;
 
+    //Setting Type
+    int temp_SetType;
+    int oldtemp_SetType;
+
     //Setting Diameter Keypad
     float temp_SetDiameter;
-
     float oldtemp_SetDiameter;
+
+    //Setting Wire
+    float temp_SetWire;
+	float oldtemp_SetWire;
+
+	//Setting YoYo
+	bool temp_SetYoYo;
+
+	//Setting Encoder Pulse
+	int32_t temp_SetEncPulse;
+	int oldtemp_SetEncPulse;
+
 
     int SettingPosmaxHigh = 99999;
     int SettingPosmaxLow = -99998;

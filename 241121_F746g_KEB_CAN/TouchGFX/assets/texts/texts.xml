@@ -6,6 +6,111 @@
   <Texts>
     <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_FH78" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">0000</Translation>
+      </Text>
+      <Text Id="__SingleUse_SPBS" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_TTS8" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">mm</Translation>
+      </Text>
+      <Text Id="__SingleUse_JDYF" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">ENC_PULSE :</Translation>
+      </Text>
+      <Text Id="__SingleUse_A8KO" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">mm</Translation>
+      </Text>
+      <Text Id="__SingleUse_GAKW" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">0000</Translation>
+      </Text>
+      <Text Id="__SingleUse_KM0I" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_KNRI" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">Wire :</Translation>
+      </Text>
+      <Text Id="__SingleUse_88S8" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">YoYo :</Translation>
+      </Text>
+      <Text Id="__SingleUse_YW6M" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">D</Translation>
+      </Text>
+      <Text Id="__SingleUse_4UZS" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">위치 변경</Translation>
+      </Text>
+      <Text Id="__SingleUse_OJIW" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">00000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_LLLH" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_AINL" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">하강 목표 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_UKIH" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">00000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_X66B" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_NMGD" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">홈 설정</Translation>
+      </Text>
+      <Text Id="__SingleUse_M4FP" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">목표 위치 설정</Translation>
+      </Text>
+      <Text Id="__SingleUse_ARZ6" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">입력 위치 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_IIL6" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">INV_ENC</Translation>
+      </Text>
+      <Text Id="__SingleUse_O7ZE" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">TYPE:</Translation>
+      </Text>
+      <Text Id="__SingleUse_I5KW" Alignment="Left" TypographyId="Setting_Text">
+        <Translation Language="GB">D_ENC</Translation>
+      </Text>
+      <Text Id="__SingleUse_E8KK" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">00000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_NDHK" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">00000000</Translation>
+      </Text>
+      <Text Id="__SingleUse_QC77" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_UGWZ" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_8LY0" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">현재 위치 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_ZDMR" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">상승 목표 :</Translation>
+      </Text>
+      <Text Id="__SingleUse_5EPH" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">F DN :</Translation>
+      </Text>
+      <Text Id="__SingleUse_ECTN" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">DN :</Translation>
+      </Text>
+      <Text Id="__SingleUse_RNO7" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">UP :</Translation>
+      </Text>
+      <Text Id="__SingleUse_PLYC" Alignment="Left" TypographyId="Typography_02">
+        <Translation Language="GB">F UP :</Translation>
+      </Text>
+      <Text Id="__SingleUse_F8MY" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">정지</Translation>
+      </Text>
+      <Text Id="__SingleUse_IW4R" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">하강</Translation>
+      </Text>
+      <Text Id="__SingleUse_QOKJ" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">상승</Translation>
+      </Text>
       <Text Id="__SingleUse_GC18" Alignment="Left" TypographyId="Setting_Text">
         <Translation Language="GB">mm</Translation>
       </Text>
@@ -154,7 +259,7 @@
         <Translation Language="GB">MC ON</Translation>
       </Text>
       <Text Id="__SingleUse_NBDB" Alignment="Left" TypographyId="Default">
-        <Translation Language="GB">XXXXXXXXXX</Translation>
+        <Translation Language="GB">XXXXXXXX</Translation>
       </Text>
       <Text Id="__SingleUse_MHVP" Alignment="Left" TypographyId="Typography_03">
         <Translation Language="GB">전원 및 STO :</Translation>
@@ -282,7 +387,7 @@
       <Text Id="__SingleUse_VZ84" Alignment="Center" TypographyId="Typography_02">
         <Translation Language="GB">&lt;value&gt;</Translation>
       </Text>
-      <Text Id="__SingleUse_8LKU" Alignment="Left" TypographyId="Typography_02">
+      <Text Id="__SingleUse_8LKU" Alignment="Left" TypographyId="Setting_Text">
         <Translation Language="GB">Please turn off the Power</Translation>
       </Text>
       <Text Id="__SingleUse_RVYH" Alignment="Center" TypographyId="Default">

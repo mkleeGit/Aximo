@@ -4,12 +4,14 @@
 #include <gui_generated/main_screen/MainViewBase.hpp>
 #include <touchgfx/canvas_widget_renderer/CanvasWidgetRenderer.hpp>
 #include <touchgfx/Color.hpp>
-#include <texts/TextKeysAndLanguages.hpp>
 #include <images/BitmapDatabase.hpp>
+#include <texts/TextKeysAndLanguages.hpp>
 
 MainViewBase::MainViewBase() :
     flexButtonCallback(this, &MainViewBase::flexButtonCallbackHandler),
-    buttonCallback(this, &MainViewBase::buttonCallbackHandler)
+    buttonCallback(this, &MainViewBase::buttonCallbackHandler),
+    radioButtonSelectedCallback(this, &MainViewBase::radioButtonSelectedCallbackHandler),
+    radioButtonDeselectedCallback(this, &MainViewBase::radioButtonDeselectedCallbackHandler)
 {
     touchgfx::CanvasWidgetRenderer::setupBuffer(canvasBuffer, CANVAS_BUFFER_SIZE);
     
@@ -25,57 +27,302 @@ MainViewBase::MainViewBase() :
     TITLE_BACKGROUND.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
     add(TITLE_BACKGROUND);
 
-    PowerON.setPosition(3, 225, 55, 45);
-    PowerONBox.setPosition(0, 0, 55, 45);
-    PowerONBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    PowerONBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    PowerONBox.setBorderSize(3);
-    PowerON.add(PowerONBox);
+    KEB_Image.setXY(0, 0);
+    KEB_Image.setBitmap(touchgfx::Bitmap(BITMAP_KEB_ID));
+    add(KEB_Image);
 
-    PowerONButton.setBoxWithBorderPosition(0, 0, 55, 45);
-    PowerONButton.setBorderSize(3);
-    PowerONButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
-    PowerONButton.setAlpha(100);
-    PowerONButton.setAction(flexButtonCallback);
-    PowerONButton.setPosition(0, 0, 55, 45);
-    PowerON.add(PowerONButton);
+    Direct.setPosition(2, 39, 479, 233);
+    StopButton.setPosition(91, 84, 65, 65);
+    DirectStopBox.setPosition(0, 0, 65, 65);
+    DirectStopBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    DirectStopBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    DirectStopBox.setBorderSize(3);
+    StopButton.add(DirectStopBox);
 
-    textPowerON.setXY(8, 10);
-    textPowerON.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textPowerON.setLinespacing(0);
-    textPowerON.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QEIH));
-    PowerON.add(textPowerON);
+    DirectStopButton.setBoxWithBorderPosition(0, 0, 65, 65);
+    DirectStopButton.setBorderSize(3);
+    DirectStopButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    DirectStopButton.setAlpha(100);
+    DirectStopButton.setAction(flexButtonCallback);
+    DirectStopButton.setPosition(0, 0, 65, 65);
+    StopButton.add(DirectStopButton);
 
-    add(PowerON);
+    textDirectStop.setXY(12, 20);
+    textDirectStop.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textDirectStop.setLinespacing(0);
+    textDirectStop.setTypedText(touchgfx::TypedText(T___SINGLEUSE_F8MY));
+    StopButton.add(textDirectStop);
 
-    PowerOFF.setPosition(68, 225, 55, 45);
-    PowerOFFBox.setPosition(0, 0, 55, 45);
-    PowerOFFBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    PowerOFFBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    PowerOFFBox.setBorderSize(3);
-    PowerOFF.add(PowerOFFBox);
+    Direct.add(StopButton);
 
-    PowerOFFButton.setBoxWithBorderPosition(0, 0, 55, 45);
-    PowerOFFButton.setBorderSize(3);
-    PowerOFFButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 225), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(2, 5, 8));
-    PowerOFFButton.setAlpha(100);
-    PowerOFFButton.setAction(flexButtonCallback);
-    PowerOFFButton.setPosition(0, 0, 55, 45);
-    PowerOFF.add(PowerOFFButton);
+    UpButton.setPosition(8, 32, 65, 65);
+    DirectUpBox.setPosition(0, 0, 65, 65);
+    DirectUpBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    DirectUpBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    DirectUpBox.setBorderSize(3);
+    UpButton.add(DirectUpBox);
 
-    textPowerOFF.setXY(8, 10);
-    textPowerOFF.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textPowerOFF.setLinespacing(0);
-    textPowerOFF.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BIYJ));
-    PowerOFF.add(textPowerOFF);
+    DirectUpButton.setBoxWithBorderPosition(0, 0, 65, 65);
+    DirectUpButton.setBorderSize(3);
+    DirectUpButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    DirectUpButton.setAlpha(100);
+    DirectUpButton.setAction(flexButtonCallback);
+    DirectUpButton.setPosition(0, 0, 65, 65);
+    UpButton.add(DirectUpButton);
 
-    add(PowerOFF);
+    textDirectUp.setXY(12, 20);
+    textDirectUp.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textDirectUp.setLinespacing(0);
+    textDirectUp.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QOKJ));
+    UpButton.add(textDirectUp);
 
-    textPower.setXY(39, 155);
-    textPower.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textPower.setLinespacing(0);
-    textPower.setTypedText(touchgfx::TypedText(T___SINGLEUSE_FCVV));
-    add(textPower);
+    Direct.add(UpButton);
+
+    DownButton.setPosition(8, 144, 65, 65);
+    DirectDownBox.setPosition(0, -1, 65, 65);
+    DirectDownBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    DirectDownBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    DirectDownBox.setBorderSize(3);
+    DownButton.add(DirectDownBox);
+
+    DirectDownButton.setBoxWithBorderPosition(0, 0, 65, 65);
+    DirectDownButton.setBorderSize(3);
+    DirectDownButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    DirectDownButton.setAlpha(100);
+    DirectDownButton.setAction(flexButtonCallback);
+    DirectDownButton.setPosition(0, 0, 65, 65);
+    DownButton.add(DirectDownButton);
+
+    textDriectDown.setXY(12, 20);
+    textDriectDown.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textDriectDown.setLinespacing(0);
+    textDriectDown.setTypedText(touchgfx::TypedText(T___SINGLEUSE_IW4R));
+    DownButton.add(textDriectDown);
+
+    Direct.add(DownButton);
+
+    Limit.setPosition(159, 0, 117, 118);
+    D_FDN_LimitBox.setPosition(79, 93, 25, 25);
+    D_FDN_LimitBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    D_FDN_LimitBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    D_FDN_LimitBox.setBorderSize(2);
+    Limit.add(D_FDN_LimitBox);
+
+    D_DN_LimitBox.setPosition(79, 63, 25, 25);
+    D_DN_LimitBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    D_DN_LimitBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    D_DN_LimitBox.setBorderSize(2);
+    Limit.add(D_DN_LimitBox);
+
+    D_UP_LimitBox.setPosition(79, 33, 25, 25);
+    D_UP_LimitBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    D_UP_LimitBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    D_UP_LimitBox.setBorderSize(2);
+    Limit.add(D_UP_LimitBox);
+
+    D_FUP_LimitBox.setPosition(79, 3, 25, 25);
+    D_FUP_LimitBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    D_FUP_LimitBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    D_FUP_LimitBox.setBorderSize(2);
+    Limit.add(D_FUP_LimitBox);
+
+    textD_FDNLimit.setXY(7, 93);
+    textD_FDNLimit.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_FDNLimit.setLinespacing(0);
+    textD_FDNLimit.setTypedText(touchgfx::TypedText(T___SINGLEUSE_5EPH));
+    Limit.add(textD_FDNLimit);
+
+    textD_DNLimit.setXY(26, 63);
+    textD_DNLimit.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_DNLimit.setLinespacing(0);
+    textD_DNLimit.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ECTN));
+    Limit.add(textD_DNLimit);
+
+    textD_UPLimit.setXY(29, 33);
+    textD_UPLimit.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_UPLimit.setLinespacing(0);
+    textD_UPLimit.setTypedText(touchgfx::TypedText(T___SINGLEUSE_RNO7));
+    Limit.add(textD_UPLimit);
+
+    textD_FUPLimit.setXY(10, 3);
+    textD_FUPLimit.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_FUPLimit.setLinespacing(0);
+    textD_FUPLimit.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PLYC));
+    Limit.add(textD_FUPLimit);
+
+    Direct.add(Limit);
+
+    Direct_PosSetting.setPosition(263, 0, 215, 233);
+    textD_PosUpSet.setXY(0, 145);
+    textD_PosUpSet.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_PosUpSet.setLinespacing(0);
+    textD_PosUpSet.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ZDMR));
+    Direct_PosSetting.add(textD_PosUpSet);
+
+    textD_PosUpSetValue.setXY(107, 146);
+    textD_PosUpSetValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_PosUpSetValue.setLinespacing(0);
+    Unicode::snprintf(textD_PosUpSetValueBuffer, TEXTD_POSUPSETVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_E8KK).getText());
+    textD_PosUpSetValue.setWildcard(textD_PosUpSetValueBuffer);
+    textD_PosUpSetValue.resizeToCurrentText();
+    textD_PosUpSetValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_UGWZ));
+    Direct_PosSetting.add(textD_PosUpSetValue);
+
+    textD_PosAct.setXY(0, 177);
+    textD_PosAct.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_PosAct.setLinespacing(0);
+    textD_PosAct.setTypedText(touchgfx::TypedText(T___SINGLEUSE_8LY0));
+    Direct_PosSetting.add(textD_PosAct);
+
+    textD_PosActValue.setXY(107, 178);
+    textD_PosActValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_PosActValue.setLinespacing(0);
+    Unicode::snprintf(textD_PosActValueBuffer, TEXTD_POSACTVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_NDHK).getText());
+    textD_PosActValue.setWildcard(textD_PosActValueBuffer);
+    textD_PosActValue.resizeToCurrentText();
+    textD_PosActValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QC77));
+    Direct_PosSetting.add(textD_PosActValue);
+
+    textD_PosDownSet.setXY(0, 208);
+    textD_PosDownSet.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_PosDownSet.setLinespacing(0);
+    textD_PosDownSet.setTypedText(touchgfx::TypedText(T___SINGLEUSE_AINL));
+    Direct_PosSetting.add(textD_PosDownSet);
+
+    textD_PosDownSetValue.setXY(108, 207);
+    textD_PosDownSetValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_PosDownSetValue.setLinespacing(0);
+    Unicode::snprintf(textD_PosDownSetValueBuffer, TEXTD_POSDOWNSETVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_OJIW).getText());
+    textD_PosDownSetValue.setWildcard(textD_PosDownSetValueBuffer);
+    textD_PosDownSetValue.resizeToCurrentText();
+    textD_PosDownSetValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_LLLH));
+    Direct_PosSetting.add(textD_PosDownSetValue);
+
+    D_PosUpSetPadShowButton.setBoxWithBorderPosition(0, 0, 216, 31);
+    D_PosUpSetPadShowButton.setBorderSize(5);
+    D_PosUpSetPadShowButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    D_PosUpSetPadShowButton.setAlpha(0);
+    D_PosUpSetPadShowButton.setAction(flexButtonCallback);
+    D_PosUpSetPadShowButton.setPosition(0, 142, 216, 31);
+    Direct_PosSetting.add(D_PosUpSetPadShowButton);
+
+    D_PosDownSetPadShowButton.setBoxWithBorderPosition(0, 0, 216, 29);
+    D_PosDownSetPadShowButton.setBorderSize(5);
+    D_PosDownSetPadShowButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    D_PosDownSetPadShowButton.setAlpha(0);
+    D_PosDownSetPadShowButton.setAction(flexButtonCallback);
+    D_PosDownSetPadShowButton.setPosition(0, 203, 216, 29);
+    Direct_PosSetting.add(D_PosDownSetPadShowButton);
+
+    textD_HomeSet.setXY(0, 70);
+    textD_HomeSet.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_HomeSet.setLinespacing(0);
+    textD_HomeSet.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ARZ6));
+    Direct_PosSetting.add(textD_HomeSet);
+
+    textD_HomeSetValue.setXY(107, 69);
+    textD_HomeSetValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_HomeSetValue.setLinespacing(0);
+    Unicode::snprintf(textD_HomeSetValueBuffer, TEXTD_HOMESETVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_UKIH).getText());
+    textD_HomeSetValue.setWildcard(textD_HomeSetValueBuffer);
+    textD_HomeSetValue.resizeToCurrentText();
+    textD_HomeSetValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_X66B));
+    Direct_PosSetting.add(textD_HomeSetValue);
+
+    D_HomeSetPadShowButton.setBoxWithBorderPosition(0, 0, 215, 22);
+    D_HomeSetPadShowButton.setBorderSize(5);
+    D_HomeSetPadShowButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    D_HomeSetPadShowButton.setAlpha(0);
+    D_HomeSetPadShowButton.setAction(flexButtonCallback);
+    D_HomeSetPadShowButton.setPosition(0, 70, 215, 22);
+    Direct_PosSetting.add(D_HomeSetPadShowButton);
+
+    textSubD_TargetSetting.setXY(32, 115);
+    textSubD_TargetSetting.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textSubD_TargetSetting.setLinespacing(0);
+    textSubD_TargetSetting.setTypedText(touchgfx::TypedText(T___SINGLEUSE_M4FP));
+    Direct_PosSetting.add(textSubD_TargetSetting);
+
+    HomingButton.setPosition(40, 25, 120, 32);
+    D_HomeSetBox.setPosition(0, 0, 120, 32);
+    D_HomeSetBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    D_HomeSetBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    D_HomeSetBox.setBorderSize(3);
+    HomingButton.add(D_HomeSetBox);
+
+    D_HomeSetButton.setBoxWithBorderPosition(0, 0, 120, 32);
+    D_HomeSetButton.setBorderSize(2);
+    D_HomeSetButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    D_HomeSetButton.setAlpha(100);
+    D_HomeSetButton.setAction(flexButtonCallback);
+    D_HomeSetButton.setPosition(0, 0, 120, 32);
+    HomingButton.add(D_HomeSetButton);
+
+    textD_HomeSetButton.setXY(16, 5);
+    textD_HomeSetButton.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_HomeSetButton.setLinespacing(0);
+    textD_HomeSetButton.setTypedText(touchgfx::TypedText(T___SINGLEUSE_4UZS));
+    HomingButton.add(textD_HomeSetButton);
+
+    Direct_PosSetting.add(HomingButton);
+
+    textSubD_HomeSetting.setXY(63, 0);
+    textSubD_HomeSetting.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textSubD_HomeSetting.setLinespacing(0);
+    textSubD_HomeSetting.setTypedText(touchgfx::TypedText(T___SINGLEUSE_NMGD));
+    Direct_PosSetting.add(textSubD_HomeSetting);
+
+    Direct.add(Direct_PosSetting);
+
+    add(Direct);
+
+    INVERTER.setPosition(0, 0, 481, 272);
+    INVERTER.setVisible(false);
+    Homescreen.setPosition(223, -6, 100, 38);
+    HomeScreenButton.setBoxWithBorderPosition(0, 0, 100, 38);
+    HomeScreenButton.setBorderSize(5);
+    HomeScreenButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    HomeScreenButton.setAlpha(0);
+    HomeScreenButton.setAction(flexButtonCallback);
+    HomeScreenButton.setPosition(0, 0, 100, 38);
+    Homescreen.add(HomeScreenButton);
+
+    HomeScreenBox.setPosition(0, 0, 100, 38);
+    HomeScreenBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    HomeScreenBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    HomeScreenBox.setBorderSize(3);
+    Homescreen.add(HomeScreenBox);
+
+    textHomeScreen.setXY(18, 8);
+    textHomeScreen.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textHomeScreen.setLinespacing(0);
+    textHomeScreen.setTypedText(touchgfx::TypedText(T___SINGLEUSE_1N3V));
+    Homescreen.add(textHomeScreen);
+
+    INVERTER.add(Homescreen);
+
+    Positionscreen.setPosition(106, -6, 100, 38);
+    PosScreenButton.setBoxWithBorderPosition(0, 0, 100, 38);
+    PosScreenButton.setBorderSize(5);
+    PosScreenButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    PosScreenButton.setAlpha(0);
+    PosScreenButton.setAction(flexButtonCallback);
+    PosScreenButton.setPosition(0, 0, 100, 38);
+    Positionscreen.add(PosScreenButton);
+
+    PosScreenBox.setPosition(0, 0, 100, 38);
+    PosScreenBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    PosScreenBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    PosScreenBox.setBorderSize(3);
+    Positionscreen.add(PosScreenBox);
+
+    textPosScreen.setXY(6, 8);
+    textPosScreen.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textPosScreen.setLinespacing(0);
+    textPosScreen.setTypedText(touchgfx::TypedText(T___SINGLEUSE_61UY));
+    Positionscreen.add(textPosScreen);
+
+    INVERTER.add(Positionscreen);
 
     STATE.setPosition(1, 39, 284, 89);
     textEror.setXY(4, 56);
@@ -123,7 +370,7 @@ MainViewBase::MainViewBase() :
     textReadyStateValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BYII));
     STATE.add(textReadyStateValue);
 
-    add(STATE);
+    INVERTER.add(STATE);
 
     Com_onoff.setPosition(394, 79, 86, 30);
     Com_onoff_box.setPosition(0, 0, 86, 30);
@@ -140,7 +387,7 @@ MainViewBase::MainViewBase() :
     Com_onoff_Button.setPosition(0, 0, 86, 30);
     Com_onoff.add(Com_onoff_Button);
 
-    textCom_onoff.setXY(-5, 6);
+    textCom_onoff.setXY(-14, 4);
     textCom_onoff.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textCom_onoff.setLinespacing(0);
     Unicode::snprintf(textCom_onoffBuffer, TEXTCOM_ONOFF_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_NBDB).getText());
@@ -149,7 +396,7 @@ MainViewBase::MainViewBase() :
     textCom_onoff.setTypedText(touchgfx::TypedText(T___SINGLEUSE_VZ84));
     Com_onoff.add(textCom_onoff);
 
-    add(Com_onoff);
+    INVERTER.add(Com_onoff);
 
     HomeOption.setPosition(256, 161, 224, 111);
     HomeOption.setVisible(false);
@@ -207,7 +454,7 @@ MainViewBase::MainViewBase() :
 
     HomeOption.add(HomingSet);
 
-    add(HomeOption);
+    INVERTER.add(HomeOption);
 
     PosOption.setPosition(143, 155, 337, 117);
     textPosSetRpm.setXY(131, 0);
@@ -318,7 +565,7 @@ MainViewBase::MainViewBase() :
     PosPospadshowButton.setPosition(127, 58, 200, 29);
     PosOption.add(PosPospadshowButton);
 
-    add(PosOption);
+    INVERTER.add(PosOption);
 
     Reset.setPosition(285, 41, 80, 40);
     ResetButton.setBoxWithBorderPosition(0, 0, 80, 40);
@@ -334,9 +581,10 @@ MainViewBase::MainViewBase() :
     textReset.setTypedText(touchgfx::TypedText(T___SINGLEUSE_5G79));
     Reset.add(textReset);
 
-    add(Reset);
+    INVERTER.add(Reset);
 
-    Enable.setPosition(3, 181, 120, 39);
+    INVPOWER.setPosition(2, 155, 121, 115);
+    Enable.setPosition(1, 26, 120, 39);
     EnableBox.setPosition(0, 0, 120, 39);
     EnableBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     EnableBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -357,11 +605,61 @@ MainViewBase::MainViewBase() :
     textEnable.setTypedText(touchgfx::TypedText(T___SINGLEUSE_DNBM));
     Enable.add(textEnable);
 
-    add(Enable);
+    INVPOWER.add(Enable);
 
-    KEB_Image.setXY(0, 0);
-    KEB_Image.setBitmap(touchgfx::Bitmap(BITMAP_KEB_ID));
-    add(KEB_Image);
+    PowerON.setPosition(1, 70, 55, 45);
+    PowerONBox.setPosition(0, 0, 55, 45);
+    PowerONBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    PowerONBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    PowerONBox.setBorderSize(3);
+    PowerON.add(PowerONBox);
+
+    PowerONButton.setBoxWithBorderPosition(0, 0, 55, 45);
+    PowerONButton.setBorderSize(3);
+    PowerONButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    PowerONButton.setAlpha(100);
+    PowerONButton.setAction(flexButtonCallback);
+    PowerONButton.setPosition(0, 0, 55, 45);
+    PowerON.add(PowerONButton);
+
+    textPowerON.setXY(8, 10);
+    textPowerON.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textPowerON.setLinespacing(0);
+    textPowerON.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QEIH));
+    PowerON.add(textPowerON);
+
+    INVPOWER.add(PowerON);
+
+    PowerOFF.setPosition(66, 70, 55, 45);
+    PowerOFFBox.setPosition(0, 0, 55, 45);
+    PowerOFFBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    PowerOFFBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    PowerOFFBox.setBorderSize(3);
+    PowerOFF.add(PowerOFFBox);
+
+    PowerOFFButton.setBoxWithBorderPosition(0, 0, 55, 45);
+    PowerOFFButton.setBorderSize(3);
+    PowerOFFButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 225), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(2, 5, 8));
+    PowerOFFButton.setAlpha(100);
+    PowerOFFButton.setAction(flexButtonCallback);
+    PowerOFFButton.setPosition(0, 0, 55, 45);
+    PowerOFF.add(PowerOFFButton);
+
+    textPowerOFF.setXY(8, 10);
+    textPowerOFF.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textPowerOFF.setLinespacing(0);
+    textPowerOFF.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BIYJ));
+    PowerOFF.add(textPowerOFF);
+
+    INVPOWER.add(PowerOFF);
+
+    textPower.setXY(37, 0);
+    textPower.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textPower.setLinespacing(0);
+    textPower.setTypedText(touchgfx::TypedText(T___SINGLEUSE_FCVV));
+    INVPOWER.add(textPower);
+
+    INVERTER.add(INVPOWER);
 
     MC_ON.setPosition(401, 41, 75, 35);
     MC_ONbutton.setBoxWithBorderPosition(0, 0, 68, 30);
@@ -383,7 +681,7 @@ MainViewBase::MainViewBase() :
     textMC_ON.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SBQJ));
     MC_ON.add(textMC_ON);
 
-    add(MC_ON);
+    INVERTER.add(MC_ON);
 
     Mode.setPosition(2, 122, 274, 33);
     MODEButton.setBoxWithBorderPosition(0, 0, 61, 33);
@@ -414,53 +712,9 @@ MainViewBase::MainViewBase() :
     textMODEState.setTypedText(touchgfx::TypedText(T___SINGLEUSE_KMWH));
     Mode.add(textMODEState);
 
-    add(Mode);
+    INVERTER.add(Mode);
 
-    Positionscreen.setPosition(106, -6, 100, 38);
-    PosScreenButton.setBoxWithBorderPosition(0, 0, 100, 38);
-    PosScreenButton.setBorderSize(5);
-    PosScreenButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
-    PosScreenButton.setAlpha(0);
-    PosScreenButton.setAction(flexButtonCallback);
-    PosScreenButton.setPosition(0, 0, 100, 38);
-    Positionscreen.add(PosScreenButton);
-
-    PosScreenBox.setPosition(0, 0, 100, 38);
-    PosScreenBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    PosScreenBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    PosScreenBox.setBorderSize(3);
-    Positionscreen.add(PosScreenBox);
-
-    textPosScreen.setXY(6, 8);
-    textPosScreen.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textPosScreen.setLinespacing(0);
-    textPosScreen.setTypedText(touchgfx::TypedText(T___SINGLEUSE_61UY));
-    Positionscreen.add(textPosScreen);
-
-    add(Positionscreen);
-
-    Homescreen.setPosition(223, -6, 100, 38);
-    HomeScreenButton.setBoxWithBorderPosition(0, 0, 100, 38);
-    HomeScreenButton.setBorderSize(5);
-    HomeScreenButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
-    HomeScreenButton.setAlpha(0);
-    HomeScreenButton.setAction(flexButtonCallback);
-    HomeScreenButton.setPosition(0, 0, 100, 38);
-    Homescreen.add(HomeScreenButton);
-
-    HomeScreenBox.setPosition(0, 0, 100, 38);
-    HomeScreenBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    HomeScreenBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    HomeScreenBox.setBorderSize(3);
-    Homescreen.add(HomeScreenBox);
-
-    textHomeScreen.setXY(18, 8);
-    textHomeScreen.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textHomeScreen.setLinespacing(0);
-    textHomeScreen.setTypedText(touchgfx::TypedText(T___SINGLEUSE_1N3V));
-    Homescreen.add(textHomeScreen);
-
-    add(Homescreen);
+    add(INVERTER);
 
     Settingscreen.setPosition(395, -6, 81, 38);
     Settingshowbutton.setBoxWithBorderPosition(0, 0, 79, 38);
@@ -478,16 +732,10 @@ MainViewBase::MainViewBase() :
 
     add(Settingscreen);
 
-    Setting.setBackground(touchgfx::BitmapId(BITMAP_ALTERNATE_THEME_IMAGES_CONTAINERS_LARGE_NARROW_OUTLINED_LIGHT_ID), 84, 1);
+    Setting.setBackground(touchgfx::BitmapId(BITMAP_ALTERNATE_THEME_IMAGES_CONTAINERS_LARGE_WIDE_OUTLINED_LIGHT_ID), 0, 1);
     Setting.setShadeColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     Setting.setShadeAlpha(150);
     Setting.hide();
-    textIP.setXY(26, 15);
-    textIP.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textIP.setLinespacing(0);
-    textIP.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QKB3));
-    Setting.add(textIP);
-
     textsettingMinpos.setXY(26, 97);
     textsettingMinpos.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textsettingMinpos.setLinespacing(0);
@@ -553,42 +801,6 @@ MainViewBase::MainViewBase() :
     line1.setLineEndingStyle(touchgfx::Line::ROUND_CAP_ENDING);
     Setting.add(line1);
 
-    textIP0.setXY(62, 15);
-    textIP0.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textIP0.setLinespacing(0);
-    Unicode::snprintf(textIP0Buffer, TEXTIP0_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_V2VD).getText());
-    textIP0.setWildcard(textIP0Buffer);
-    textIP0.resizeToCurrentText();
-    textIP0.setTypedText(touchgfx::TypedText(T___SINGLEUSE_0LTE));
-    Setting.add(textIP0);
-
-    textIP1.setXY(102, 15);
-    textIP1.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textIP1.setLinespacing(0);
-    Unicode::snprintf(textIP1Buffer, TEXTIP1_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_H6SP).getText());
-    textIP1.setWildcard(textIP1Buffer);
-    textIP1.resizeToCurrentText();
-    textIP1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_7RDT));
-    Setting.add(textIP1);
-
-    textIP2.setXY(142, 15);
-    textIP2.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textIP2.setLinespacing(0);
-    Unicode::snprintf(textIP2Buffer, TEXTIP2_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_2HF9).getText());
-    textIP2.setWildcard(textIP2Buffer);
-    textIP2.resizeToCurrentText();
-    textIP2.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PZCS));
-    Setting.add(textIP2);
-
-    textIP3.setXY(183, 15);
-    textIP3.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textIP3.setLinespacing(0);
-    Unicode::snprintf(textIP3Buffer, TEXTIP3_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_HR4Y).getText());
-    textIP3.setWildcard(textIP3Buffer);
-    textIP3.resizeToCurrentText();
-    textIP3.setTypedText(touchgfx::TypedText(T___SINGLEUSE_4VOZ));
-    Setting.add(textIP3);
-
     settingMaxposbutton.setBoxWithBorderPosition(0, 0, 75, 20);
     settingMaxposbutton.setBorderSize(2);
     settingMaxposbutton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 116, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -637,30 +849,33 @@ MainViewBase::MainViewBase() :
     textsettingMaxrpmvalue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_J0QV));
     Setting.add(textsettingMaxrpmvalue);
 
-    settingclosebutton.setXY(276, 1);
+    settingclosebutton.setXY(442, 1);
     settingclosebutton.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_ICON_ROUNDED_MICRO_OUTLINE_NORMAL_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_ICON_ROUNDED_MICRO_OUTLINE_PRESSED_ID), touchgfx::Bitmap(BITMAP_ICON_THEME_IMAGES_NAVIGATION_CLOSE_50_50_000000_SVG_ID), touchgfx::Bitmap(BITMAP_ICON_THEME_IMAGES_CONTENT_CLEAR_50_50_FFFFFF_SVG_ID));
     settingclosebutton.setIconXY(-7, -7);
     settingclosebutton.setAction(buttonCallback);
     Setting.add(settingclosebutton);
 
+    SettingSave.setPosition(398, 237, 76, 28);
     SettingSavebutton.setBoxWithBorderPosition(0, 0, 76, 28);
     SettingSavebutton.setBorderSize(2);
     SettingSavebutton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
     SettingSavebutton.setAction(flexButtonCallback);
-    SettingSavebutton.setPosition(229, 235, 76, 28);
-    Setting.add(SettingSavebutton);
+    SettingSavebutton.setPosition(0, 0, 76, 28);
+    SettingSave.add(SettingSavebutton);
 
-    textSettingSave.setXY(246, 239);
+    textSettingSave.setXY(17, 4);
     textSettingSave.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textSettingSave.setLinespacing(0);
     textSettingSave.setTypedText(touchgfx::TypedText(T___SINGLEUSE_L7G2));
-    Setting.add(textSettingSave);
+    SettingSave.add(textSettingSave);
 
-    textIP0dot.setXY(94, 15);
-    textIP0dot.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textIP0dot.setLinespacing(0);
-    textIP0dot.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BUMY));
-    Setting.add(textIP0dot);
+    Setting.add(SettingSave);
+
+    textIP2dot.setXY(175, 15);
+    textIP2dot.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textIP2dot.setLinespacing(0);
+    textIP2dot.setTypedText(touchgfx::TypedText(T___SINGLEUSE_LBNE));
+    Setting.add(textIP2dot);
 
     textIP1dot.setXY(134, 15);
     textIP1dot.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -668,11 +883,53 @@ MainViewBase::MainViewBase() :
     textIP1dot.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ZRTI));
     Setting.add(textIP1dot);
 
-    textIP2dot.setXY(175, 15);
-    textIP2dot.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textIP2dot.setLinespacing(0);
-    textIP2dot.setTypedText(touchgfx::TypedText(T___SINGLEUSE_LBNE));
-    Setting.add(textIP2dot);
+    textIP0dot.setXY(94, 15);
+    textIP0dot.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textIP0dot.setLinespacing(0);
+    textIP0dot.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BUMY));
+    Setting.add(textIP0dot);
+
+    textIP3.setXY(183, 15);
+    textIP3.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textIP3.setLinespacing(0);
+    Unicode::snprintf(textIP3Buffer, TEXTIP3_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_HR4Y).getText());
+    textIP3.setWildcard(textIP3Buffer);
+    textIP3.resizeToCurrentText();
+    textIP3.setTypedText(touchgfx::TypedText(T___SINGLEUSE_4VOZ));
+    Setting.add(textIP3);
+
+    textIP2.setXY(142, 15);
+    textIP2.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textIP2.setLinespacing(0);
+    Unicode::snprintf(textIP2Buffer, TEXTIP2_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_2HF9).getText());
+    textIP2.setWildcard(textIP2Buffer);
+    textIP2.resizeToCurrentText();
+    textIP2.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PZCS));
+    Setting.add(textIP2);
+
+    textIP1.setXY(102, 15);
+    textIP1.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textIP1.setLinespacing(0);
+    Unicode::snprintf(textIP1Buffer, TEXTIP1_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_H6SP).getText());
+    textIP1.setWildcard(textIP1Buffer);
+    textIP1.resizeToCurrentText();
+    textIP1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_7RDT));
+    Setting.add(textIP1);
+
+    textIP0.setXY(62, 15);
+    textIP0.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textIP0.setLinespacing(0);
+    Unicode::snprintf(textIP0Buffer, TEXTIP0_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_V2VD).getText());
+    textIP0.setWildcard(textIP0Buffer);
+    textIP0.resizeToCurrentText();
+    textIP0.setTypedText(touchgfx::TypedText(T___SINGLEUSE_0LTE));
+    Setting.add(textIP0);
+
+    textIP.setXY(26, 15);
+    textIP.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textIP.setLinespacing(0);
+    textIP.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QKB3));
+    Setting.add(textIP);
 
     textmm1.setXY(189, 67);
     textmm1.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -686,11 +943,11 @@ MainViewBase::MainViewBase() :
     textmm2.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MS94));
     Setting.add(textmm2);
 
-    textDiameter.setXY(28, 199);
-    textDiameter.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textDiameter.setLinespacing(0);
-    textDiameter.setTypedText(touchgfx::TypedText(T___SINGLEUSE_0H9W));
-    Setting.add(textDiameter);
+    textmm3.setXY(234, 200);
+    textmm3.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textmm3.setLinespacing(0);
+    textmm3.setTypedText(touchgfx::TypedText(T___SINGLEUSE_GC18));
+    Setting.add(textmm3);
 
     SettingDiameterButton.setBoxWithBorderPosition(0, 0, 105, 25);
     SettingDiameterButton.setBorderSize(2);
@@ -708,11 +965,11 @@ MainViewBase::MainViewBase() :
     textDiametervalue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HNZT));
     Setting.add(textDiametervalue);
 
-    textmm3.setXY(234, 200);
-    textmm3.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textmm3.setLinespacing(0);
-    textmm3.setTypedText(touchgfx::TypedText(T___SINGLEUSE_GC18));
-    Setting.add(textmm3);
+    textDiameter.setXY(28, 199);
+    textDiameter.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textDiameter.setLinespacing(0);
+    textDiameter.setTypedText(touchgfx::TypedText(T___SINGLEUSE_0H9W));
+    Setting.add(textDiameter);
 
     ServconnetButton.setBoxWithBorderPosition(0, 0, 92, 31);
     ServconnetButton.setBorderSize(2);
@@ -726,6 +983,160 @@ MainViewBase::MainViewBase() :
     textservconnect.setLinespacing(0);
     textservconnect.setTypedText(touchgfx::TypedText(T___SINGLEUSE_CVKH));
     Setting.add(textservconnect);
+
+    DriveTypeScroll.setPosition(290, 42, 125, 48);
+    DriveTypeScroll.setScrollbarsColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    DriveTypeScroll.setScrollbarsAlpha(255);
+    DriveTypeScroll.setScrollbarsPermanentlyVisible();
+    TypeD_ENC.setPosition(3, 35, 100, 25);
+    TypeD_ENCBox.setPosition(0, 0, 100, 25);
+    TypeD_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    TypeD_ENCBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeD_ENCBox.setBorderSize(2);
+    TypeD_ENC.add(TypeD_ENCBox);
+
+    TypeD_ENCButton.setBoxWithBorderPosition(0, 0, 100, 25);
+    TypeD_ENCButton.setBorderSize(2);
+    TypeD_ENCButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeD_ENCButton.setAlpha(100);
+    TypeD_ENCButton.setAction(flexButtonCallback);
+    TypeD_ENCButton.setPosition(0, 0, 100, 25);
+    TypeD_ENC.add(TypeD_ENCButton);
+
+    textTypeD_ENC.setXY(22, 4);
+    textTypeD_ENC.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTypeD_ENC.setLinespacing(0);
+    textTypeD_ENC.setTypedText(touchgfx::TypedText(T___SINGLEUSE_I5KW));
+    TypeD_ENC.add(textTypeD_ENC);
+
+    DriveTypeScroll.add(TypeD_ENC);
+
+    TypeINV_ENC.setPosition(3, 67, 100, 25);
+    TypeINV_ENCBox.setPosition(0, 0, 100, 25);
+    TypeINV_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    TypeINV_ENCBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeINV_ENCBox.setBorderSize(2);
+    TypeINV_ENC.add(TypeINV_ENCBox);
+
+    TypeINV_ENCButton.setBoxWithBorderPosition(0, 0, 100, 25);
+    TypeINV_ENCButton.setBorderSize(2);
+    TypeINV_ENCButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeINV_ENCButton.setAlpha(100);
+    TypeINV_ENCButton.setAction(flexButtonCallback);
+    TypeINV_ENCButton.setPosition(0, 0, 100, 25);
+    TypeINV_ENC.add(TypeINV_ENCButton);
+
+    textTypeINV_ENC.setXY(18, 4);
+    textTypeINV_ENC.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTypeINV_ENC.setLinespacing(0);
+    textTypeINV_ENC.setTypedText(touchgfx::TypedText(T___SINGLEUSE_IIL6));
+    TypeINV_ENC.add(textTypeINV_ENC);
+
+    DriveTypeScroll.add(TypeINV_ENC);
+
+    TypeD.setPosition(3, 3, 100, 25);
+    TypeD_Box.setPosition(0, 0, 100, 25);
+    TypeD_Box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    TypeD_Box.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeD_Box.setBorderSize(2);
+    TypeD.add(TypeD_Box);
+
+    TypeD_Button.setBoxWithBorderPosition(0, 0, 100, 25);
+    TypeD_Button.setBorderSize(2);
+    TypeD_Button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeD_Button.setAlpha(100);
+    TypeD_Button.setAction(flexButtonCallback);
+    TypeD_Button.setPosition(0, 0, 100, 25);
+    TypeD.add(TypeD_Button);
+
+    textTypeE.setXY(41, 3);
+    textTypeE.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTypeE.setLinespacing(0);
+    textTypeE.setTypedText(touchgfx::TypedText(T___SINGLEUSE_YW6M));
+    TypeD.add(textTypeE);
+
+    DriveTypeScroll.add(TypeD);
+
+    Setting.add(DriveTypeScroll);
+
+    radioButtonGroup1.setRadioButtonSelectedHandler(radioButtonSelectedCallback);
+    
+    radioButtonGroup1.setRadioButtonDeselectedHandler(radioButtonDeselectedCallback);
+    
+    YoYoButton.setXY(333, 115);
+    YoYoButton.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_RADIO_MEDIUM_ROUNDED_ON_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_ON_DARK_ID));
+    YoYoButton.setSelected(true);
+    YoYoButton.setDeselectionEnabled(true);
+    radioButtonGroup1.add(YoYoButton);
+    Setting.add(YoYoButton);
+
+    textYoYo.setXY(277, 124);
+    textYoYo.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textYoYo.setLinespacing(0);
+    textYoYo.setTypedText(touchgfx::TypedText(T___SINGLEUSE_88S8));
+    Setting.add(textYoYo);
+
+    SettingWireButton.setBoxWithBorderPosition(0, 0, 66, 24);
+    SettingWireButton.setBorderSize(2);
+    SettingWireButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    SettingWireButton.setAction(flexButtonCallback);
+    SettingWireButton.setPosition(331, 160, 66, 24);
+    Setting.add(SettingWireButton);
+
+    textWirevalue.setXY(340, 163);
+    textWirevalue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textWirevalue.setLinespacing(0);
+    Unicode::snprintf(textWirevalueBuffer, TEXTWIREVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_GAKW).getText());
+    textWirevalue.setWildcard(textWirevalueBuffer);
+    textWirevalue.resizeToCurrentText();
+    textWirevalue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_KM0I));
+    Setting.add(textWirevalue);
+
+    textWire.setXY(277, 163);
+    textWire.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textWire.setLinespacing(0);
+    textWire.setTypedText(touchgfx::TypedText(T___SINGLEUSE_KNRI));
+    Setting.add(textWire);
+
+    textmm4.setXY(401, 165);
+    textmm4.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textmm4.setLinespacing(0);
+    textmm4.setTypedText(touchgfx::TypedText(T___SINGLEUSE_A8KO));
+    Setting.add(textmm4);
+
+    textEncPulse.setXY(277, 201);
+    textEncPulse.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textEncPulse.setLinespacing(0);
+    textEncPulse.setTypedText(touchgfx::TypedText(T___SINGLEUSE_JDYF));
+    Setting.add(textEncPulse);
+
+    SettingEncPulseButton.setBoxWithBorderPosition(0, 0, 66, 24);
+    SettingEncPulseButton.setBorderSize(2);
+    SettingEncPulseButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    SettingEncPulseButton.setAction(flexButtonCallback);
+    SettingEncPulseButton.setPosition(376, 197, 66, 24);
+    Setting.add(SettingEncPulseButton);
+
+    textEncPulsevalue.setXY(386, 201);
+    textEncPulsevalue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textEncPulsevalue.setLinespacing(0);
+    Unicode::snprintf(textEncPulsevalueBuffer, TEXTENCPULSEVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_FH78).getText());
+    textEncPulsevalue.setWildcard(textEncPulsevalueBuffer);
+    textEncPulsevalue.resizeToCurrentText();
+    textEncPulsevalue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SPBS));
+    Setting.add(textEncPulsevalue);
+
+    textmm5.setXY(444, 202);
+    textmm5.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textmm5.setLinespacing(0);
+    textmm5.setTypedText(touchgfx::TypedText(T___SINGLEUSE_TTS8));
+    Setting.add(textmm5);
+
+    textType.setXY(244, 48);
+    textType.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textType.setLinespacing(0);
+    textType.setTypedText(touchgfx::TypedText(T___SINGLEUSE_O7ZE));
+    Setting.add(textType);
 
     add(Setting);
 
@@ -1017,10 +1428,10 @@ void MainViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonConta
         //Show Setting
         Setting.setVisible(true);
         Setting.invalidate();
-        //SetttingShowButton
+        //SettingShowButton
         //When Settingshowbutton clicked call virtual function
-        //Call SetttingShowButton
-        SetttingShowButton();
+        //Call SettingShowButton
+        SettingShowButton();
     }
     if (&src == &settingMinposbutton)
     {
@@ -1098,6 +1509,90 @@ void MainViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonConta
         //When SettingRpmButton clicked call virtual function
         //Call SettingRpmShow
         SettingRpmShow();
+    }
+    if (&src == &DirectUpButton)
+    {
+        //DirectMoveUpButton
+        //When DirectUpButton clicked call virtual function
+        //Call DirectMoveUpButton
+        DirectMoveUpButton();
+    }
+    if (&src == &DirectDownButton)
+    {
+        //DirectMoveDownButton
+        //When DirectDownButton clicked call virtual function
+        //Call DirectMoveDownButton
+        DirectMoveDownButton();
+    }
+    if (&src == &DirectStopButton)
+    {
+        //DirectMoveStopButton
+        //When DirectStopButton clicked call virtual function
+        //Call DirectMoveStopButton
+        DirectMoveStopButton();
+    }
+    if (&src == &D_PosUpSetPadShowButton)
+    {
+        //DirectPosUpSetPadShowButton
+        //When D_PosUpSetPadShowButton clicked call virtual function
+        //Call DirectPosUpSetPadShowButton
+        DirectPosUpSetPadShowButton();
+    }
+    if (&src == &TypeD_ENCButton)
+    {
+        //SetType_D_ENC_Button
+        //When TypeD_ENCButton clicked call virtual function
+        //Call SetType_D_ENC_Button
+        SetType_D_ENC_Button();
+    }
+    if (&src == &TypeINV_ENCButton)
+    {
+        //SetType_INV_ENC_Button
+        //When TypeINV_ENCButton clicked call virtual function
+        //Call SetType_INV_ENC_Button
+        SetType_INV_ENC_Button();
+    }
+    if (&src == &D_PosDownSetPadShowButton)
+    {
+        //DirectPosDownSetPadShowButton
+        //When D_PosDownSetPadShowButton clicked call virtual function
+        //Call DirectPosDownSetPadShowButton
+        DirectPosDownSetPadShowButton();
+    }
+    if (&src == &D_HomeSetPadShowButton)
+    {
+        //DirectHomeSetPadShow
+        //When D_HomeSetPadShowButton clicked call virtual function
+        //Call DirectHomeSetPadShow
+        DirectHomeSetPadShow();
+    }
+    if (&src == &TypeD_Button)
+    {
+        //SetType_D_Button
+        //When TypeD_Button clicked call virtual function
+        //Call SetType_D_Button
+        SetType_D_Button();
+    }
+    if (&src == &SettingWireButton)
+    {
+        //SettingWireSetPadShow
+        //When SettingWireButton clicked call virtual function
+        //Call SettingWireSetPadShow
+        SettingWireSetPadShow();
+    }
+    if (&src == &SettingEncPulseButton)
+    {
+        //SettingEncPulseSetPadShow
+        //When SettingEncPulseButton clicked call virtual function
+        //Call SettingEncPulseSetPadShow
+        SettingEncPulseSetPadShow();
+    }
+    if (&src == &D_HomeSetButton)
+    {
+        //DirectHomeSetbutton
+        //When D_HomeSetButton clicked call virtual function
+        //Call DirectHomeSetbutton
+        DirectHomeSetbutton();
     }
 }
 
@@ -1222,5 +1717,27 @@ void MainViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
         //When Numbuttondot clicked call virtual function
         //Call NumdotButton
         NumdotButton();
+    }
+}
+
+void MainViewBase::radioButtonSelectedCallbackHandler(const touchgfx::AbstractButton& src)
+{
+    if (&src == &YoYoButton)
+    {
+        //YoYoSelected
+        //When YoYoButton selected call virtual function
+        //Call YoYoSelected
+        YoYoSelected();
+    }
+}
+
+void MainViewBase::radioButtonDeselectedCallbackHandler(const touchgfx::AbstractButton& src)
+{
+    if (&src == &YoYoButton)
+    {
+        //YoYoDeselected
+        //When YoYoButton deselected call virtual function
+        //Call YoYoDeselected
+        YoYoDeselected();
     }
 }

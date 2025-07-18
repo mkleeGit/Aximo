@@ -25,6 +25,7 @@
 #include <STM32TouchController.hpp>
 /* USER CODE BEGIN Header */
 #include <stm32746g_discovery_ts.h>
+//#include "../Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h""
 /* Includes ------------------------------------------------------------------*/
 /* USER CODE END Header */
 

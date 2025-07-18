@@ -8,113 +8,98 @@
 #ifndef INC_GLOBAL_H_
 #define INC_GLOBAL_H_
 
-#include "main.h"
+#include <main.h>
 #include "stdbool.h"
 #include "stm32f7xx_hal.h"
 
-//temp
-extern uint8_t TempHomeoffset[4];
-extern uint8_t TempPowerStart[2];
-extern uint8_t TempModeSelect;
-extern uint8_t TempTargetPos[4];
-extern uint8_t TempTargetVel[4];
-//
 
-extern bool GVLLocal;
 
-extern int GVLAddnumber;
-extern bool GVLsendControlword;
-extern bool GVLsendMode;
+typedef enum DriveTypeTypedef{
+	Direct_No_encoder = 1,
+	Direct_encoder = 2,
+	inverter_No_encoder = 3,
+	inverter_encoder
+}DriveTypeTypedef;
 
-extern bool GVLinverterenable;
-extern bool GVLPowerstate;
-extern bool GVLPoweroff;
-extern bool GVLPoweron;
+//Direct Pos
+extern int16_t g_s16DirectSetPosvalue;
+
+//Board 관련 Digital I/O
+
+
+
+//switch
+//INPUT
+extern bool g_bEMG;
+extern bool g_bLocal;//로컬전환신호 switch 사용
+
+extern bool ResetTest;
+
+//OUTPUT
+
+extern bool g_bBypassSTO;	//Relay 사용
+extern bool g_bMCinput;		//인버터 3상 전압 공급 마크네틱 Input
+extern bool g_bMCinputstate;//인버터 3상 전압 공급 마그네틱 상태
+extern bool g_bMCoutput;	//인버터 3상 출력 마그네틱 output
+extern bool g_bMCoutputstate;//인버터 3상 출력 마그네틱 상태
+
+//Buffer
+extern int8_t g_s8ModeSelect;
+extern bool g_bModeWrite;
+
+extern uint8_t g_u8BufHomeoffset[4];
+extern uint8_t g_u8BufPowerStart[2];//delete
+
+extern uint8_t g_u8BufTargetPos[4];
+extern uint8_t g_u8BufTargetVel[4];
+
+
+extern int32_t g_s32Addnumber; //g_s32Address
+
+
+extern bool g_bDirect_HomeTrig; //Direct Home trig Signal
+
+extern bool g_bPowerstate;
+extern bool g_bPoweroff;
+extern bool g_bPoweron;
 
 extern bool GVLComon;
 extern bool GVLComoff;
 
 extern int GVLComstate;
-extern int GVLBrakestatus;
-extern bool GVLVel_RPM_direction;
-
-extern bool GVLVelRpmset;
-extern bool GVLPosRpmset;
-
-extern bool GVLPosposset;
-extern bool GVLHomeposset;
-
-extern bool GVLReset;
-extern bool GVLPosStart;
-extern bool GVLPosStop;
-
-extern bool GVLHomeset;
-
-extern uint8_t GVL_IP[4];
-
-
-extern bool GVLWriteon;
-
-extern uint8_t GVLiMode;
-
-//Relay
-extern bool GVLbypassSTO;
-extern bool GVLMCinput;
-extern bool GVLMCinputstate;
-extern bool GVLMCoutput;
-extern bool GVLMCoutputstate;
-//
 
 //TCP
 extern uint8_t GVLTCP_connection;
 extern int GVLTCP_state;
 extern int GVLTCP_Cable_state;
+extern uint8_t g_st_u8IP[4];
 
-extern uint8_t GVLTCP_inv_Statebuf[4];
-extern uint8_t GVLTCP_inv_Errorbuf[4];
-extern uint8_t GVLTCP_inv_Modebuf[4];
-extern uint8_t GVLTCP_inv_supplybuf[4];
-extern uint8_t GVLTCP_inv_STObuf[4];
-//
+extern int8_t g_s8Mode;//GVLiMode; inverter Mode
 
-//Flash
-extern uint32_t GVLFlash_TempSaveMaxPos;
-extern uint32_t GVLFlash_TempSaveMinPos;
-extern uint32_t GVLFlash_TempSaveDen;
-extern uint32_t GVLFlash_TempSaveNum;
-extern uint32_t GVLFlash_TempSaveDiameter;
-extern uint32_t GVLFlash_TempSaveMinMaxRpm;
-extern bool GVLFlash_Write;
+//Min, Max Pos
+extern int32_t g_s32MaxPosValue;						//->Struct Setting
+extern int32_t g_s32MinPosValue;						//->Struct Setting
 
-//
+extern int g_s32DriveSettingType;	//드라이브 타입 설정		//-> Struct Setting
 
-extern uint16_t GVL_switch_on;//1
-extern uint16_t GVL_enable_voltage;//2
-extern uint16_t GVL_no_quick_stop;//4
-extern uint16_t GVL_enable_operation;//8
-extern uint16_t GVL_op_mode_spec_four;//16
-extern uint16_t GVL_op_mode_spec_five;//32
-extern uint16_t GVL_op_mode_spec_six;//64
-extern uint16_t GVL_fault_reset;//128
-extern uint16_t GVL_halt;//256
-extern uint16_t GVL_op_mode_spec_nine;//512
-extern uint16_t GVL_reserved;//1024
-extern uint16_t GVL_manufacturer_spec_11;//2048
-extern uint16_t GVL_manufacturer_spec_12;//4096
-extern uint16_t GVL_manufacturer_spec_13;//8192
-extern uint16_t GVL_manufacturer_spec_14;//16384
-extern uint16_t GVL_brake_ctrl_15;//32768
+//Flash Memory
+extern uint32_t g_u32FlashSaveMaxPos;					//Memory Save Max Position
+extern uint32_t g_u32FlashSaveMinPos;					//Memory Save Min Position
+extern uint32_t g_u32FlashSaveDen;						//Memory Save Min Gear
+extern uint32_t g_u32FlashSaveNum;
+extern uint32_t g_u32FlashSaveDiameter;
+extern uint32_t g_u32FlashSaveMinMaxRpm;
+extern uint32_t g_u32FlashSaveDriveType;
+extern uint32_t g_u32FlashSaveWire;
+extern uint32_t g_u32FlashSaveYoYo;
+extern uint32_t g_u32FlashSaveEncPulse;
+extern bool g_bFlashWrite;
 
+extern float g_fWire;
 
+extern int g_s32YoYo;
 
-
-typedef enum WriteModeTypedef{
-	Nomode = 0,
-	Position = 1,
-	Velocity = 2,
-	Home	= 6,
-	Cycl_Sync_Pos = 8
-}WriteModeTypedef;
+//Tcp 보류
 typedef struct TcpComdataTypedef{
 	char cState[4];
 	char cMode[4];
@@ -126,56 +111,121 @@ typedef struct TcpComdataTypedef{
 	char cPositionActPOS[4];
 
 }tcpcomdataTypedef;
+//
+
+//typedef enum
+typedef enum WriteModeTypedef{
+	Nomode = 0,
+	Position = 1,
+	Velocity = 2,
+	Home	= 6,
+	Cycl_Sync_Pos = 8
+}WriteModeTypedef;
+
+//typedef struct
+typedef struct SettingTypedef{
+	float g_fWrie;	//Wire length
+	int g_s32YoYo;	//YoYo Type
+
+	//DriveType
+	int g_s32DriveSettingType;	//드라이브 타입 설정
+
+	//Gear
+	float fGearNumerator;
+	float fGearDenominator;
+
+	float fDiameter;
+
+	//Min, Max Pos
+	int32_t g_s32MaxPosValue;		// Max Position setting value
+	int32_t g_s32MinPosValue;		// Min Position Setting value
+
+	int32_t g_s32minmaxRpmvalue;	// Min, Max Rpm Setting value
+
+	bool bFinalPosLimit;			// Final Positive Limit
+	bool bPosLimit;				// Positive Limit
+	bool bNegLimit;					// Negative Limit
+	bool bFinalNegLimit;			// Final Negative Limit
+
+}SettingTypedef;
+
+typedef struct DirectTypedef{
+	int16_t s16UpPosSetValue;			//Set Up Position value
+
+	int16_t s16DownPosSetValue;			//Set Down Position value
+
+	int16_t s16HomePosSetValue;			//Set Home Position value
+
+	uint16_t u16EncoderPulse;			//TTL Setting Pulse value ex) TTL 1024, 2048 ...
+
+	int32_t s32EncodercountValue;		//TTL Actual Count value
+
+	int32_t s32DirectActPos;			//Direct Actual Position
+
+	int32_t s32DirectHomeOffset;		//TTL Encoder Home off set
+
+	bool bEncTTLZero;					//TTL Pulse Zero Setting
+
+	float fActrotate;					//
+
+	float fIncrements;
+
+	bool bUp;							//Direct Up signal
+	bool bDown;							//Direct Down signal
+	bool bStop;							//Direct Stop signal
+
+	//Direct Home
+	float fHomerated;					//Direct Homerated
+	float fHomePoscount;				//Direct Position count
+	float fHomeFeedconstant;			//Direct Feedconstant
+	int32_t s32HomeCountvalue;			//Direct Home Count
+
+}DirectTypedef;
 
 typedef struct inverterTypedef{
-	char cName[20];
+	char cName[20];						//Inverter Name
 
-	int VelsetRpmvalue;
-	int VelTargetRpmvalue;
+	int VelsetRpmvalue;					//Inverter Velocity Mode Set Rpm value
+	int VelTargetRpmvalue;				//Inverter Velocity Mode Set Target Rpm value
 
-	int PossetRpmvalue;
-	int PosTargetRpmvalue;
+	int PosSetRpmvalue;					//Inverter Position Mode Set Rpm value
+	int PosTargetRpmvalue;				//Inverter Position Mode Set Target Rpm value
 
-	int32_t PosTargetPoscount;
-	int16_t PosTargetPosvalue;
+	//int32_t PosTargetPoscount;
+	//int16_t PosTargetPosvalue;
 
 	int16_t PosSetPosvalue;
 
-	int32_t HomeTargetPoscount;
-	int16_t HomeTargetPosvalue;
+	//int32_t HomeTargetPoscount;
+	//int16_t HomeTargetPosvalue;
 
 	int16_t HomeSetPosvalue;
 
 	int actRpmvalue;
-	int minmaxRpmvalue;
+	int32_t minmaxRpmvalue;				// Struct inverter -> Sturct Setting
 
-	int minPosvalue;
-	int maxPosvalue;
+//	int minPosvalue;
+//	int maxPosvalue;
 
 	char cState[25];
 	char cError[25];
 	char systemcounter[4];
 	char cMode[25];
-	int iMode;
+	int8_t s8Mode;
 	char cSupplystate[15];
 	char cSTOstate[15];
 	int iControlwordstate;
 
 	char cReadystate[15];
-	bool POSLimit;
-	bool NEGLimit;
 
 	int16_t PosActPosvalue;
 	int64_t PosActPoscount;
-	double increments;
+	float increments;//double increments;
 	float iActrotate;
 	float iTgtrotate;
-	float iGearNumerator;
-	float iGearDenominator;
-	double idiameter;
-
-
-
+	//float iGearNumerator;
+	//float iGearDenominator;
+	//float idiameter;
 }inverterTypedef;
 
 typedef struct StatuswordTypedef{
@@ -200,14 +250,14 @@ typedef struct StatuswordTypedef{
 
 
 typedef struct controlwordTypedef{
-	uint8_t switch_on;//1
-	uint8_t enable_voltage;//2
-	uint8_t no_quick_stop;//4
-	uint8_t enable_operation;//8
-	uint8_t op_mode_spec_four;//16
-	uint8_t op_mode_spec_five;//32
-	uint8_t op_mode_spec_six;//64
-	uint8_t fault_reset;//128
+	uint16_t switch_on;//1
+	uint16_t enable_voltage;//2
+	uint16_t no_quick_stop;//4
+	uint16_t enable_operation;//8
+	uint16_t op_mode_spec_four;//16
+	uint16_t op_mode_spec_five;//32
+	uint16_t op_mode_spec_six;//64
+	uint16_t fault_reset;//128
 	uint16_t halt;//256
 	uint16_t op_mode_spec_nine;//512
 	uint16_t reserved;//1024
@@ -217,7 +267,6 @@ typedef struct controlwordTypedef{
 	uint16_t manufacturer_spec_14;//16384
 	uint16_t brake_ctrl_15;//32768
 }controlwordTypedef;
-
 
 typedef struct StatecontrolwordTypedef{
 	bool switch_on;//1
@@ -237,6 +286,7 @@ typedef struct StatecontrolwordTypedef{
 	bool manufacturer_spec_14;//16384
 	bool brake_ctrl_15;//32768
 }StatecontrolwordTypedef;
+
 typedef struct StateMachineTypedef{
 	bool Initialization;		//0
 	bool not_ready_to_switch_on;//1
@@ -257,6 +307,7 @@ typedef struct StateMachineTypedef{
 	bool endless_protection_time;	//16
 	bool suppressed_error;		//17
 }StateMachineTypedef;
+
 typedef struct BrakeStatusTypedef{
 	bool BrakeCtrlVal;
 	bool BrakeCtrlSigal;
@@ -277,34 +328,52 @@ typedef struct BrakeStatusTypedef{
 	bool Reserved_14;
 	bool Reserved_15;
 }BrakeStatusTypedef;
+extern SettingTypedef g_st_Setting;
 
-extern inverterTypedef GVLinverter[7];	//[Number] <- inverter total unit
-extern StatecontrolwordTypedef GVLStatecontrolword[7]; //[Number] <- inverter total unit
-extern StateMachineTypedef GVLStateMachine[7]; //[Number] <- inverter total unit
-extern BrakeStatusTypedef GVLBrakeStatus[7]; //[Number] <- inverter total unit
+extern DirectTypedef g_st_Direct;
 
-extern StatuswordTypedef GVLStatusword;
+extern inverterTypedef g_st_inverter;	//[Number] <- inverter total unit
+
+extern controlwordTypedef g_st_controlword;
+
+extern StatecontrolwordTypedef g_st_Statecontrolword; //[Number] <- inverter total unit
+
+extern StateMachineTypedef g_st_StateMachine; //[Number] <- inverter total unit
+
+extern BrakeStatusTypedef g_st_BrakeStatus; //[Number] <- inverter total unit
+
+extern StatuswordTypedef g_st_Statusword;
+
 //extern WriteModeTypedef GVLWrtiemode;
 //extern NumpadTypdef GVLNum;
 //extern char GVLcRpmvalue[4];
 //extern uint8_t GVLCount;
-extern int GVL_Vel_input_iRpmvalue;
-extern uint8_t GVL_Vel_input_cRpmvalue[4];
 
-extern int GVL_Pos_input_iRpmvalue;
-extern uint8_t GVL_Pos_input_cRpmvalue[4];
 
-extern int GVL_Pos_input_iPosvalue;
-extern uint8_t GVL_Pos_input_cPosvalue[8];
+extern int32_t g_s32Vel_input_Rpmvalue;
+extern uint8_t g_u8bufVel_input_Rpmvalue[4];
 
-extern int GVL_Home_input_iPosvalue;
-extern uint8_t GVL_Home_input_cPosvalue[8];
+extern int32_t g_s32Pos_input_Rpmvalue;
+extern uint8_t g_u8bufPos_input_Rpmvalue[4];
+
+extern int32_t g_s32Pos_input_Posvalue;
+extern uint8_t g_u8bufPos_input_Posvalue[8];
+
+extern int32_t g_s32Home_input_Posvalue;
+extern uint8_t g_u8bufHome_input_Posvalue[8];
+
+extern int32_t g_s32Direct_input_UpPosvalue;
+
+extern int32_t g_s32Direct_input_DownPosvalue;
+
+extern int32_t g_s32Direct_input_Homevalue;
+
 
 extern uint16_t GVL_iControlword;
 extern uint8_t GVL_cControlword[2];
 
-extern int GVL_iModevalue;
-extern uint8_t GVL_cModevalue[4];
+//extern int32_t GVL_iModevalue;
+extern uint8_t GVL_cModevalue[4]; // Serial Mode
 
 
 

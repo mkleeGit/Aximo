@@ -17,21 +17,22 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+//#include <KEB_CAN_Func.h>
+#include <KEB_CAN_Func_Copy.hpp>
+#include <KEB_PROTOCAL.h>
 #include "main.h"
+#include "cmath"
 #include "cmsis_os.h"
 #include "fatfs.h"
 #include "lwip.h"
 #include "app_touchgfx.h"
 #include "usb_host.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stm32746g_discovery.h>
 #include <stm32746g_discovery_qspi.h>
-#include "global.h"
+//#include "global.h"
 #include "SerialCom.h"
-#include "KEB_CAN_Func.h"
-//#include "tcp_echoserver.h"
 #include "lwip/opt.h"
 #include "lwip/init.h"
 #include "lwip/netif.h"
@@ -43,8 +44,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+#include <string.h>
 
-
+KEB_CAN_FUNC KEB_CAN;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -103,9 +105,6 @@
 #define FLASH_USER_START_ADDR	ADDR_FLASH_SECTOR_6
 #define FLASH_USER_END_ADDR		ADDR_FLASH_SECTOR_7 + GetSectorSize(ADDR_FLAH_SECTOR_7)
 
-
-
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -134,6 +133,8 @@ RTC_HandleTypeDef hrtc;
 SD_HandleTypeDef hsd1;
 
 SPI_HandleTypeDef hspi2;
+DMA_HandleTypeDef hdma_spi2_tx;
+DMA_HandleTypeDef hdma_spi2_rx;
 
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
@@ -141,6 +142,7 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim5;
 TIM_HandleTypeDef htim8;
 TIM_HandleTypeDef htim12;
+TIM_HandleTypeDef htim13;
 TIM_HandleTypeDef htim14;
 
 UART_HandleTypeDef huart1;
@@ -162,6 +164,27 @@ CAN_RxHeaderTypeDef CANRxHeader;
 CAN_TxHeaderTypeDef CANTxHeader;
 
 HAL_StatusTypeDef ret;
+
+uint8_t SPIRxData[3] = {0x00, };
+uint8_t SPITxData[3] = {0x00, };
+
+uint8_t SPITx1stInput[3] = {0x00, };
+uint8_t SPITx2ndInput[3] = {0x00, };
+
+uint8_t SPIRx1stInput[3] = {0x00, };
+uint8_t SPIRx2ndInput[3] = {0x00, };
+
+uint8_t SPIRx1stOutput[3] = {0x00, };
+uint8_t SPIRx2ndOutput[3] = {0x00, };
+
+
+
+uint8_t SPIEncoderTxData[5] = {0x00, };
+uint8_t SPIEncoderRxData[5] = {0x00, };
+
+int32_t SPIEncoderData;
+
+uint16_t LEDTest = 0;
 
 uint8_t CAN1Rx0Data[8];
 uint8_t CAN1RPDO3Data[8] = {0x00, };
@@ -185,26 +208,25 @@ uint32_t currentuiTime = 0;
 uint32_t getuiTime = 0;
 uint32_t beforeuiTime = 0;
 
-uint8_t TempHomeoffset[4];
 uint8_t TempPowerStart[2];
-uint8_t TempModeSelect;
-uint8_t TempTargetPos[4];
-uint8_t TempTargetVel[4];
 
-uint8_t TPDO3RxDATA[8];
-uint8_t TPDO4RxDATA[8];
+/*CAN CROSS PROTOCAL BEGIN*/
 
+//CAN TPDO3 BUFFER
 uint8_t TPDO3statusword[2];
 uint8_t TPDO3Modes;
 uint8_t TPDO3Errorcode;
-
+//CAN TPDO4 BUFFER
 uint8_t TPDO4PositionAct[4];
 uint8_t TPDO4VelocityAct[4];
-
-uint8_t Heartheatconsumer;
-
+//CAN Heartbeat
+uint8_t Heartbeatconsumer;
+//CAN Convert hexto16uint
 uint16_t TPDO3Statusword_dec;
 uint16_t TPDO3Errorcode_dec;
+
+/*CAN CROSS PROTOCAL END*/
+
 
 static FMC_SDRAM_CommandTypeDef Command;
 //Flash memory
@@ -214,114 +236,29 @@ uint32_t FirstSector = 0, NbOfSectors = 0;
 uint32_t Address = ADDR_FLASH_SECTOR_7, SECTORError = 0;
 __IO uint32_t data32 = 0 , MemoryProgramStatus = 0;
 
-//Flash memory
-uint32_t GVLFlash_TempSaveMaxPos;
-uint32_t GVLFlash_TempSaveMinPos;
 
-uint32_t GVLFlash_TempSaveDen;
-uint32_t GVLFlash_TempSaveNum;
-
-uint32_t GVLFlash_TempSaveDiameter;
-
-uint32_t GVLFlash_TempSaveMinMaxRpm;
-
-bool GVLFlash_Write = false;
 //
 
-uint16_t GVL_switch_on;//1
-uint16_t GVL_enable_voltage;//2
-uint16_t GVL_no_quick_stop;//4
-uint16_t GVL_enable_operation;//8
-uint16_t GVL_op_mode_spec_four;//16
-uint16_t GVL_op_mode_spec_five;//32
-uint16_t GVL_op_mode_spec_six;//64
-uint16_t GVL_fault_reset;//128
-uint16_t GVL_halt;//256
-uint16_t GVL_op_mode_spec_nine;//512
-uint16_t GVL_reserved;//1024
-uint16_t GVL_manufacturer_spec_11;//2048
-uint16_t GVL_manufacturer_spec_12;//4096
-uint16_t GVL_manufacturer_spec_13;//8192
-uint16_t GVL_manufacturer_spec_14;//16384
-uint16_t GVL_brake_ctrl_15;//32768
+
 
 //global variable
-inverterTypedef GVLinverter[inverter_total];
-controlwordTypedef GVLcontrolword[inverter_total];
-StatecontrolwordTypedef GVLStatecontrolword[inverter_total];
-StateMachineTypedef GVLStateMachine[inverter_total];
-BrakeStatusTypedef GVLBrakeStatus[inverter_total];
 
-StatuswordTypedef GVLStatusword;
+//StatecontrolwordTypedef GVLStatecontrolword;
+//StateMachineTypedef GVLStateMachine;
+//BrakeStatusTypedef GVLBrakeStatus;
 
-//WriteModeTypedef GVLWrtiemode;
-
-int GVLAddnumber = 0;
-
-int GVL_Vel_input_iRpmvalue = 0;
-uint8_t GVL_Vel_input_cRpmvalue[4];
-
-int GVL_Pos_input_iRpmvalue = 0;
-uint8_t GVL_Pos_input_cRpmvalue[4];
-
-int GVL_Pos_input_iPosvalue = 0;
-uint8_t GVL_Pos_input_cPosvalue[8];
-
-int GVL_Home_input_iPosvalue;
-uint8_t GVL_Home_input_cPosvalue[8];
-
-uint16_t GVL_iControlword;
-uint8_t GVL_cControlword[2];
-
-int GVL_iModevalue;
-uint8_t GVL_cModevalue[4];
+//StatuswordTypedef GVLStatusword;
 
 uint16_t GVLControlWordValue;
 
-bool GVLsendControlword = false;
-bool GVLsendMode		= false;
-bool GVLinverterenable 	= false;
-bool GVLPowerstate		= false;
-bool GVLPoweroff		= false;
-bool GVLPoweron			= false;
-bool GVLWriteon			= false;
-
-bool GVLComon			= false;
-bool GVLComoff			= false;
-int GVLComstate			= 0;
-
-
 //Velocity Mode RPM CW,CCW
-bool GVLVel_RPM_direction;
-
-
-bool GVLVelRpmset		= false;
-bool GVLPosRpmset		= false;
-bool GVLReset 			= false;
-bool GVLPosStart		= false;
 bool GVLPosStop			= false;
 bool GVLPosposset		= false;
 
-//Home Set
-bool GVLHomeset;
-
 //Home Mode
-bool GVLHomeposset;
 
-//ByPass STO Control
-bool GVLbypassSTO = false;
-//MC Control
-bool GVLMCinput = false;
-bool GVLMCoutput = false;
-bool GVLMCinputstate = false;
-bool GVLMCoutputstate = false;
 
-bool GVLLocal;
-//IP Address
-uint8_t GVL_IP[4];
-uint8_t GVLTCP_connection = 0;
-int GVLTCP_state = 0;
-int GVLTCP_Cable_state = 0;
+
 
 uint8_t GVLTCP_inv_Statebuf[4];
 uint8_t GVLTCP_inv_Errorbuf[4];
@@ -329,7 +266,7 @@ uint8_t GVLTCP_inv_Modebuf[4];
 uint8_t GVLTCP_inv_supplybuf[4];
 uint8_t GVLTCP_inv_STObuf[4];
 
-uint8_t GVLiMode;
+//uint8_t g_u8Mode;//GVLiMode;
 
 int ReadControlvalue;
 int ReadStatevalue;
@@ -384,12 +321,16 @@ int flashtest;
 
 //uint8_t uitest[4];
 int itest;
+bool GPIOTest;
+int SPIsteptest;
 
-
-bool testcount1;
+bool testcount1 = true;
 bool testcount2;
 bool testcount3;
 
+uint8_t modetest;
+
+uint8_t u8Modestep;
 
 uint8_t Tcp_ReceiveData[17];
 /* USER CODE END PV */
@@ -420,6 +361,7 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART6_UART_Init(void);
 static void MX_ADC3_Init(void);
 static void MX_CAN1_Init(void);
+static void MX_TIM13_Init(void);
 static void MX_TIM14_Init(void);
 void StartDefaultTask(void const * argument);
 void StartTask02(void const * argument);
@@ -453,7 +395,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
 /* USER CODE BEGIN 0 */
 
 //test
-void Datacopy(uint8_t *cpData)
+void Datacopy(uint8_t *cpData)	//삭제해도 될듯
 {
 	cpData[0] = STX;
 	cpData[1] = 0x01;
@@ -469,13 +411,34 @@ void Datacopy(uint8_t *cpData)
 	cpData[11] = TPDO4VelocityAct[1];
 	cpData[12] = TPDO4VelocityAct[2];
 	cpData[13] = TPDO4VelocityAct[3];
-	cpData[14] = GVLMCinputstate;
-	cpData[15] = GVLMCoutputstate;
-	cpData[16] = GVLbypassSTO;
+	cpData[14] = g_bMCinputstate;
+	cpData[15] = g_bMCoutputstate;
+	cpData[16] = g_bBypassSTO;
 	cpData[17] = 0x00;
 	cpData[18] = 0x05;
 }
 
+/*SPI Communication */
+void HAL_DMA_STATE_CHANGE(SPI_HandleTypeDef *hspi)
+{
+	hspi->State = HAL_SPI_STATE_READY;
+}
+/*void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+	;//HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+}
+
+void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+	if(hspi-> Instance == SPI2)
+	{
+		HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+		SPIsteptest = SPIsteptest + 1;
+		testcount1 = false;
+	}
+}*/
+
+/*Flash Memory Function begin*/
 uint32_t GetSector(uint32_t Address)
 {
 	uint32_t sector = 0;
@@ -514,6 +477,7 @@ uint32_t GetSector(uint32_t Address)
 	}
 	return sector;
 }
+
 void save_flash()
 {
 	HAL_FLASH_Unlock(); // unlock flash memory
@@ -526,16 +490,22 @@ void save_flash()
 	EraseInitStruct.NbSectors		= NbOfSectors;
 	HAL_FLASHEx_Erase(&EraseInitStruct, &SECTORError);
 
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 0, (uint32_t)GVLFlash_TempSaveDen);
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 4, (uint32_t)GVLFlash_TempSaveNum);
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 8, (uint32_t)GVLFlash_TempSaveDiameter);
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 12, (uint32_t)GVLFlash_TempSaveMaxPos);
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 16, (uint32_t)GVLFlash_TempSaveMinPos);
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 20, (uint32_t)GVLFlash_TempSaveMinMaxRpm);
-
+	//Save Data
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 0, (uint32_t)g_u32FlashSaveDen);		//Moter shaft
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 4, (uint32_t)g_u32FlashSaveNum);		//Gear end shaft
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 8, (uint32_t)g_u32FlashSaveDiameter);	//move
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 12, (uint32_t)g_u32FlashSaveMaxPos);	// Max Position
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 16, (uint32_t)g_u32FlashSaveMinPos);	// Min Position
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 20, (uint32_t)g_u32FlashSaveMinMaxRpm); // MinMax Rpm
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 24, (uint32_t)g_u32FlashSaveDriveType);	// Type (ex : Direct, Inverter ...)
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 28, (uint32_t)g_u32FlashSaveWire);		// Wire width
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 32, (uint32_t)g_u32FlashSaveYoYo);		// YoYo type or no YoYo Type
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address + 36, (uint32_t)g_u32FlashSaveEncPulse);	// Encoder Pulse(ex : 1024, 2048, 4192..);
 	HAL_FLASH_Lock();
 }
+/*Flash Memory Function End*/
 
+/*CAN CROSS(Canopen Protocal) Protocal Begin*/
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
   uint8_t rcvd_msg[8] = {0, };
@@ -545,29 +515,27 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     Error_Handler();
   }
 
-  if(CANRxHeader.StdId == TXPDO3 + CAN_ID)
+  if(CANRxHeader.StdId == TXPDO3 + CAN_ID)		//KEB 3rd transmit PDO Mapping + CANopen Node ID
   {
-	  //memcpy(&TPDO3RxDATA, &rcvd_msg, 8);
-	  memcpy(&TPDO3statusword, &rcvd_msg, 2);
-	  KEB_CAN_Func_reverse_array(TPDO3statusword, 2);
+	  memcpy(&TPDO3statusword, &rcvd_msg, 2);	// 2byte controlword
+	  KEB_CAN.KEB_CAN_Func_reverse_array(TPDO3statusword, 2);//KEB_CAN_Func_reverse_array(TPDO3statusword, 2);
 
-	  memcpy(&TPDO3Modes, &rcvd_msg[2], 1);
+	  memcpy(&TPDO3Modes, &rcvd_msg[2], 1);		// 1byte Modes of operation
 
-	  memcpy(&TPDO3Errorcode, &rcvd_msg[3], 1);
+	  memcpy(&TPDO3Errorcode, &rcvd_msg[3], 1); // 1byte errorcode
   }
 
-  if(CANRxHeader.StdId == TXPDO4 + CAN_ID)
+  if(CANRxHeader.StdId == TXPDO4 + CAN_ID)		//KEB 4th transmit POD Mapping + CANopen Node ID
   {
-	  ///memcpy(&TPDO4RxDATA, &rcvd_msg, 8);
-	  memcpy(&TPDO4PositionAct, &rcvd_msg, 4);
-	  KEB_CAN_Func_reverse_array(TPDO4PositionAct, 4);
+	  memcpy(&TPDO4PositionAct, &rcvd_msg, 4);	// READ KEB Actual Postion
+	  KEB_CAN.KEB_CAN_Func_reverse_array(TPDO4PositionAct, 4);//KEB_CAN_Func_reverse_array(TPDO4PositionAct, 4);
 
-	  memcpy(&TPDO4VelocityAct, &rcvd_msg[4], 4);
-	  KEB_CAN_Func_reverse_array(TPDO4VelocityAct, 4);
+	  memcpy(&TPDO4VelocityAct, &rcvd_msg[4], 4);	//READ KEB Actual Velocity
+	  KEB_CAN.KEB_CAN_Func_reverse_array(TPDO4VelocityAct, 4);//KEB_CAN_Func_reverse_array(TPDO4VelocityAct, 4);
   }
-  if(CANRxHeader.StdId == NMTHeartbeat + CAN_ID)
+  if(CANRxHeader.StdId == NMTHeartbeat + CAN_ID)	//READ KEB Canopen Heartbeat
   {
-	  memcpy(&Heartheatconsumer, rcvd_msg, 1);
+	  memcpy(&Heartbeatconsumer, rcvd_msg, 1);
   }
 }
 
@@ -595,308 +563,110 @@ void can_filter_config(void)
 	}
 
 }
+/*CAN CROSS(Canopen Protocal)Protocal End*/
 
+/*init Function Begin*/
 void variableinit()
 {
-	GVL_IP[0] = DEST_IP_ADDR0;
-	GVL_IP[1] = DEST_IP_ADDR1;
-	GVL_IP[2] = DEST_IP_ADDR2;
-	GVL_IP[3] = DEST_IP_ADDR3;
+	g_st_u8IP[0] = DEST_IP_ADDR0;
+	g_st_u8IP[1] = DEST_IP_ADDR1;
+	g_st_u8IP[2] = DEST_IP_ADDR2;
+	g_st_u8IP[3] = DEST_IP_ADDR3;
 
-	strcpy(GVLinverter[1].cName,"Inverter01");
+	strcpy(g_st_inverter.cName,"Inverter01");
 
-	GVLinverter[1].VelsetRpmvalue = 0;
+	g_st_inverter.VelsetRpmvalue = 0;
 
-	GVLinverter[1].PossetRpmvalue = 0;
+	g_st_inverter.PosSetRpmvalue = 0;
 
-	GVLinverter[1].increments = 65536;
+	g_st_inverter.increments = 65536;	//g_st_Setting.fIncrements;
 
-	GVLinverter[1].idiameter = 1;
+	g_st_Setting.fDiameter = 1;		//g_st_Setting.fDiameter;
 
-	if(GVLinverter[1].iGearNumerator <= 0)
-		GVLinverter[1].iGearNumerator = 1;
+	if(g_st_Setting.fGearNumerator <= 0)	//g_st_Setting.fGearNumerator;
+		g_st_Setting.fGearNumerator = 1;	//g_st_Setting.fGearNumerator;
 
-	if(GVLinverter[1].iGearDenominator <= 0)
-		GVLinverter[1].iGearDenominator = 1;
+	if(g_st_Setting.fGearDenominator <= 0)	//g_st_Setting.fGearDenominator;
+		g_st_Setting.fGearDenominator = 1; //g_st_Setting.fGearDenominator;
 
+	g_s8Mode = Position;
+	g_bModeWrite = true;
 
 	binit = true;
 }
+/*init Function End*/
+
 void disconnectstate()
 {
-	strcpy(GVLinverter[GVLAddnumber].cState,"disconnect");
-	strcpy(GVLinverter[GVLAddnumber].cError,"disconnect");
-	strcpy(GVLinverter[GVLAddnumber].cMode,"disconnect");
-	GVLinverter[GVLAddnumber].actRpmvalue = 0000;
-	GVLinverter[GVLAddnumber].VelTargetRpmvalue = 0000;
-	GVLinverter[GVLAddnumber].PosTargetRpmvalue = 0000;
+	strcpy(g_st_inverter.cState,"disconnect");
+	strcpy(g_st_inverter.cError,"disconnect");
+	strcpy(g_st_inverter.cMode,"disconnect");
+	g_st_inverter.actRpmvalue = 0000;
+	g_st_inverter.VelTargetRpmvalue = 0000;
+	g_st_inverter.PosTargetRpmvalue = 0000;
 	memset(RxBuf, 0,DATA_BUF_SIZE);
 }
 
 void Statusword(StatuswordTypedef *p, uint16_t value)
 {
-	if((value - 32768) > -1)
-	{
-		p->manufacturer_spec_15 = true;
-		value = value - 32768;
-	}
-	else
-		p->manufacturer_spec_15 = false;
-
-	if((value - 16384) > -1)
-	{
-		p->special_function = true;
-		value = value - 16384;
-	}
-	else
-		p->special_function = false;
-
-	if((value - 8192) > -1)
-	{
-		p->op_mode_spec_13 = true;
-		value = value - 8192;
-	}
-	else
-		p->op_mode_spec_13 = false;
-
-	if((value - 4096) > -1)
-	{
-		p->op_mode_spec_12 = true;
-		value = value - 4096;
-	}
-	else
-		p->op_mode_spec_12 = false;
-
-	if((value - 2048) > -1)
-	{
-		p->internal_limit_active = true;
-		value = value - 2048;
-	}
-	else
-		p->internal_limit_active = false;
-
-	if((value - 1024) > -1)
-	{
-		p->target_reached = true;
-		value = value - 1024;
-	}
-	else
-		p->target_reached = false;
-
-	if((value - 512) > -1)
-	{
-		p->remote = true;
-		value = value - 512;
-	}
-	else
-		p->remote = false;
-
-	if((value - 256) > -1)
-	{
-		p->synchron = true;
-		value = value - 256;
-	}
-	else
-		p->synchron = false;
-
-	if((value - 128) > -1)
-	{
-		p->warning = true;
-		value = value - 128;
-	}
-	else
-		p->warning = false;
-
-	if((value - 64) > -1)
-	{
-		p->switch_on_disabled = true;
-		value = value - 64;
-	}
-	else
-		p->switch_on_disabled = false;
-
-	if((value - 32) > -1)
-	{
-		p->no_quick_stop = true;
-		value = value -32;
-	}
-	else
-		p->no_quick_stop = false;
-
-	if((value - 16) > -1)
-	{
-		p->voltage_enabled = true;
-		value = value - 16;
-	}
-	else
-		p->voltage_enabled = false;
-
-	if((value - 8) > -1)
-	{
-		p->fault = true;
-		value = value - 8;
-	}
-	else
-		p->fault = false;
-
-	if((value - 4) > -1)
-	{
-		p->operation_enabled = true;
-		value = value - 4;
-	}
-	else
-		p->operation_enabled = false;
-
-	if((value - 2) > -1)
-	{
-		p->switched_on = true;
-		value = value - 2;
-	}
-	else
-		p->switched_on = false;
-
-	if((value - 1) > -1)
-	{
-		p->ready_to_switch_on = true;
-		value = value - 1;
-	}
-	else
-		p->ready_to_switch_on = false;
+	p->manufacturer_spec_15 = value & 0x8000;
+	p->special_function = value & 0x4000;
+	p->op_mode_spec_13 = value & 0x2000;
+	p->op_mode_spec_12 = value & 0x1000;
+	p->internal_limit_active = value & 0x0800;
+	p->target_reached = value & 0x0400;
+	p->remote = value & 0x0200;
+	p->synchron = value & 0x0100;
+	p->warning = value & 0x0080;
+	p->switch_on_disabled = value & 0x0040;
+	p->no_quick_stop = value & 0x0020;
+	p->voltage_enabled = value & 0x0010;
+	p->fault = value & 0x0008;
+	p->operation_enabled = value & 0x0004;
+	p->switched_on = value & 0x0002;
+	p->ready_to_switch_on = value & 0x0001;
 }
 
 void StateControlword(StatecontrolwordTypedef *p, int value)
 {
-	if((value - 32768) > -1)
-	{
-		p->brake_ctrl_15 = true;
-		value = value - 32768;
-	}
-	else
-		p->brake_ctrl_15 = false;
-
-	if((value - 16384) > -1)
-	{
-		p->manufacturer_spec_14 = true;
-		value = value - 16384;
-	}
-	else
-		p->manufacturer_spec_14 = false;
-
-	if((value - 8192) > -1)
-	{
-		p->manufacturer_spec_13 = true;
-		value = value - 8192;
-	}
-	else
-		p->manufacturer_spec_13 = false;
-
-	if((value - 4096) > -1)
-	{
-		p->manufacturer_spec_12 = true;
-		value = value - 4096;
-	}
-	else
-		p->manufacturer_spec_12 = false;
-
-	if((value - 2048) > -1)
-	{
-		p->manufacturer_spec_11 = true;
-		value = value - 2048;
-	}
-	else
-		p->manufacturer_spec_11 = false;
-
-	if((value - 1024) > -1)
-	{
-		p->reserved = true;
-		value = value - 1024;
-	}
-	else
-		p->reserved = false;
-
-	if((value - 512) > -1)
-	{
-		p->op_mode_spec_nine = true;
-		value = value - 512;
-	}
-	else
-		p->op_mode_spec_nine = false;
-
-	if((value - 256) > -1)
-	{
-		p->halt = true;
-		value = value - 256;
-	}
-	else
-		p->halt = false;
-
-	if((value - 128) > -1)
-	{
-		p->fault_reset = true;
-		value = value - 128;
-	}
-	else
-		p->fault_reset = false;
-
-	if((value - 64) > -1)
-	{
-		p->op_mode_spec_six = true;
-		value = value - 64;
-	}
-	else
-		p->op_mode_spec_six = false;
-
-	if((value - 32) > -1)
-	{
-		p->op_mode_spec_five = true;
-		value = value -32;
-	}
-	else
-		p->op_mode_spec_five = false;
-
-	if((value - 16) > -1)
-	{
-		p->op_mode_spec_four = true;
-		value = value - 16;
-	}
-	else
-		p->op_mode_spec_four = false;
-
-	if((value - 8) > -1)
-	{
-		p->enable_operation = true;
-		value = value - 8;
-	}
-	else
-		p->enable_operation = false;
-
-	if((value - 4) > -1)
-	{
-		p->no_quick_stop = true;
-		value = value - 4;
-	}
-	else
-		p->no_quick_stop = false;
-
-	if((value - 2) > -1)
-	{
-		p->enable_voltage = true;
-		value = value - 2;
-	}
-	else
-		p->enable_voltage = false;
-
-	if((value - 1) > -1)
-	{
-		p->switch_on = true;
-		value = value - 1;
-	}
-	else
-		p->switch_on = false;
+    p->brake_ctrl_15 = value & 0x8000;
+    p->manufacturer_spec_14 = value & 0x4000;
+    p->manufacturer_spec_13 = value & 0x2000;
+    p->manufacturer_spec_12 = value & 0x1000;
+    p->manufacturer_spec_11 = value & 0x0800;
+    p->reserved = value & 0x0400;
+    p->op_mode_spec_nine = value & 0x0200;
+    p->halt = value & 0x0100;
+    p->fault_reset = value & 0x0080;
+    p->op_mode_spec_six = value & 0x0040;
+    p->op_mode_spec_five = value & 0x0020;
+    p->op_mode_spec_four = value & 0x0010;
+    p->enable_operation = value & 0x0008;
+    p->no_quick_stop = value & 0x0004;
+    p->enable_voltage = value & 0x0002;
+    p->switch_on = value & 0x0001;
 }
 void BrakeStatus(BrakeStatusTypedef *p, int value)
 {
-	if((value - 32768) > -1)
+    p->Reserved_15 = value & 0x8000;
+    p->Reserved_14 = value & 0x4000;
+    p->Reserved_13 = value & 0x2000;
+    p->Reserved_12 = value & 0x1000;
+    p->Reserved_11 = value & 0x0800;
+    p->Reserved_10 = value & 0x0400;
+    p->Reserved_9 = value & 0x0200;
+    p->Reserved_8 = value & 0x0100;
+    p->State_closing = value & 0x0050;
+    p->State_close_delay = value & 0x0040;
+    p->State_open = value & 0x0030;
+    p->State_opening = value & 0x0020;
+    p->State_open_delay = value & 0x0010;
+    p->State_closed = !(p->State_closing || p->State_close_delay || p->State_open || p->State_opening || p->State_open_delay);
+    p->Reserved_3 = value & 0x0008;
+    p->BrakeCtrlRef = value & 0x0004;
+    p->BrakeCtrlSigal = value & 0x0002;
+    p->BrakeCtrlVal = value & 0x0001;
+	/*if((value - 32768) > -1)
 		{
 			p->Reserved_15 = true;
 			value = value - 32768;
@@ -1034,11 +804,29 @@ void BrakeStatus(BrakeStatusTypedef *p, int value)
 			value = value - 1;
 		}
 		else
-			p->BrakeCtrlVal = false;
+			p->BrakeCtrlVal = false;*/
 }
 void StateMachine(StateMachineTypedef *p, int value)
 {
-	p->Initialization = false;
+	p->Initialization = (value == 0);
+	p->not_ready_to_switch_on = (value == 1);
+	p->switch_on_disable = (value == 2);
+	p->ready_to_switch_on = (value == 3);
+	p->switched_on = (value == 4);
+	p->operation_enabled = (value == 5);
+	p->Quick_stop_active = (value == 6);
+	p->fault_reaction_active = (value == 7);
+	p->fault = (value == 8);
+	p->Shutdown_active = (value == 9);
+	p->disable_operation_active = (value == 10);
+	p->mod_off_pause_active = (value == 11);
+	p->start_operation_active = (value == 12);
+	p->power_Off = (value == 13);
+	p->protection_time_active = (value == 14);
+	p->protection_time_end = (value == 15);
+	p->endless_protection_time = (value == 16);
+	p->suppressed_error = (value == 17);
+	/*p->Initialization = false;
 	p->not_ready_to_switch_on = false;
 	p->switch_on_disable = false;
 	p->ready_to_switch_on = false;
@@ -1112,7 +900,7 @@ void StateMachine(StateMachineTypedef *p, int value)
 		case 17:
 			p->suppressed_error = true;
 			break;
-	}
+	}*/
 }
 /* USER CODE END 0 */
 
@@ -1131,7 +919,6 @@ int main(void)
 
   /* Enable D-Cache---------------------------------------------------------*/
   SCB_EnableDCache();
-
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
@@ -1177,6 +964,7 @@ int main(void)
   MX_FATFS_Init();
   MX_ADC3_Init();
   MX_CAN1_Init();
+  MX_TIM13_Init();
   MX_TIM14_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
@@ -1761,24 +1549,24 @@ static void MX_SPI2_Init(void)
 
   /* USER CODE END SPI2_Init 1 */
   /* SPI2 parameter configuration*/
-  hspi2.Instance = SPI2;
-  hspi2.Init.Mode = SPI_MODE_MASTER;
-  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi2.Init.DataSize = SPI_DATASIZE_4BIT;
-  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
-  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi2.Init.CRCPolynomial = 7;
-  hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi2.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
-  if (HAL_SPI_Init(&hspi2) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	hspi2.Instance = SPI2;
+	hspi2.Init.Mode = SPI_MODE_MASTER;
+	hspi2.Init.Direction = SPI_DIRECTION_2LINES;
+	hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
+	hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+	hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+	hspi2.Init.NSS = SPI_NSS_SOFT;
+	hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+	hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+	hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+	hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+	hspi2.Init.CRCPolynomial = 7;
+	hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+	hspi2.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+	if (HAL_SPI_Init(&hspi2) != HAL_OK)
+	{
+		Error_Handler();
+	}
   /* USER CODE BEGIN SPI2_Init 2 */
 
   /* USER CODE END SPI2_Init 2 */
@@ -2099,6 +1887,39 @@ static void MX_TIM12_Init(void)
 }
 
 /**
+  * @brief TIM13 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM13_Init(void)
+{
+
+  /* USER CODE BEGIN TIM13_Init 0 */
+
+  /* USER CODE END TIM13_Init 0 */
+
+  /* USER CODE BEGIN TIM13_Init 1 */
+
+  /* USER CODE END TIM13_Init 1 */
+  htim13.Instance = TIM13;
+  htim13.Init.Prescaler = 199;
+  htim13.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim13.Init.Period = 1000;
+  htim13.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim13) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM13_Init 2 */
+
+  /* USER CODE END TIM13_Init 2 */
+
+}
+
+
+
+/**
   * @brief TIM14 Initialization Function
   * @param None
   * @retval None
@@ -2207,8 +2028,15 @@ static void MX_DMA_Init(void)
 
   /* DMA controller clock enable */
   __HAL_RCC_DMA2_CLK_ENABLE();
+  __HAL_RCC_DMA1_CLK_ENABLE();
 
   /* DMA interrupt init */
+  /* DMA1_Stream3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream3_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream3_IRQn);
+  /* DMA1_Stream4_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream4_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream4_IRQn);
   /* DMA2_Stream0_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
@@ -2495,8 +2323,9 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : ARDUINO_D10_Pin */
   GPIO_InitStruct.Pin = ARDUINO_D10_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(ARDUINO_D10_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LCD_INT_Pin */
@@ -2606,113 +2435,522 @@ void StartTask02(void const * argument)
   float HomeFeedconstant;
   int32_t HomeCountvalue;
 
-  HAL_TIM_Base_Start_IT(&htim14);
-  HAL_CAN_Start(&hcan1);
+
+  float fYoYoDiamerter;
+  float fYoYoTempDiamerter;
+  int32_t s32YoYoRotateCount;
+
+
+  //HAL_TIM_Base_Start_IT(&htim14);
+  //HAL_CAN_Start(&hcan1);
 
   can_filter_config();
+  /*HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+
+  SPITxData[0] = 0x40;
+  SPITxData[1] = 0x0A;
+  SPITxData[2] = 0x00;*/
+
+  //HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+  //__SPI2_CLK_ENABLE();
+  //HAL_SPI_TransmitReceive(&hspi2, SPITxData, SPIRxData, 3, 500);
+  //HAL_SPI_Transmit(&hspi2, SPITxData, 3, 500);
+  //HAL_SPI_TransmitReceive_DMA(&hspi2, SPITxData, SPIRxData, 3);
+  //HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+  //__SPI2_CLK_DISABLE();
+
+  //HAL_DMA_STATE_CHANGE(&hspi2);
+
+
+
+  //HAL_DMA_STATE_CHANGE(&hspi2);
+
+  /*Encoder TTL Setting begin*/
+  //HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET); //TEST 나중에 삭제
+
+  //HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+  SPIEncoderTxData[0] = 0x88;			//MDR0 WRITE ADDRESS 0x88
+  //SPIEncoderTxData[1] = 0x03;
+  SPIEncoderTxData[1] = 0x03;
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 2, 500);
+  //HAL_SPI_Transmit_IT(&hspi2, SPIEncoderTxData, 2);
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+
+  SPIEncoderTxData[0] = 0x90;
+  //SPIEncoderTxData[1] = 0x00;
+  SPIEncoderTxData[1] = 0x10;
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+  //testcount2 = true;
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 2, 500);
+  //HAL_SPI_Transmit_IT(&hspi2, SPIEncoderTxData, 2);
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+
+  SPIEncoderTxData[0] = 0x20;
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+  //testcount2 = true;
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 1, 500);
+  //HAL_SPI_Transmit_IT(&hspi2, SPIEncoderTxData, 1);
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+
+  SPIEncoderTxData[0] = 0x30;
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+  //testcount2 = true;
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 1, 500);
+  //HAL_SPI_Transmit_IT(&hspi2, SPIEncoderTxData, 1);
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+  /*Encoder TTL Setting end*/
+
+  SPIEncoderTxData[0] = 0x98;
+  SPIEncoderTxData[1] = 0x00;
+  SPIEncoderTxData[2] = 0x98;
+  SPIEncoderTxData[3] = 0x96;
+  SPIEncoderTxData[4] = 0x7F;
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+  //testcount2 = true;
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 5, 500);
+  //HAL_SPI_Transmit_IT(&hspi2, SPIEncoderTxData, 1);
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+
+  SPIEncoderTxData[0] = 0xE0;
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+  //testcount2 = true;
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 1, 500);
+  //HAL_SPI_Transmit_IT(&hspi2, SPIEncoderTxData, 1);
+  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+  /*Encoder TTL Setting end*/
+
+  /*RELAY I/O WATCHDOG TIMER BEGIN*/
+  HAL_TIM_Base_Start_IT(&htim13);
+  /*RELAY I/O WATCHDOG TIMER END */
 
   /* Infinite loop */
   for(;;)
   {
-
 	  if (binit == false)
 	  {
 		  variableinit();
 	  }
 	  else
 	  {
-		  //flash memory
-		  GVLinverter[GVLAddnumber].iGearDenominator	= *(float*)(Address + 0);
-		  GVLinverter[GVLAddnumber].iGearNumerator		= *(float*)(Address + 4);
-		  GVLinverter[GVLAddnumber].idiameter			= *(float*)(Address + 8);
-		  GVLinverter[GVLAddnumber].maxPosvalue			= *(int*)(Address + 12);
-		  GVLinverter[GVLAddnumber].minPosvalue			= *(int*)(Address + 16);
-		  GVLinverter[GVLAddnumber].minmaxRpmvalue		= *(int*)(Address + 20);
-		  if(GVLFlash_Write == true)
+
+		  /*	flash memory begin	*/
+		  if (*(float*)(Address + 0) > 0)g_st_Setting.fGearDenominator	= *(float*)(Address + 0);//g_st_Setting.fGearDenominator	//Setting Gear Demominator
+		  else g_st_Setting.fGearDenominator = 1;
+		  if (*(float*)(Address + 4) > 0)g_st_Setting.fGearNumerator = *(float*)(Address + 4);//g_st_Setting.fGearNumerator		//Setting Gear Numerator
+		  else g_st_Setting.fGearNumerator = 1;
+		  if (*(float*)(Address + 8) > 0)g_st_Setting.fDiameter = *(float*)(Address + 8);//g_st_Setting.fDiameter	//Setting idiamter
+		  else g_st_Setting.fDiameter = 1;
+
+		  g_s32MaxPosValue					= *(int*)(Address + 12);//g_st_Setting.g_s32MaxPosValue		//Setting Max Position
+		  g_s32MinPosValue					= *(int*)(Address + 16);//g_st_Setting.g_s32MinPosValue		//Setting Min Position
+		  g_st_inverter.minmaxRpmvalue		= *(int*)(Address + 20);//g_st_Setting.g_s32MinMaxRpmValue		//Setting Motor Rpm
+		  g_s32DriveSettingType				= *(int*)(Address + 24);//g_st_Setting.g_s32DriveSettingType		//Select the mode to use : Direct, Direct Incremental, Inverter + Encoder;
+		  g_fWire							= *(float*)(Address + 28);//g_st_Setting.g_fWire		//Setting Wire width
+		  g_s32YoYo							= *(int*)(Address + 32);//g_st_Setting.g_s32YoYo		//Select the mode to use : YoYo, Nothing
+
+		  if(*(uint16_t*)(Address + 36) > 0)g_st_Direct.u16EncoderPulse = *(uint16_t*)(Address + 36);
+		  else g_st_Direct.u16EncoderPulse = 1;
+
+		  if(g_bFlashWrite == true)										//Flash Save
 		  {
 			  save_flash();
-			  GVLFlash_Write = false;
+			  g_bFlashWrite = false;
 		  }
-		  //
+		  /* flash memory end */
 
+
+		  // Select Local Mode code begin
+		  if(g_bLocal == false)
+		  {
+			  HAL_CAN_Stop(&hcan1);			// CAN 통신 STOP
+			  HAL_TIM_Base_Stop_IT(&htim14); // CAN 통신 TIMER STOP
+		  }
+		  else if(g_bLocal == true)
+		  {
+			  HAL_CAN_Start(&hcan1);		// CAN 통신 START
+			  HAL_TIM_Base_Start_IT(&htim14); // CAN 통신 TIMER START
+		  }
+		  //HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET); //TEST 나중에 삭제
+		  // Select Local Mode code end
+		  /*SPITx1stInput[0] = 0x40;
+		  SPITx1stInput[1] = 0x00;
+		  SPITx1stInput[2] = 0xFF;
+
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  //HAL_SPI_TransmitR(&hspi2, SPITx1stInput, 3, 500);
+		  HAL_SPI_TransmitReceive(&hspi2, SPITx1stInput, SPIRx1stInput, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+		  //Limit Code begin
+		  SPITx2ndInput[0] = 0x40;
+		  SPITx2ndInput[1] = 0x01;
+		  SPITx2ndInput[2] = 0xFF;
+
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  //HAL_SPI_Transmit(&hspi2, SPITx2ndInput, 3, 500);
+		  HAL_SPI_TransmitReceive(&hspi2, SPITx2ndInput, SPIRx2ndInput, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+		  SPITx1stInput[0] = 0x41;
+		  SPITx1stInput[1] = 0x12;
+		  //SPITx1stInput[2] = 0x00;
+
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_TransmitReceive(&hspi2, SPITx1stInput, SPIRx1stInput, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+		  //Limit Code End
+
+
+		  //EMG Code begin
+		  if(SPIRx1stInput[2] & 0x01)
+			  g_bEMG = true;
+		  else
+			  g_bEMG = false;
+		  //EMG Code end
+
+		  //Local Code begin
+		  //if(SPIRxData[2] & 0x02)
+		//	  g_bLocal = true;
+		 // else
+		//	  g_bLocal = false;
+		  // Local Code end
+
+		  //Limit Code begin
+		  if (SPIRx1stInput[2] & 0x04)
+			  g_st_Setting.bFinalPosLimit = true;
+		  else
+			  g_st_Setting.bFinalPosLimit = false;
+		  if (SPIRx1stInput[2] & 0x08)
+			  g_st_Setting.bPosLimit = true;
+		  else
+			  g_st_Setting.bPosLimit = false;
+		  if (SPIRx1stInput[2] & 0x10)
+			  g_st_Setting.bNegLimit = true;
+		  else
+			  g_st_Setting.bNegLimit = false;
+		  if(SPIRx1stInput[2] & 0x20)
+			  g_st_Setting.bFinalNegLimit = true;
+		  else
+			  g_st_Setting.bFinalNegLimit = false;
+		  //Limit Code end
+
+		  SPITx2ndInput[0] = 0x41;
+		  SPITx2ndInput[1] = 0x13;
+		  SPITx2ndInput[2] = 0x00;
+
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_TransmitReceive(&hspi2, SPITx2ndInput, SPIRx2ndInput, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);*/
+
+		  /*SPITxData[0] = 0x42;
+		  SPITxData[1] = 0x00;
+		  SPITxData[2] = 0x00;
+
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_Transmit_DMA(&hspi2, SPITxData, 3);
+		  //HAL_SPI_Transmit(&hspi2, SPITxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+		  SPITxData[0] = 0x42;
+		  SPITxData[1] = 0x01;
+		  SPITxData[2] = 0x00;
+
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_Transmit_DMA(&hspi2, SPITxData, 3);
+		  //HAL_SPI_Transmit(&hspi2, SPITxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+		  //__SPI2_CLK_DISABLE();
+
+		  SPITxData[0] = 0x42;
+		  SPITxData[1] = 0x12;
+		  //SPITxData[2] = 0xFF;
+		  itest = itest + 1;
+		  if(itest <= 500)
+		  {
+			  SPITxData[2] = 0x00;
+		  }
+		  else if(itest >= 500 && itest <= 1000)
+		  {
+			  SPITxData[2] = 0xFF;
+		  }
+		  else if(itest > 1000)
+		  {
+			  itest = 0;
+		  }
+
+		  //if(g_st_Direct.bUp)
+			//  SPITxData[2] |= 0x10;
+		  //else
+			//  SPITxData[2] &= ~0x10;
+		  //if(g_st_Direct.bDown)
+			//  SPITxData[2] |= 0x20;
+		  //else
+			//  SPITxData[2] &= ~0x20;
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_Transmit_DMA(&hspi2, SPITxData, 3);
+		  //HAL_SPI_Transmit(&hspi2, SPITxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+		  SPITxData[0] = 0x42;
+		  SPITxData[1] = 0x13;
+		  //SPITxData[2] = 0x03;
+
+		  if(itest <= 500)
+		  {
+			  SPITxData[2] = 0x00;
+		  }
+		  else if(itest >= 500 && itest <= 1000)
+		  {
+			  SPITxData[2] = 0x03;
+		  }
+		  else if(itest > 1000)
+		  {
+			  itest = 0;
+		  }
+
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_Transmit(&hspi2, SPITxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+		  SPITxData[0] = 0x43;
+		  SPITxData[1] = 0x12;
+		  SPITxData[2] = 0x00;
+
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_TransmitReceive_DMA(&hspi2, SPITxData, SPIRxData, 3);
+		  //HAL_SPI_TransmitReceive(&hspi2, SPITxData, SPIRxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+
+
+
+		  SPITxData[0] = 0x43;
+		  SPITxData[1] = 0x13;
+		  SPITxData[2] = 0x00;
+
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_TransmitReceive_DMA(&hspi2, SPITxData, SPIRxData, 3);
+		  //HAL_SPI_TransmitReceive(&hspi2, SPITxData, SPIRxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+*/
+		  /*SPITxData[0] = 0x42;
+		  SPITxData[1] = 0x00;
+		  SPITxData[2] = 0x00;
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_Transmit(&hspi2, SPITxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+		  SPITxData[0] = 0x42;
+		  SPITxData[1] = 0x01;
+		  SPITxData[2] = 0x00;
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_Transmit(&hspi2, SPITxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+		  SPITxData[0] = 0x42;
+		  SPITxData[1] = 0x12;
+		  SPITxData[2] = 0xFF;
+		  if(g_st_Direct.bUp)
+			  SPITxData[2] |= 0x10;
+		  else
+			  SPITxData[2] &= ~0x10;
+
+		  if(g_st_Direct.bDown)
+			  SPITxData[2] |= 0x20;
+		  else
+			  SPITxData[2] &= ~0x20;
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_Transmit(&hspi2, SPITxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+		  SPITxData[0] = 0x42;
+		  SPITxData[1] = 0x13;
+		  SPITxData[2] = 0x03;
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_Transmit(&hspi2, SPITxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
+
+		  SPITxData[0] = 0x43;
+		  SPITxData[1] = 0x12;
+		  SPITxData[2] = 0x00;
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
+		  HAL_SPI_TransmitReceive(&hspi2, SPITxData, SPIRxData, 3, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);*/
+
+
+		  /*Encoder TTL Count Begin */
+		  SPIEncoderTxData[0] = 0x60;
+		  SPIEncoderTxData[1] = 0x00;
+		  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+		  //testcount2 = true;
+		  //HAL_SPI_TransmitReceive_IT(&hspi2, SPIEncoderTxData, SPIEncoderRxData, 5);
+		  HAL_SPI_TransmitReceive(&hspi2, SPIEncoderTxData, SPIEncoderRxData, 5, 500);
+		  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+		  /*Encoder TTL Count End */
+
+		  //TTL Encoder Count Data Change uint8_t [1]~[4] -> int32_t
+		  SPIEncoderData = 0;
+		  SPIEncoderData |= ((uint32_t)SPIEncoderRxData[1] << 24);
+		  SPIEncoderData |= ((uint32_t)SPIEncoderRxData[2] << 16);
+		  SPIEncoderData |= ((uint32_t)SPIEncoderRxData[3] << 8);
+		  SPIEncoderData |= ((uint32_t)SPIEncoderRxData[4] << 0);
+
+		  g_st_Direct.s32EncodercountValue = SPIEncoderData;	//TTL Encoder Count value
+
+		  /*if (ResetTest == true) HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+		  else HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+
+		  if (HAL_GPIO_ReadPin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin) == GPIO_PIN_SET )
+		  {
+
+			  GPIOTest = true;
+		  }
+		  else
+		  {
+			  GPIOTest = false;
+		  }*/
+
+		  //Home Setting
+		  if(g_s32DriveSettingType == Direct_encoder) // Direct Encoder count
+		  {
+			  g_st_Direct.fHomerated = (g_st_Setting.fGearDenominator / g_st_Setting.fGearDenominator);
+			  g_st_Direct.fHomePoscount = (g_st_Direct.s32DirectHomeOffset * g_st_Direct.u16EncoderPulse);
+			  g_st_Direct.fHomeFeedconstant = 1/(g_st_Setting.fDiameter);
+			  g_st_Direct.s32HomeCountvalue = g_st_Direct.fHomerated * g_st_Direct.fHomePoscount * g_st_Direct.fHomeFeedconstant;
+		  }
+		  else if(g_s32DriveSettingType == inverter_encoder) // Inverter Encoder count
+		  {
+			  rated = (g_st_Setting.fGearDenominator / g_st_Setting.fGearNumerator);
+			  Poscount = (g_st_inverter.PosSetPosvalue * g_st_inverter.increments);
+			  Feedconstant = 1/(g_st_Setting.fDiameter);
+			  Countvalue = rated * Poscount * Feedconstant;
+
+			  Homerated = (g_st_Setting.fGearDenominator / g_st_Setting.fGearNumerator);
+			  HomePoscount = (g_st_inverter.HomeSetPosvalue * g_st_inverter.increments);
+			  HomeFeedconstant = 1/(g_st_Setting.fDiameter);
+			  HomeCountvalue = Homerated * HomePoscount * HomeFeedconstant;
+		  }
+
+		  if(g_bDirect_HomeTrig == true)
+		  {
+			  SPIEncoderTxData[0] = 0x98;
+			  SPIEncoderTxData[1] = ((uint8_t)(g_st_Direct.s32HomeCountvalue >> 24));
+			  SPIEncoderTxData[2] = ((uint8_t)(g_st_Direct.s32HomeCountvalue >> 16));
+			  SPIEncoderTxData[3] = ((uint8_t)(g_st_Direct.s32HomeCountvalue >> 8));
+			  SPIEncoderTxData[4] = ((uint8_t)(g_st_Direct.s32HomeCountvalue >> 0));
+			  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+			  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 5, 500);
+			  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+
+			  SPIEncoderTxData[0] = 0xE0;
+			  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+			  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 1, 500);
+			  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+
+			  g_bDirect_HomeTrig = false;
+		  }
+
+
+
+		  /*if (bool(g_s32YoYo) == true)
+		  {
+			s32YoYoRotateCount = floor(g_st_Direct.s32EncodercountValue * rated / g_st_Direct.u16EncoderPulse);
+		  }
+
+		  rated = (g_st_Setting.fGearDenominator / g_st_Setting.fGearNumerator);		//Gear rate
+		  Poscount = (g_st_inverter.PosSetPosvalue * g_st_inverter.increments);			//Position Count Calculation
+		  Feedconstant = 1/(g_st_Setting.fDiameter);									//FeedConstat Calculation
+		  Countvalue = rated * Poscount * Feedconstant;									//Encoder Count Calculation
+*/
 		  //RPDO4 Target Pos
-		  rated = (GVLinverter[GVLAddnumber].iGearDenominator / GVLinverter[GVLAddnumber].iGearNumerator);
-		  Poscount = (GVLinverter[GVLAddnumber].PosSetPosvalue * 65536);
-		  Feedconstant = 1/(GVLinverter[GVLAddnumber].idiameter);//*3.14);
-		  Countvalue = rated * Poscount * Feedconstant;
-		  KEB_CAN_Func_32dectohex(Countvalue, TempTargetPos, 4);
+		  KEB_CAN.KEB_CAN_Func_32dectohex(Countvalue, g_u8BufTargetPos, 4);//KEB_CAN_Func_32dectohex(Countvalue, TempTargetPos, 4);
 
 		  //RPDO4 Target Vel
-		  KEB_CAN_Func_32dectohex(GVLinverter[GVLAddnumber].PossetRpmvalue , TempTargetVel, 4);
+		  KEB_CAN.KEB_CAN_Func_32dectohex(g_st_inverter.PosSetRpmvalue, g_u8BufTargetVel, 4);//KEB_CAN_Func_32dectohex(GVLinverter[GVLAddnumber].PossetRpmvalue , TempTargetVel, 4);
 
 		  //PRDO4 Target Home Pos
-		  Homerated = (GVLinverter[GVLAddnumber].iGearDenominator / GVLinverter[GVLAddnumber].iGearNumerator);
-		  HomePoscount = (GVLinverter[GVLAddnumber].HomeSetPosvalue * 65536);
-		  HomeFeedconstant = 1/(GVLinverter[GVLAddnumber].idiameter);//*3.14);
-		  HomeCountvalue = Homerated * HomePoscount * HomeFeedconstant;
-
 		  //convert Homecountvalue 32dec -> hex
-		  KEB_CAN_Func_32dectohex(HomeCountvalue, TempHomeoffset, 4); //
+		  KEB_CAN.KEB_CAN_Func_32dectohex(HomeCountvalue, g_u8BufHomeoffset, 4);//KEB_CAN_Func_32dectohex(HomeCountvalue, TempHomeoffset, 4); //
 
-		  TPDO3Statusword_dec = KEB_CAN_Func_hexto16uint(TPDO3statusword, 2);
+		  TPDO3Statusword_dec = KEB_CAN.KEB_CAN_Func_hexto16uint(TPDO3statusword, 2);//TPDO3Statusword_dec = KEB_CAN_Func_hexto16uint(TPDO3statusword, 2);
 
-		  Statusword(&GVLStatusword, TPDO3Statusword_dec);
-		  KEB_CAN_errorcode(TPDO3Errorcode, GVLinverter[GVLAddnumber].cError);
+		  //Read Status
+		  Statusword(&g_st_Statusword, TPDO3Statusword_dec);
 
-		  TempModeSelect = GVL_iModevalue;
+		  KEB_CAN.KEB_CAN_errorcode(TPDO3Errorcode, g_st_inverter.cError);//KEB_CAN_errorcode(TPDO3Errorcode, GVLinverter[GVLAddnumber].cError);
 
-		  GVLinverter[GVLAddnumber].iMode = TPDO3Modes;
-		  KEB_CAN_Modes(TPDO3Modes, GVLinverter[GVLAddnumber].cMode);
+		  //TPDO Stateword(READ)
+		  KEB_CAN.KEB_CAN_Stateword(TPDO3Statusword_dec, g_st_inverter.cState);
 
-		  if(GVLStatusword.voltage_enabled == true)
-			  strcpy(GVLinverter[GVLAddnumber].cReadystate,"RUN");
+		  //TPDO ModeBuffer(READ)
+		  g_st_inverter.s8Mode = TPDO3Modes;
+		  KEB_CAN.KEB_CAN_ModeState(TPDO3Modes, g_st_inverter.cMode);//KEB_CAN_Modes(TPDO3Modes, GVLinverter[GVLAddnumber].cMode);
+
+		  //RPDO ModeBuffer(WRITE)
+		  KEB_CAN.KEB_CAN_ModeChange(g_bModeWrite, g_s8Mode, g_s8ModeSelect, g_st_inverter.s8Mode);
+
+
+		  if(g_st_Statusword.voltage_enabled == true)
+			  strcpy(g_st_inverter.cReadystate,"RUN");
 		  else
-			  strcpy(GVLinverter[GVLAddnumber].cReadystate,"FAULT");
+			  strcpy(g_st_inverter.cReadystate,"FAULT");
 
 
-		  GVLinverter[GVLAddnumber].actRpmvalue = KEB_CAN_Func_hexto32dec(TPDO4VelocityAct, 4) / 8 ; // co02 : Velocity shift factor = default value 10(3bit) = 1/8 rpm
+		  g_st_inverter.actRpmvalue = KEB_CAN.KEB_CAN_Func_hexto32dec(TPDO4VelocityAct, 4) / 8; // co02 : Velocity shift factor = default value 10(3bit) = 1/8 rpm
 
-		  GVLinverter[GVLAddnumber].PosActPoscount = KEB_CAN_Func_hexto32dec(TPDO4PositionAct, 4);
+		  g_st_inverter.PosActPoscount = KEB_CAN.KEB_CAN_Func_hexto32dec(TPDO4PositionAct, 4);
+		  if(g_st_Direct.s16UpPosSetValue <= g_st_Direct.s32DirectActPos || g_s32MaxPosValue <= g_st_Direct.s32DirectActPos)
+			  g_st_Direct.bUp = false;
+		  else if(g_st_Direct.s16DownPosSetValue >= g_st_Direct.s32DirectActPos || g_s32MinPosValue >= g_st_Direct.s32DirectActPos)
+			  g_st_Direct.bDown = false;
+		  /*if(g_st_Direct.bUp == true && (g_st_Setting.bPosLimit == false || g_st_Setting.bFinalPosLimit == false) )
+			  g_st_Direct.bUp = false;
+		  else if(g_st_Direct.bDown == true && (g_st_Setting.bNegLimit == false || g_st_Setting.bFinalNegLimit == false))
+			  g_st_Direct.bDown = false;*/
 
 		  ////////////////////Bypass STO relay//////////////////////////////////////
-		  if(GVLbypassSTO)
+		  /*if(g_bBypassSTO)
 		  {
 			  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_SET);
 		  }
 		  else
 		  {
 			  HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
-		  }
+		  }*/
 
 		  ///////////////////MC INPUT, OUTPUT Relay/////////////////////////////////
-		  if (GVLMCinput == true && GVLMCoutput == true)
+		  if (g_bMCinput == true && g_bMCoutput == true)
 		  {
-			  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
-			  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
-			  GVLMCinputstate = true;
-			  GVLMCoutputstate = true;
+			  //HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_SET);
+			  //HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
+			  g_bMCinputstate = true;
+			  g_bMCoutputstate = true;
 		  }
 		  else
 		  {
-			  HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
-			  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
-			  GVLMCinputstate = false;
-			  GVLMCoutputstate = false;
+			 //HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+			 //HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
+			  g_bMCinputstate = false;
+			  g_bMCoutputstate = false;
 		  }
 		  //////////////////////////////////////////////////////////////////////////
 
 		  /////////////////////Double Brake relay///////////////////////////////////
-		  if(GVLStateMachine[GVLAddnumber].switched_on && GVLPoweron && GVLComstate == 0)
+		  if(g_st_StateMachine.switched_on && g_bPoweron && GVLComstate == 0)
 		  {
-			  HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+			  ;//HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
 		  }
-		  else if((GVLBrakeStatus[GVLAddnumber].State_closed && (GVLStateMachine[GVLAddnumber].operation_enabled == false)) || GVLComstate == 8)
+		  else if((g_st_BrakeStatus.State_closed && (g_st_StateMachine.operation_enabled == false)) || GVLComstate == 8)
 		  {
-			  HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+			  ;//HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
 		  }
 		  ///////////////////////////////////////////////////////////////////////////
 
 		  ///////////////////Read Local switch input/////////////////////////////////
+		  /*temp test*/
+		  //g_bLocal;
 		  /*if(HAL_GPIO_ReadPin(ARDUINO_D10_GPIO_Port, ARDUINO_D10_Pin))
 		  {
 			  GVLLocal = true;
@@ -2734,7 +2972,6 @@ void StartTask02(void const * argument)
 				  break;
 			  }
 		  }*/
-		  GVLLocal = true;
 		  ///////////////////////////////////////////////////////////////////////////
 
 		  // Analog RPM setting
@@ -2776,12 +3013,24 @@ void StartTask02(void const * argument)
 		  KEB_SupplyBuf(RxBuf, DATA_BUF_SIZE, GVLTCP_inv_supplybuf);
 		  KEB_STOBuf(RxBuf, DATA_BUF_SIZE, GVLTCP_inv_STObuf);*/
 
-		  GVLinverter[GVLAddnumber].iActrotate = GVLinverter[GVLAddnumber].PosActPoscount / GVLinverter[GVLAddnumber].increments;
+		  //Axis Actual Position
+		  if(g_s32DriveSettingType == Direct_encoder)//Direct Encoder Actual Position
+		  {
+			  g_st_Direct.fActrotate = g_st_Direct.s32EncodercountValue / g_st_Direct.u16EncoderPulse;
 
-		  GVLinverter[GVLAddnumber].PosActPosvalue = (GVLinverter[GVLAddnumber].iActrotate * (GVLinverter[GVLAddnumber].iGearNumerator / GVLinverter[GVLAddnumber].iGearDenominator))
-				  * GVLinverter[GVLAddnumber].idiameter; //* 3.14;
+			  g_st_Direct.s32DirectActPos = ((g_st_Direct.fActrotate * (g_st_Setting.fGearNumerator / g_st_Setting.fGearDenominator))
+					  * g_st_Setting.fDiameter);// + g_st_Direct.s32DirectHomeOffset;
+		  }
+		  else if(g_s32DriveSettingType == inverter_encoder)//Inverter Encoder Actual Position
+		  {
+			  g_st_inverter.iActrotate = g_st_inverter.PosActPoscount / g_st_inverter.increments;
 
-		  if(GVLinverter[GVLAddnumber].iMode == Position)
+			  g_st_inverter.PosActPosvalue = (g_st_inverter.iActrotate * (g_st_Setting.fGearNumerator / g_st_Setting.fGearDenominator))
+					  * g_st_Setting.fDiameter; //* 3.14;
+		  }
+
+
+		  /*if(GVLinverter[GVLAddnumber].iMode == Position)
 		  {
 			  GVLinverter[GVLAddnumber].PosTargetPoscount = KEB_TgtPositiondisplay(RxBuf, DATA_BUF_SIZE);
 			  GVLinverter[GVLAddnumber].iTgtrotate = GVLinverter[GVLAddnumber].PosTargetPoscount / GVLinverter[GVLAddnumber].increments;
@@ -2794,7 +3043,7 @@ void StartTask02(void const * argument)
 			  GVLinverter[GVLAddnumber].iTgtrotate = GVLinverter[GVLAddnumber].HomeTargetPoscount / GVLinverter[GVLAddnumber].increments;
 			  GVLinverter[GVLAddnumber].HomeTargetPosvalue = (GVLinverter[GVLAddnumber].iTgtrotate * (GVLinverter[GVLAddnumber].iGearNumerator / GVLinverter[GVLAddnumber].iGearDenominator))
 							  * GVLinverter[GVLAddnumber].idiameter;// * 3.14;
-		  }
+		  }*/
 
 	  }
 	  osDelay(1);
@@ -2819,13 +3068,14 @@ void StartTask03(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-	if(GVLTCP_connection == 0)
-	{
-		tcp_echoclient_connect();
-	}
+	//if(GVLTCP_connection == 0)
+	//{
+	  tcp_echoclient_connect();
+	  tcp_loop_send();
+	//}
 	//sys_check_timeouts();
 	//tcp_serial_inf(RxBuf, DATA_BUF_SIZE);
-	tcp_timeout_check();
+	//tcp_timeout_check();
     osDelay(1);
   }
   /* USER CODE END StartTask03 */
@@ -2887,13 +3137,14 @@ void MPU_Config(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	/* USER CODE BEGIN Callback 0 */
-	if(htim == &htim14){
+	if (htim->Instance == TIM14){//if(htim == &htim14){
 		getuiTime = HAL_GetTick();
 		currentuiTime = getuiTime - beforeuiTime;
 		if(currentuiTime >= 200)	//200ms
 		{
+			HAL_GPIO_TogglePin(ARDUINO_D10_GPIO_Port, ARDUINO_D10_Pin);
 			beforeuiTime = getuiTime;
-			if(Heartheatconsumer == 0x05)
+			if(Heartbeatconsumer == 0x05)	//KEB Parameter CANopen fieldbus state[2] = 5(CAN301_STATE_OPERATIONAL)
 			{
 				CAN1NMTData[0] = 0x01;
 				CAN1NMTData[1] = (uint8_t)CAN_ID;
@@ -2924,7 +3175,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 					}
 				}
 			}
-			if(Heartheatconsumer == 0x7F)
+			if(Heartbeatconsumer == 0x7F)	//KEB Parameter CANopen fieldbus state[2] = 127(CAN301_STATE_PREOPERATIONAL
 			{
 				if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan1) > 0){
 					CAN1NMTData[0] = 0x81;
@@ -2948,34 +3199,34 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 		}
 
-		GVL_iControlword= GVL_switch_on + GVL_enable_voltage
-				+ GVL_no_quick_stop + GVL_enable_operation
-				+ GVL_op_mode_spec_four + GVL_op_mode_spec_five
-				+ GVL_op_mode_spec_six + GVL_fault_reset
-				+ GVL_halt + GVL_op_mode_spec_nine
-				+ GVL_reserved + GVL_manufacturer_spec_11
-				+ GVL_manufacturer_spec_12 + GVL_manufacturer_spec_13
-				+ GVL_manufacturer_spec_14 + GVL_brake_ctrl_15;
+		GVL_iControlword = g_st_controlword.switch_on + g_st_controlword.enable_voltage
+				+ g_st_controlword.no_quick_stop + g_st_controlword.enable_operation
+				+ g_st_controlword.op_mode_spec_four + g_st_controlword.op_mode_spec_five
+				+ g_st_controlword.op_mode_spec_six + g_st_controlword.fault_reset
+				+ g_st_controlword.halt + g_st_controlword.op_mode_spec_nine
+				+ g_st_controlword.reserved + g_st_controlword.manufacturer_spec_11
+				+ g_st_controlword.manufacturer_spec_12 + g_st_controlword.manufacturer_spec_13
+				+ g_st_controlword.manufacturer_spec_14 + g_st_controlword.brake_ctrl_15;
 
-		KEB_CAN_Func_Controlword_dectohex(GVL_iControlword, &GVL_cControlword);
+		KEB_CAN.KEB_CAN_Func_Controlword_dectohex(GVL_iControlword, (uint8_t*)&GVL_cControlword);//KEB_CAN_Func_Controlword_dectohex(GVL_iControlword, (uint8_t*)&GVL_cControlword);
 
 		CAN1RPDO3Data[0] = GVL_cControlword[1];
 		CAN1RPDO3Data[1] = GVL_cControlword[0];
-		CAN1RPDO3Data[2] = TempModeSelect;
-		CAN1RPDO3Data[3] = TempHomeoffset[3];
-		CAN1RPDO3Data[4] = TempHomeoffset[2];
-		CAN1RPDO3Data[5] = TempHomeoffset[1];
-		CAN1RPDO3Data[6] = TempHomeoffset[0];
+		CAN1RPDO3Data[2] = g_s8ModeSelect;
+		CAN1RPDO3Data[3] = g_u8BufHomeoffset[3];
+		CAN1RPDO3Data[4] = g_u8BufHomeoffset[2];
+		CAN1RPDO3Data[5] = g_u8BufHomeoffset[1];
+		CAN1RPDO3Data[6] = g_u8BufHomeoffset[0];
 		CAN1RPDO3Data[7] = 0x00;
 
-		CAN1RPDO4Data[0] = TempTargetPos[3];
-		CAN1RPDO4Data[1] = TempTargetPos[2];
-		CAN1RPDO4Data[2] = TempTargetPos[1];
-		CAN1RPDO4Data[3] = TempTargetPos[0];
-		CAN1RPDO4Data[4] = TempTargetVel[3];
-		CAN1RPDO4Data[5] = TempTargetVel[2];
-		CAN1RPDO4Data[6] = TempTargetVel[1];
-		CAN1RPDO4Data[7] = TempTargetVel[0];
+		CAN1RPDO4Data[0] = g_u8BufTargetPos[3];
+		CAN1RPDO4Data[1] = g_u8BufTargetPos[2];
+		CAN1RPDO4Data[2] = g_u8BufTargetPos[1];
+		CAN1RPDO4Data[3] = g_u8BufTargetPos[0];
+		CAN1RPDO4Data[4] = g_u8BufTargetVel[3];
+		CAN1RPDO4Data[5] = g_u8BufTargetVel[2];
+		CAN1RPDO4Data[6] = g_u8BufTargetVel[1];
+		CAN1RPDO4Data[7] = g_u8BufTargetVel[0];
 
 		PDOgetuiTime = HAL_GetTick();
 		PDOcurrentuitime = PDOgetuiTime - PDObeforeuiTime;
@@ -2992,14 +3243,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				}
 				else
 				{
-					if(GVL_op_mode_spec_four == 16)
-						GVL_op_mode_spec_four = 0;
-					if(GVL_op_mode_spec_five == 32)
-						GVL_op_mode_spec_five = 0;
-					if(GVL_fault_reset == 128)
-						GVL_fault_reset = 0;
-					if(GVL_halt == 256)
-						GVL_halt = 0;
+					if(g_st_controlword.op_mode_spec_four == 16)
+						g_st_controlword.op_mode_spec_four = 0;
+					if(g_st_controlword.op_mode_spec_five == 32)
+						g_st_controlword.op_mode_spec_five = 0;
+					if(g_st_controlword.fault_reset == 128)
+						g_st_controlword.fault_reset = 0;
+					if(g_st_controlword.halt == 256)
+						g_st_controlword.halt = 0;
 				}
 			}
 		}
@@ -3018,6 +3269,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			}
 		}
 	}
+	//INPUT, OUTPUT IC WATCHDOG TIMER
+	if (htim->Instance == TIM13){
+;//		HAL_GPIO_TogglePin(ARDUINO_D10_GPIO_Port, ARDUINO_D10_Pin); //TIMER 시간 설정 필요
+	}
+
 	/* USER CODE END Callback 0 */
 	if (htim->Instance == TIM6) {
 		HAL_IncTick();

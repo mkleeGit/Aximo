@@ -35,15 +35,15 @@ uint8_t* cpWritereturn;
 
 void Addresscalculation()
 {
-	if((GVLAddnumber > 0) && (GVLAddnumber < 10))
+	if((g_s32Addnumber > 0) && (g_s32Addnumber < 10))
 	{
 		cAddress[0] = 0x30;
-		cAddress[1] = (char)(GVLAddnumber + '0');
+		cAddress[1] = (char)(g_s32Addnumber + '0');
 	}
-	else if (GVLAddnumber >= 10 && GVLAddnumber < 100)
+	else if (g_s32Addnumber >= 10 && g_s32Addnumber < 100)
 	{
-		cAddress[0] = (char)((GVLAddnumber / 10) + '0');
-		cAddress[1] = (char)((GVLAddnumber % 10) + '0');
+		cAddress[0] = (char)((g_s32Addnumber / 10) + '0');
+		cAddress[1] = (char)((g_s32Addnumber % 10) + '0');
 	}
 }
 
@@ -94,10 +94,10 @@ uint8_t* SerialWriteTx(uint8_t x)
 		cParaAdd[1] = 0x33;
 		cParaAdd[2] = 0x31;
 		cParaAdd[3] = 0x34;
-		cParaData[0] = GVL_Vel_input_cRpmvalue[0];
-		cParaData[1] = GVL_Vel_input_cRpmvalue[1];
-		cParaData[2] = GVL_Vel_input_cRpmvalue[2];
-		cParaData[3] = GVL_Vel_input_cRpmvalue[3];
+		cParaData[0] = g_u8bufVel_input_Rpmvalue[0];
+		cParaData[1] = g_u8bufVel_input_Rpmvalue[1];
+		cParaData[2] = g_u8bufVel_input_Rpmvalue[2];
+		cParaData[3] = g_u8bufVel_input_Rpmvalue[3];
 		cParaData[4] = 0;
 		cParaData[5] = 0;
 		cParaData[6] = 0;
@@ -142,10 +142,10 @@ uint8_t* SerialWriteTx(uint8_t x)
 		cParaAdd[1] = 0x45;
 		cParaAdd[2] = 0x31;
 		cParaAdd[3] = 0x45;
-		cParaData[0] = GVL_Pos_input_cRpmvalue[0];
-		cParaData[1] = GVL_Pos_input_cRpmvalue[1];
-		cParaData[2] = GVL_Pos_input_cRpmvalue[2];
-		cParaData[3] = GVL_Pos_input_cRpmvalue[3];
+		cParaData[0] = g_u8bufPos_input_Rpmvalue[0];
+		cParaData[1] = g_u8bufPos_input_Rpmvalue[1];
+		cParaData[2] = g_u8bufPos_input_Rpmvalue[2];
+		cParaData[3] = g_u8bufPos_input_Rpmvalue[3];
 		cParaData[4] = 0x30;
 		cParaData[5] = 0x30;
 		cParaData[6] = 0x30;
@@ -158,14 +158,14 @@ uint8_t* SerialWriteTx(uint8_t x)
 		cParaAdd[1] = 0x35;
 		cParaAdd[2] = 0x31;
 		cParaAdd[3] = 0x33;
-		cParaData[0] = GVL_Pos_input_cPosvalue[0];
-		cParaData[1] = GVL_Pos_input_cPosvalue[1];
-		cParaData[2] = GVL_Pos_input_cPosvalue[2];
-		cParaData[3] = GVL_Pos_input_cPosvalue[3];
-		cParaData[4] = GVL_Pos_input_cPosvalue[4];
-		cParaData[5] = GVL_Pos_input_cPosvalue[5];
-		cParaData[6] = GVL_Pos_input_cPosvalue[6];
-		cParaData[7] = GVL_Pos_input_cPosvalue[7];
+		cParaData[0] = g_u8bufPos_input_Posvalue[0];
+		cParaData[1] = g_u8bufPos_input_Posvalue[1];
+		cParaData[2] = g_u8bufPos_input_Posvalue[2];
+		cParaData[3] = g_u8bufPos_input_Posvalue[3];
+		cParaData[4] = g_u8bufPos_input_Posvalue[4];
+		cParaData[5] = g_u8bufPos_input_Posvalue[5];
+		cParaData[6] = g_u8bufPos_input_Posvalue[6];
+		cParaData[7] = g_u8bufPos_input_Posvalue[7];
 		Writeselectnum = 2;
 	}
 	else if(writetype == Home_Pos) // Home Mode. Set position
@@ -174,14 +174,14 @@ uint8_t* SerialWriteTx(uint8_t x)
 		cParaAdd[1] = 0x31;
 		cParaAdd[2] = 0x30;
 		cParaAdd[3] = 0x30;
-		cParaData[0] = GVL_Home_input_cPosvalue[0];
-		cParaData[1] = GVL_Home_input_cPosvalue[1];
-		cParaData[2] = GVL_Home_input_cPosvalue[2];
-		cParaData[3] = GVL_Home_input_cPosvalue[3];
-		cParaData[4] = GVL_Home_input_cPosvalue[4];
-		cParaData[5] = GVL_Home_input_cPosvalue[5];
-		cParaData[6] = GVL_Home_input_cPosvalue[6];
-		cParaData[7] = GVL_Home_input_cPosvalue[7];
+		cParaData[0] = g_u8bufHome_input_Posvalue[0];
+		cParaData[1] = g_u8bufHome_input_Posvalue[1];
+		cParaData[2] = g_u8bufHome_input_Posvalue[2];
+		cParaData[3] = g_u8bufHome_input_Posvalue[3];
+		cParaData[4] = g_u8bufHome_input_Posvalue[4];
+		cParaData[5] = g_u8bufHome_input_Posvalue[5];
+		cParaData[6] = g_u8bufHome_input_Posvalue[6];
+		cParaData[7] = g_u8bufHome_input_Posvalue[7];
 		Writeselectnum = 2;
 	}
 	cpWritereturn = KEB_WriteTransmitData(cAddress, cParaAdd, cParaData, Writeselectnum);

@@ -185,8 +185,6 @@ void Error_Handler(void);
 #define DCMI_PWR_EN_GPIO_Port GPIOH
 #define DCMI_D4_Pin GPIO_PIN_14
 #define DCMI_D4_GPIO_Port GPIOH
-#define ARDUINO_PWM_CS_D5_Pin GPIO_PIN_0
-#define ARDUINO_PWM_CS_D5_GPIO_Port GPIOI
 #define VCP_TX_Pin GPIO_PIN_9
 #define VCP_TX_GPIO_Port GPIOA
 #define RCC_OSC32_OUT_Pin GPIO_PIN_15
@@ -394,7 +392,7 @@ void Error_Handler(void);
 #define DEST_IP_ADDR0 (uint8_t)192
 #define DEST_IP_ADDR1 (uint8_t)168
 #define DEST_IP_ADDR2 (uint8_t)0
-#define DEST_IP_ADDR3 (uint8_t)56
+#define DEST_IP_ADDR3 (uint8_t)42
 //Server Port
 #define DEST_PORT (uint32_t)7889
 
@@ -404,6 +402,4 @@ void Error_Handler(void);
 }
 #endif
 
-
-void Datacopy(uint8_t* cpData);
 #endif /* __MAIN_H */

@@ -5,16 +5,16 @@
  *      Author: Lee
  */
 
-#ifndef INC_KEB_PROTOCAL_H_
-#define INC_KEB_PROTOCAL_H_
+#ifndef INC_KEB_PROTOCAL_HPP_
+#define INC_KEB_PROTOCAL_HPP_
 
+#include <main.h>
 #include <stdbool.h>
-#include "main.h"
 
 /* USER CODE BEGIN PFP */
 uint8_t KEB_BccXOR(uint8_t* ParaAdd, uint8_t* ParaData, uint8_t BccStep, uint8_t IID, uint8_t Service);
 uint8_t* KEB_WriteParameterData(uint16_t usiData);
-uint8_t* KEB_ReadTransmitData(uint8_t*cReadAddress, uint8_t* cReadParaAddress);
+uint8_t* KEB_ReadTrasmitdata(uint8_t* cReadAddress, uint8_t* cReadParaAddress, uint8_t ReadTransStep);
 uint8_t* KEB_WriteTransmitData(uint8_t* cWriteAddress, uint8_t* cWriteParaAddress, uint8_t* cWriteParadata, uint8_t WriteTransStep);
 void KEB_StateBuf(uint8_t* uiBuffer,uint16_t uiBufsize, uint8_t* StateString);
 void KEB_ErrorBuf(uint8_t* uiBuffer,uint16_t uiBufsize, uint8_t* StateString);
@@ -64,4 +64,4 @@ int KEB_SupplystateNum(uint8_t* uiBuffer, uint16_t uiBufsize);
 
 /* USER CODE END PFP */
 
-#endif /* INC_KEB_PROTOCAL_H_ */
+#endif /* INC_KEB_PROTOCAL_HPP_ */

@@ -61,7 +61,11 @@ extern DMA_HandleTypeDef hdma_adc3;
 extern CAN_HandleTypeDef hcan1;
 extern DMA2D_HandleTypeDef hdma2d;
 extern LTDC_HandleTypeDef hltdc;
+extern DMA_HandleTypeDef hdma_spi2_tx;
+extern DMA_HandleTypeDef hdma_spi2_rx;
+extern SPI_HandleTypeDef hspi2;
 extern TIM_HandleTypeDef htim8;
+extern TIM_HandleTypeDef htim13;
 extern TIM_HandleTypeDef htim14;
 extern DMA_HandleTypeDef hdma_usart6_rx;
 extern UART_HandleTypeDef huart6;
@@ -174,6 +178,34 @@ void DebugMon_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles DMA1 stream3 global interrupt.
+  */
+void DMA1_Stream3_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Stream3_IRQn 0 */
+
+  /* USER CODE END DMA1_Stream3_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_spi2_rx);
+  /* USER CODE BEGIN DMA1_Stream3_IRQn 1 */
+
+  /* USER CODE END DMA1_Stream3_IRQn 1 */
+}
+
+/**
+  * @brief This function handles DMA1 stream4 global interrupt.
+  */
+void DMA1_Stream4_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Stream4_IRQn 0 */
+
+  /* USER CODE END DMA1_Stream4_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_spi2_tx);
+  /* USER CODE BEGIN DMA1_Stream4_IRQn 1 */
+
+  /* USER CODE END DMA1_Stream4_IRQn 1 */
+}
+
+/**
   * @brief This function handles CAN1 TX interrupts.
   */
 void CAN1_TX_IRQHandler(void)
@@ -227,6 +259,35 @@ void CAN1_SCE_IRQHandler(void)
   /* USER CODE BEGIN CAN1_SCE_IRQn 1 */
 
   /* USER CODE END CAN1_SCE_IRQn 1 */
+}
+
+/**
+  * @brief This function handles SPI2 global interrupt.
+  */
+void SPI2_IRQHandler(void)
+{
+  /* USER CODE BEGIN SPI2_IRQn 0 */
+
+  /* USER CODE END SPI2_IRQn 0 */
+  HAL_SPI_IRQHandler(&hspi2);
+  /* USER CODE BEGIN SPI2_IRQn 1 */
+
+  /* USER CODE END SPI2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM8 update interrupt and TIM13 global interrupt.
+  */
+void TIM8_UP_TIM13_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM8_UP_TIM13_IRQn 0 */
+
+  /* USER CODE END TIM8_UP_TIM13_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim8);
+  HAL_TIM_IRQHandler(&htim13);
+  /* USER CODE BEGIN TIM8_UP_TIM13_IRQn 1 */
+
+  /* USER CODE END TIM8_UP_TIM13_IRQn 1 */
 }
 
 /**
@@ -335,7 +396,7 @@ void USART6_IRQHandler(void)
 {
   /* USER CODE BEGIN USART6_IRQn 0 */
 
-//?��?��?���??�?? ?��?�� 보류
+//?��?��?���???�??? ?��?�� 보류
   /*if(__HAL_UART_GET_FLAG(&huart6,UART_FLAG_RXNE) != RESET)
   {
 	  __HAL_UART_CLEAR_FLAG(&huart6,UART_FLAG_RXNE);

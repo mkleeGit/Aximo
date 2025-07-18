@@ -20,12 +20,21 @@
 #ifndef __TCP_ECHOCLIENT_H__
 #define __TCP_ECHOCLIENT_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void tcp_echoclient_connect(void);
-void Data_copy(uint8_t* Copydata, uint8_t Datalength);
+void tcp_loop_send();
+//void tcp_timeout_check(void);
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* __TCP_ECHOCLIENT_H__ */
 

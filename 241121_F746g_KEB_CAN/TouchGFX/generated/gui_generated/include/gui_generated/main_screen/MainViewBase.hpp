@@ -8,16 +8,19 @@
 #include <mvp/View.hpp>
 #include <gui/main_screen/MainPresenter.hpp>
 #include <touchgfx/widgets/Box.hpp>
+#include <touchgfx/widgets/Image.hpp>
 #include <touchgfx/containers/Container.hpp>
 #include <touchgfx/widgets/BoxWithBorder.hpp>
 #include <touchgfx/containers/buttons/Buttons.hpp>
 #include <touchgfx/widgets/TextArea.hpp>
 #include <touchgfx/widgets/TextAreaWithWildcard.hpp>
-#include <touchgfx/widgets/Image.hpp>
 #include <touchgfx/containers/ModalWindow.hpp>
 #include <touchgfx/widgets/canvas/Line.hpp>
 #include <touchgfx/widgets/canvas/PainterRGB565.hpp>
 #include <touchgfx/widgets/ButtonWithIcon.hpp>
+#include <touchgfx/containers/ScrollableContainer.hpp>
+#include <touchgfx/widgets/RadioButton.hpp>
+#include <touchgfx/widgets/RadioButtonGroup.hpp>
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
 #include <touchgfx/widgets/ScalableImage.hpp>
 
@@ -155,7 +158,7 @@ public:
     {
         // Override and implement this function in Main
     }
-    virtual void SetttingShowButton()
+    virtual void SettingShowButton()
     {
         // Override and implement this function in Main
     }
@@ -191,6 +194,62 @@ public:
     {
         // Override and implement this function in Main
     }
+    virtual void DirectMoveUpButton()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void DirectMoveDownButton()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void DirectMoveStopButton()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void DirectPosUpSetPadShowButton()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void SetType_D_ENC_Button()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void SetType_INV_ENC_Button()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void DirectPosDownSetPadShowButton()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void DirectHomeSetPadShow()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void SetType_D_Button()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void SettingWireSetPadShow()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void YoYoSelected()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void YoYoDeselected()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void SettingEncPulseSetPadShow()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void DirectHomeSetbutton()
+    {
+        // Override and implement this function in Main
+    }
 
 protected:
     FrontendApplication& application() {
@@ -203,15 +262,56 @@ protected:
     touchgfx::Box __background;
     touchgfx::Box MAIN_BACKGROUND;
     touchgfx::Box TITLE_BACKGROUND;
-    touchgfx::Container PowerON;
-    touchgfx::BoxWithBorder PowerONBox;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  PowerONButton;
-    touchgfx::TextArea textPowerON;
-    touchgfx::Container PowerOFF;
-    touchgfx::BoxWithBorder PowerOFFBox;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  PowerOFFButton;
-    touchgfx::TextArea textPowerOFF;
-    touchgfx::TextArea textPower;
+    touchgfx::Image KEB_Image;
+    touchgfx::Container Direct;
+    touchgfx::Container StopButton;
+    touchgfx::BoxWithBorder DirectStopBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  DirectStopButton;
+    touchgfx::TextArea textDirectStop;
+    touchgfx::Container UpButton;
+    touchgfx::BoxWithBorder DirectUpBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  DirectUpButton;
+    touchgfx::TextArea textDirectUp;
+    touchgfx::Container DownButton;
+    touchgfx::BoxWithBorder DirectDownBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  DirectDownButton;
+    touchgfx::TextArea textDriectDown;
+    touchgfx::Container Limit;
+    touchgfx::BoxWithBorder D_FDN_LimitBox;
+    touchgfx::BoxWithBorder D_DN_LimitBox;
+    touchgfx::BoxWithBorder D_UP_LimitBox;
+    touchgfx::BoxWithBorder D_FUP_LimitBox;
+    touchgfx::TextArea textD_FDNLimit;
+    touchgfx::TextArea textD_DNLimit;
+    touchgfx::TextArea textD_UPLimit;
+    touchgfx::TextArea textD_FUPLimit;
+    touchgfx::Container Direct_PosSetting;
+    touchgfx::TextArea textD_PosUpSet;
+    touchgfx::TextAreaWithOneWildcard textD_PosUpSetValue;
+    touchgfx::TextArea textD_PosAct;
+    touchgfx::TextAreaWithOneWildcard textD_PosActValue;
+    touchgfx::TextArea textD_PosDownSet;
+    touchgfx::TextAreaWithOneWildcard textD_PosDownSetValue;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  D_PosUpSetPadShowButton;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  D_PosDownSetPadShowButton;
+    touchgfx::TextArea textD_HomeSet;
+    touchgfx::TextAreaWithOneWildcard textD_HomeSetValue;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  D_HomeSetPadShowButton;
+    touchgfx::TextArea textSubD_TargetSetting;
+    touchgfx::Container HomingButton;
+    touchgfx::BoxWithBorder D_HomeSetBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  D_HomeSetButton;
+    touchgfx::TextArea textD_HomeSetButton;
+    touchgfx::TextArea textSubD_HomeSetting;
+    touchgfx::Container INVERTER;
+    touchgfx::Container Homescreen;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  HomeScreenButton;
+    touchgfx::BoxWithBorder HomeScreenBox;
+    touchgfx::TextArea textHomeScreen;
+    touchgfx::Container Positionscreen;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  PosScreenButton;
+    touchgfx::BoxWithBorder PosScreenBox;
+    touchgfx::TextArea textPosScreen;
     touchgfx::Container STATE;
     touchgfx::TextArea textEror;
     touchgfx::TextArea textState;
@@ -252,11 +352,20 @@ protected:
     touchgfx::Container Reset;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  ResetButton;
     touchgfx::TextArea textReset;
+    touchgfx::Container INVPOWER;
     touchgfx::Container Enable;
     touchgfx::BoxWithBorder EnableBox;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  EableButton;
     touchgfx::TextArea textEnable;
-    touchgfx::Image KEB_Image;
+    touchgfx::Container PowerON;
+    touchgfx::BoxWithBorder PowerONBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  PowerONButton;
+    touchgfx::TextArea textPowerON;
+    touchgfx::Container PowerOFF;
+    touchgfx::BoxWithBorder PowerOFFBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  PowerOFFButton;
+    touchgfx::TextArea textPowerOFF;
+    touchgfx::TextArea textPower;
     touchgfx::Container MC_ON;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  MC_ONbutton;
     touchgfx::BoxWithBorder MC_OnBox;
@@ -266,19 +375,10 @@ protected:
     touchgfx::TextArea textMODE;
     touchgfx::TextArea textColons;
     touchgfx::TextAreaWithOneWildcard textMODEState;
-    touchgfx::Container Positionscreen;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  PosScreenButton;
-    touchgfx::BoxWithBorder PosScreenBox;
-    touchgfx::TextArea textPosScreen;
-    touchgfx::Container Homescreen;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  HomeScreenButton;
-    touchgfx::BoxWithBorder HomeScreenBox;
-    touchgfx::TextArea textHomeScreen;
     touchgfx::Container Settingscreen;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  Settingshowbutton;
     touchgfx::TextArea textsettingtitle;
     touchgfx::ModalWindow Setting;
-    touchgfx::TextArea textIP;
     touchgfx::TextArea textsettingMinpos;
     touchgfx::TextArea textSettingMaxpos;
     touchgfx::TextArea textGearRatio;
@@ -289,10 +389,6 @@ protected:
     touchgfx::TextAreaWithOneWildcard textGearDeno_value;
     touchgfx::Line line1;
     touchgfx::PainterRGB565 line1Painter;
-    touchgfx::TextAreaWithOneWildcard textIP0;
-    touchgfx::TextAreaWithOneWildcard textIP1;
-    touchgfx::TextAreaWithOneWildcard textIP2;
-    touchgfx::TextAreaWithOneWildcard textIP3;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  settingMaxposbutton;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  settingMinposbutton;
     touchgfx::TextAreaWithOneWildcard textsettingMaxposvalue;
@@ -300,19 +396,50 @@ protected:
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  SettingRpmButton;
     touchgfx::TextAreaWithOneWildcard textsettingMaxrpmvalue;
     touchgfx::ButtonWithIcon settingclosebutton;
+    touchgfx::Container SettingSave;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  SettingSavebutton;
     touchgfx::TextArea textSettingSave;
-    touchgfx::TextArea textIP0dot;
-    touchgfx::TextArea textIP1dot;
     touchgfx::TextArea textIP2dot;
+    touchgfx::TextArea textIP1dot;
+    touchgfx::TextArea textIP0dot;
+    touchgfx::TextAreaWithOneWildcard textIP3;
+    touchgfx::TextAreaWithOneWildcard textIP2;
+    touchgfx::TextAreaWithOneWildcard textIP1;
+    touchgfx::TextAreaWithOneWildcard textIP0;
+    touchgfx::TextArea textIP;
     touchgfx::TextArea textmm1;
     touchgfx::TextArea textmm2;
-    touchgfx::TextArea textDiameter;
+    touchgfx::TextArea textmm3;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  SettingDiameterButton;
     touchgfx::TextAreaWithOneWildcard textDiametervalue;
-    touchgfx::TextArea textmm3;
+    touchgfx::TextArea textDiameter;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  ServconnetButton;
     touchgfx::TextArea textservconnect;
+    touchgfx::ScrollableContainer DriveTypeScroll;
+    touchgfx::Container TypeD_ENC;
+    touchgfx::BoxWithBorder TypeD_ENCBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  TypeD_ENCButton;
+    touchgfx::TextArea textTypeD_ENC;
+    touchgfx::Container TypeINV_ENC;
+    touchgfx::BoxWithBorder TypeINV_ENCBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  TypeINV_ENCButton;
+    touchgfx::TextArea textTypeINV_ENC;
+    touchgfx::Container TypeD;
+    touchgfx::BoxWithBorder TypeD_Box;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  TypeD_Button;
+    touchgfx::TextArea textTypeE;
+    touchgfx::RadioButtonGroup<1> radioButtonGroup1;
+    touchgfx::RadioButton YoYoButton;
+    touchgfx::TextArea textYoYo;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  SettingWireButton;
+    touchgfx::TextAreaWithOneWildcard textWirevalue;
+    touchgfx::TextArea textWire;
+    touchgfx::TextArea textmm4;
+    touchgfx::TextArea textEncPulse;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  SettingEncPulseButton;
+    touchgfx::TextAreaWithOneWildcard textEncPulsevalue;
+    touchgfx::TextArea textmm5;
+    touchgfx::TextArea textType;
     touchgfx::ModalWindow Popup_PowerState;
     touchgfx::ButtonWithLabel hidebutton;
     touchgfx::TextArea textArea11;
@@ -343,6 +470,14 @@ protected:
     /*
      * Wildcard Buffers
      */
+    static const uint16_t TEXTD_POSUPSETVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textD_PosUpSetValueBuffer[TEXTD_POSUPSETVALUE_SIZE];
+    static const uint16_t TEXTD_POSACTVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textD_PosActValueBuffer[TEXTD_POSACTVALUE_SIZE];
+    static const uint16_t TEXTD_POSDOWNSETVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textD_PosDownSetValueBuffer[TEXTD_POSDOWNSETVALUE_SIZE];
+    static const uint16_t TEXTD_HOMESETVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textD_HomeSetValueBuffer[TEXTD_HOMESETVALUE_SIZE];
     static const uint16_t TEXTERRORVALUE_SIZE = 30;
     touchgfx::Unicode::UnicodeChar textErrorValueBuffer[TEXTERRORVALUE_SIZE];
     static const uint16_t TEXTSTATEVALUE_SIZE = 30;
@@ -369,22 +504,26 @@ protected:
     touchgfx::Unicode::UnicodeChar textGearNum_valueBuffer[TEXTGEARNUM_VALUE_SIZE];
     static const uint16_t TEXTGEARDENO_VALUE_SIZE = 10;
     touchgfx::Unicode::UnicodeChar textGearDeno_valueBuffer[TEXTGEARDENO_VALUE_SIZE];
-    static const uint16_t TEXTIP0_SIZE = 10;
-    touchgfx::Unicode::UnicodeChar textIP0Buffer[TEXTIP0_SIZE];
-    static const uint16_t TEXTIP1_SIZE = 10;
-    touchgfx::Unicode::UnicodeChar textIP1Buffer[TEXTIP1_SIZE];
-    static const uint16_t TEXTIP2_SIZE = 10;
-    touchgfx::Unicode::UnicodeChar textIP2Buffer[TEXTIP2_SIZE];
-    static const uint16_t TEXTIP3_SIZE = 10;
-    touchgfx::Unicode::UnicodeChar textIP3Buffer[TEXTIP3_SIZE];
     static const uint16_t TEXTSETTINGMAXPOSVALUE_SIZE = 15;
     touchgfx::Unicode::UnicodeChar textsettingMaxposvalueBuffer[TEXTSETTINGMAXPOSVALUE_SIZE];
     static const uint16_t TEXTSETTINGMINPOSVALUE_SIZE = 15;
     touchgfx::Unicode::UnicodeChar textsettingMinposvalueBuffer[TEXTSETTINGMINPOSVALUE_SIZE];
     static const uint16_t TEXTSETTINGMAXRPMVALUE_SIZE = 15;
     touchgfx::Unicode::UnicodeChar textsettingMaxrpmvalueBuffer[TEXTSETTINGMAXRPMVALUE_SIZE];
+    static const uint16_t TEXTIP3_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textIP3Buffer[TEXTIP3_SIZE];
+    static const uint16_t TEXTIP2_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textIP2Buffer[TEXTIP2_SIZE];
+    static const uint16_t TEXTIP1_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textIP1Buffer[TEXTIP1_SIZE];
+    static const uint16_t TEXTIP0_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textIP0Buffer[TEXTIP0_SIZE];
     static const uint16_t TEXTDIAMETERVALUE_SIZE = 10;
     touchgfx::Unicode::UnicodeChar textDiametervalueBuffer[TEXTDIAMETERVALUE_SIZE];
+    static const uint16_t TEXTWIREVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textWirevalueBuffer[TEXTWIREVALUE_SIZE];
+    static const uint16_t TEXTENCPULSEVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textEncPulsevalueBuffer[TEXTENCPULSEVALUE_SIZE];
     static const uint16_t KEYPADINPUTVALUE_SIZE = 10;
     touchgfx::Unicode::UnicodeChar KeypadinputvalueBuffer[KEYPADINPUTVALUE_SIZE];
 
@@ -401,12 +540,16 @@ private:
      */
     touchgfx::Callback<MainViewBase, const touchgfx::AbstractButtonContainer&> flexButtonCallback;
     touchgfx::Callback<MainViewBase, const touchgfx::AbstractButton&> buttonCallback;
+    touchgfx::Callback<MainViewBase, const touchgfx::AbstractButton&> radioButtonSelectedCallback;
+    touchgfx::Callback<MainViewBase, const touchgfx::AbstractButton&> radioButtonDeselectedCallback;
 
     /*
      * Callback Handler Declarations
      */
     void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
     void buttonCallbackHandler(const touchgfx::AbstractButton& src);
+    void radioButtonSelectedCallbackHandler(const touchgfx::AbstractButton& src);
+    void radioButtonDeselectedCallbackHandler(const touchgfx::AbstractButton& src);
 
 };
 

@@ -5,10 +5,10 @@
  *      Author: LEEMINKOO
  */
 
-#ifndef INC_KEB_CAN_FUNC_H_
-#define INC_KEB_CAN_FUNC_H_
+#ifndef INC_KEB_CAN_FUNC_HPP_
+#define INC_KEB_CAN_FUNC_HPP_
 
-#include "main.h"
+#include <main.h>
 void KEB_CAN_Func_32dectohex(int idecvalue, uint8_t* uiarryhex, uint8_t num);
 
 void KEB_CAN_Func_Controlword_dectohex(int idecvalue, uint8_t* uiarryhex);
@@ -23,4 +23,4 @@ void KEB_CAN_Modes(uint16_t dec, char *StateString);
 
 void KEB_CAN_errorcode(uint8_t dec, char *StateString);
 
-#endif /* INC_KEB_CAN_FUNC_H_ */
+#endif /* INC_KEB_CAN_FUNC_HPP_ */
