@@ -123,9 +123,10 @@ void tcp_echoclient_connect(void)
 	  else
 	  {
 			ConnectTimeOut = ConnectTimeOut + 1;
-			if(ConnectTimeOut >= 2000)
+			if(ConnectTimeOut >= 1000)
 			{
 				tcp_abort(echoclient_pcb);
+				Tcpvariableinit();
 				//mem_free(echoclient_pcb);
 				echoclient_pcb = NULL;
 				ConnectTimeOut = 0;
@@ -140,9 +141,10 @@ void tcp_echoclient_connect(void)
 		    if(!ip_addr_cmp(&echoclient_pcb->local_ip, &local_ip))
 		    {
 				ConnectTimeOut = ConnectTimeOut + 1;
-				if(ConnectTimeOut >= 2000)
+				if(ConnectTimeOut >= 1000)
 				{
 					tcp_abort(echoclient_pcb);
+					Tcpvariableinit();
 					//mem_free(echoclient_pcb);
 					echoclient_pcb = NULL;
 					ConnectTimeOut = 0;
@@ -164,12 +166,13 @@ void tcp_echoclient_connect(void)
   case 2:
 	  if (echoclient_pcb != NULL)
 	  {
-		    if(!ip_addr_cmp(&echoclient_pcb->local_ip, &local_ip))
+		    if(!ip_addr_cmp(&echoclient_pcb->local_ip, &local_ip) || echoclient_pcb->state != ESTABLISHED)
 		    {
 				ConnectTimeOut = ConnectTimeOut + 1;
-				if(ConnectTimeOut >= 2000)
+				if(ConnectTimeOut >= 1000)
 				{
 					tcp_abort(echoclient_pcb);
+					Tcpvariableinit();
 					//mem_free(echoclient_pcb);
 					echoclient_pcb = NULL;
 					ConnectTimeOut = 0;
@@ -521,10 +524,6 @@ static err_t tcp_echoclient_poll(void *arg, struct tcp_pcb *tpcb) {
 					}
 				}
 			}
-			/*if (es->tx_pending == 1) {
-				send_tlv_response_to_csharp(tpcb);
-				es->tx_pending = 0;
-			}*/
 		}
 		ret_err = ERR_OK;
 	} else {
@@ -596,9 +595,7 @@ static void tcp_echoclient_connection_close(struct tcp_pcb *tpcb,struct echoclie
 
 void tcp_loop_send()
 {
-	/*struct tcp_pcb *tpcb;
-	struct echoclient *es;
-	static long long prevTimestamp = 0;
+	/*static long long prevTimestamp = 0;
 	static int Timeout = 0;
 	if(echoclient_pcb->state == ESTABLISHED)
 	{
@@ -622,13 +619,9 @@ void tcp_loop_send()
 
 void send_tlv_response_to_csharp(struct tcp_pcb *tpcb)
 {
-	struct echoclient *es;
-    int velocity = g_st_inverter.PosSetRpmvalue;
-    int16_t position = g_st_inverter.PosSetPosvalue;
-    uint32_t count = Enc_Count;
-
     static uint8_t buf[1024]; // 넉넉히
 	int w = 0, r;
+
 	cJSON *JSONpayload = cJSON_CreateObject();
 	cJSON_AddStringToObject(JSONpayload, "TCPStatus", "WRITE");
 	cJSON_AddStringToObject(JSONpayload, "SerialNumber", g_Tcp_SerialNumber);

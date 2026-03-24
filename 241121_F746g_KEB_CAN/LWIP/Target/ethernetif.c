@@ -827,6 +827,7 @@ void ethernet_link_thread(void const * argument)
     if(linkchanged)
     {
       /* Get MAC Config MAC */
+      g_bEthernet_ConnectionStatus = true;
       HAL_ETH_GetMACConfig(&heth, &MACConf);
       MACConf.DuplexMode = duplex;
       MACConf.Speed = speed;
@@ -834,7 +835,6 @@ void ethernet_link_thread(void const * argument)
       HAL_ETH_Start_IT(&heth);
       netif_set_up(netif);
       netif_set_link_up(netif);
-      g_bEthernet_ConnectionStatus = true;
     }
   }
 
