@@ -41,6 +41,11 @@ public :
 	void KEB_CAN_errorcode(uint8_t dec, char *StateString);
 
 	void KEB_CAN_ModeChange(bool& u8ModeWrite, int8_t& u8TouchMode, int8_t& u8RPDOMode, int8_t& s8InvModeState);
+
+
+
+
+	int s16ModeChange_Timeout;
 };
 
 

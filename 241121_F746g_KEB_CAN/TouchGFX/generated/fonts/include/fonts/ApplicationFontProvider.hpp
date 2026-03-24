@@ -36,7 +36,7 @@ struct TypographyFontIndex
     static const touchgfx::FontId VELOCITY_TEXT = 0; // verdana_20_4bpp
     static const touchgfx::FontId TYPOGRAPHY_02 = 0; // verdana_20_4bpp
     static const touchgfx::FontId TYPOGRAPHY_03 = 4; // malgunbd_20_4bpp
-    static const touchgfx::FontId SETTING_TEXT = 5;  // verdana_15_4bpp
+    static const touchgfx::FontId SETTING_TEXT = 5;  // malgunbd_15_4bpp
     static const uint16_t NUMBER_OF_FONTS = 6;
 };
 

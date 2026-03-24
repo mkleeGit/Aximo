@@ -8,7 +8,7 @@
 #include <mvp/View.hpp>
 #include <gui/main_screen/MainPresenter.hpp>
 #include <touchgfx/widgets/Box.hpp>
-#include <touchgfx/widgets/Image.hpp>
+#include <touchgfx/widgets/ScalableImage.hpp>
 #include <touchgfx/containers/Container.hpp>
 #include <touchgfx/widgets/BoxWithBorder.hpp>
 #include <touchgfx/containers/buttons/Buttons.hpp>
@@ -22,7 +22,6 @@
 #include <touchgfx/widgets/RadioButton.hpp>
 #include <touchgfx/widgets/RadioButtonGroup.hpp>
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
-#include <touchgfx/widgets/ScalableImage.hpp>
 
 class MainViewBase : public touchgfx::View<MainPresenter>
 {
@@ -210,11 +209,11 @@ public:
     {
         // Override and implement this function in Main
     }
-    virtual void SetType_D_ENC_Button()
+    virtual void SetType_D_INC_Button()
     {
         // Override and implement this function in Main
     }
-    virtual void SetType_INV_ENC_Button()
+    virtual void SetType_INV_ABS_Button()
     {
         // Override and implement this function in Main
     }
@@ -250,6 +249,38 @@ public:
     {
         // Override and implement this function in Main
     }
+    virtual void IOStateShowButton()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void IOStateHidButton()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void ParkingSelected()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void ParkingDeselected()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void WireOutSelected()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void WireOutDeselected()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void EmgBrakeSelected()
+    {
+        // Override and implement this function in Main
+    }
+    virtual void EmgBrakeDeselected()
+    {
+        // Override and implement this function in Main
+    }
 
 protected:
     FrontendApplication& application() {
@@ -262,7 +293,7 @@ protected:
     touchgfx::Box __background;
     touchgfx::Box MAIN_BACKGROUND;
     touchgfx::Box TITLE_BACKGROUND;
-    touchgfx::Image KEB_Image;
+    touchgfx::ScalableImage AXIMOPICTURE;
     touchgfx::Container Direct;
     touchgfx::Container StopButton;
     touchgfx::BoxWithBorder DirectStopBox;
@@ -350,6 +381,7 @@ protected:
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  PosRpmpadshowButton;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  PosPospadshowButton;
     touchgfx::Container Reset;
+    touchgfx::BoxWithBorder ResetBox;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  ResetButton;
     touchgfx::TextArea textReset;
     touchgfx::Container INVPOWER;
@@ -366,10 +398,6 @@ protected:
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  PowerOFFButton;
     touchgfx::TextArea textPowerOFF;
     touchgfx::TextArea textPower;
-    touchgfx::Container MC_ON;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  MC_ONbutton;
-    touchgfx::BoxWithBorder MC_OnBox;
-    touchgfx::TextArea textMC_ON;
     touchgfx::Container Mode;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  MODEButton;
     touchgfx::TextArea textMODE;
@@ -416,21 +444,30 @@ protected:
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  ServconnetButton;
     touchgfx::TextArea textservconnect;
     touchgfx::ScrollableContainer DriveTypeScroll;
-    touchgfx::Container TypeD_ENC;
-    touchgfx::BoxWithBorder TypeD_ENCBox;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  TypeD_ENCButton;
-    touchgfx::TextArea textTypeD_ENC;
-    touchgfx::Container TypeINV_ENC;
-    touchgfx::BoxWithBorder TypeINV_ENCBox;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  TypeINV_ENCButton;
-    touchgfx::TextArea textTypeINV_ENC;
+    touchgfx::Container TypeD_INC;
+    touchgfx::BoxWithBorder TypeD_INCBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  TypeD_INCButton;
+    touchgfx::TextArea textTypeD_INC;
+    touchgfx::Container TypeINV_ABS;
+    touchgfx::BoxWithBorder TypeINV_ABSBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  TypeINV_ABSButton;
+    touchgfx::TextArea textTypeINV_ABS;
     touchgfx::Container TypeD;
     touchgfx::BoxWithBorder TypeD_Box;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  TypeD_Button;
     touchgfx::TextArea textTypeE;
     touchgfx::RadioButtonGroup<1> radioButtonGroup1;
     touchgfx::RadioButton YoYoButton;
+    touchgfx::RadioButtonGroup<1> radioButtonGroup3;
+    touchgfx::RadioButton WireOutButton;
     touchgfx::TextArea textYoYo;
+    touchgfx::RadioButtonGroup<1> radioButtonGroup2;
+    touchgfx::RadioButton EmgBrakeButton;
+    touchgfx::RadioButtonGroup<1> radioButtonGroup4;
+    touchgfx::RadioButton ParkingButton;
+    touchgfx::TextArea textEmgBrake;
+    touchgfx::TextArea textParking;
+    touchgfx::TextArea textWireOut;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  SettingWireButton;
     touchgfx::TextAreaWithOneWildcard textWirevalue;
     touchgfx::TextArea textWire;
@@ -440,6 +477,65 @@ protected:
     touchgfx::TextAreaWithOneWildcard textEncPulsevalue;
     touchgfx::TextArea textmm5;
     touchgfx::TextArea textType;
+    touchgfx::ButtonWithLabel IOPOPUPShowButton;
+    touchgfx::Container MC_ON;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  MC_ONbutton;
+    touchgfx::BoxWithBorder MC_OnBox;
+    touchgfx::TextArea textMC_ON;
+    touchgfx::ModalWindow IOState;
+    touchgfx::TextArea IO_INPUT_text01;
+    touchgfx::TextArea IO_INPUT_text02;
+    touchgfx::TextArea IO_INPUT_text03;
+    touchgfx::TextArea IO_INPUT_text04;
+    touchgfx::TextArea IO_INPUT_text05;
+    touchgfx::TextArea IO_INPUT_text06;
+    touchgfx::TextArea IO_INPUT_text07;
+    touchgfx::TextArea IO_INPUT_text08;
+    touchgfx::TextArea IO_INPUT_text09;
+    touchgfx::TextArea IO_INPUT_text10;
+    touchgfx::TextArea IO_INPUT_text11;
+    touchgfx::TextArea IO_INPUT_text12;
+    touchgfx::TextArea IO_INPUT_text13;
+    touchgfx::TextArea IO_INPUT_text14;
+    touchgfx::TextArea IO_INPUT_text15;
+    touchgfx::TextArea IO_INPUT_text16;
+    touchgfx::Box IO_INPUT_LAMP_Box1;
+    touchgfx::Box IO_INPUT_LAMP_Box11;
+    touchgfx::Box IO_INPUT_LAMP_Box12;
+    touchgfx::Box IO_INPUT_LAMP_Box13;
+    touchgfx::Box IO_INPUT_LAMP_Box14;
+    touchgfx::Box IO_INPUT_LAMP_Box15;
+    touchgfx::Box IO_INPUT_LAMP_Box16;
+    touchgfx::Box IO_INPUT_LAMP_Box2;
+    touchgfx::Box IO_INPUT_LAMP_Box3;
+    touchgfx::Box IO_INPUT_LAMP_Box4;
+    touchgfx::Box IO_INPUT_LAMP_Box5;
+    touchgfx::Box IO_INPUT_LAMP_Box6;
+    touchgfx::Box IO_INPUT_LAMP_Box7;
+    touchgfx::Box IO_INPUT_LAMP_Box8;
+    touchgfx::Box IO_INPUT_LAMP_Box9;
+    touchgfx::Box IO_INPUT_LAMP_Box10;
+    touchgfx::TextArea IO_OUTPUT_text01;
+    touchgfx::TextArea IO_OUTPUT_text02;
+    touchgfx::TextArea IO_OUTPUT_text03;
+    touchgfx::TextArea IO_OUTPUT_text04;
+    touchgfx::TextArea IO_OUTPUT_text05;
+    touchgfx::TextArea IO_OUTPUT_text06;
+    touchgfx::TextArea IO_OUTPUT_text07;
+    touchgfx::TextArea IO_OUTPUT_text08;
+    touchgfx::TextArea IO_OUTPUT_text09;
+    touchgfx::TextArea IO_OUTPUT_text10;
+    touchgfx::Box IO_OUTPUT_LAMP_Box1;
+    touchgfx::Box IO_OUTPUT_LAMP_Box2;
+    touchgfx::Box IO_OUTPUT_LAMP_Box3;
+    touchgfx::Box IO_OUTPUT_LAMP_Box4;
+    touchgfx::Box IO_OUTPUT_LAMP_Box5;
+    touchgfx::Box IO_OUTPUT_LAMP_Box6;
+    touchgfx::Box IO_OUTPUT_LAMP_Box7;
+    touchgfx::Box IO_OUTPUT_LAMP_Box8;
+    touchgfx::Box IO_OUTPUT_LAMP_Box9;
+    touchgfx::Box IO_OUTPUT_LAMP_Box10;
+    touchgfx::ButtonWithIcon IOPOPUPclosebutton;
     touchgfx::ModalWindow Popup_PowerState;
     touchgfx::ButtonWithLabel hidebutton;
     touchgfx::TextArea textArea11;
@@ -463,9 +559,71 @@ protected:
     touchgfx::ButtonWithLabel Numbutton9;
     touchgfx::BoxWithBorder numbox;
     touchgfx::TextAreaWithOneWildcard Keypadinputvalue;
+    touchgfx::Container STM_EMG;
+    touchgfx::BoxWithBorder boxWithBorder5;
+    touchgfx::TextArea textArea12;
+    touchgfx::ScalableImage scalableImage2;
     touchgfx::ModalWindow RemoteAlarm;
     touchgfx::TextArea textremotealarm;
     touchgfx::ScalableImage AlarmImage;
+    touchgfx::ScrollableContainer TcpSTMDrivescroll;
+    touchgfx::TextArea textTcpRemoteEnable;
+    touchgfx::TextArea textTcpConsoleEMG;
+    touchgfx::TextArea textTcpMcOn;
+    touchgfx::TextArea textTcpSTMDriveType;
+    touchgfx::TextAreaWithOneWildcard textTcpSTMDriveTypeValue;
+    touchgfx::TextArea textTcpSTMPower;
+    touchgfx::TextArea textTcpSTMStart;
+    touchgfx::TextArea textTcpSTMStop;
+    touchgfx::TextArea textTcpSTMReset;
+    touchgfx::TextArea textTcpSTMHomeSet;
+    touchgfx::TextArea textTcpHomeSetPos;
+    touchgfx::TextAreaWithOneWildcard textTcpSTMHomeSetPosValue;
+    touchgfx::TextArea textTcpSTMTargetPos;
+    touchgfx::TextAreaWithOneWildcard textTcpSTMTargetPosValue;
+    touchgfx::TextArea textTcpSTMSpeed;
+    touchgfx::TextAreaWithOneWildcard textTcpSTMSpeedValue;
+    touchgfx::TextArea textTcpSTMDirectUp;
+    touchgfx::TextArea textTcpSTMDirectDown;
+    touchgfx::TextArea textTcpSTMDirectStop;
+    touchgfx::Box TcpSTMRemoteEnablebox;
+    touchgfx::Box TcpSTMConsoleEmgbox;
+    touchgfx::Box TcpSTMMcOnbox;
+    touchgfx::Box TcpSTMPowerbox;
+    touchgfx::Box TcpSTMStartbox;
+    touchgfx::Box TcpSTMStopbox;
+    touchgfx::Box TcpSTMResetbox;
+    touchgfx::Box TcpSTMHomeSetbox;
+    touchgfx::Box TcpSTMDirectUpbox;
+    touchgfx::Box TcpSTMDirectDownbox;
+    touchgfx::Box TcpSTMDirectStopbox;
+    touchgfx::ScrollableContainer TcpSTMDisplayDirvescroll;
+    touchgfx::TextArea textTcpLocalCtrlOn;
+    touchgfx::TextArea textTcpPowerStatus;
+    touchgfx::TextArea textTcpIsRunning;
+    touchgfx::TextArea textTcpIsArrived;
+    touchgfx::TextArea textTcpActPos;
+    touchgfx::TextAreaWithOneWildcard textTcpActPosValue;
+    touchgfx::TextArea textTcpIsError;
+    touchgfx::TextArea textTcpErrorCode;
+    touchgfx::TextAreaWithOneWildcard textTcpErrorCodeValue;
+    touchgfx::TextArea textTcpLimitFF;
+    touchgfx::TextArea textTcpLimitF;
+    touchgfx::TextArea textTcpLimitR;
+    touchgfx::TextArea textTcpLimitFR;
+    touchgfx::TextArea textTcpWireOut;
+    touchgfx::TextArea textTcpBrake;
+    touchgfx::Box TcpIsLocalCtrlOnbox;
+    touchgfx::Box TcpIsPowerStatusbox;
+    touchgfx::Box TcpIsRunningbox;
+    touchgfx::Box TcpIsArrivedbox;
+    touchgfx::Box TcpIsErrorbox;
+    touchgfx::Box TcpLimitFFbox;
+    touchgfx::Box TcpLimitFbox;
+    touchgfx::Box TcpLimitRbox;
+    touchgfx::Box TcpLimitFRbox;
+    touchgfx::Box TcpWireOutbox;
+    touchgfx::Box TcpEmgBrakebox;
 
     /*
      * Wildcard Buffers
@@ -526,6 +684,18 @@ protected:
     touchgfx::Unicode::UnicodeChar textEncPulsevalueBuffer[TEXTENCPULSEVALUE_SIZE];
     static const uint16_t KEYPADINPUTVALUE_SIZE = 10;
     touchgfx::Unicode::UnicodeChar KeypadinputvalueBuffer[KEYPADINPUTVALUE_SIZE];
+    static const uint16_t TEXTTCPSTMDRIVETYPEVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textTcpSTMDriveTypeValueBuffer[TEXTTCPSTMDRIVETYPEVALUE_SIZE];
+    static const uint16_t TEXTTCPSTMHOMESETPOSVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textTcpSTMHomeSetPosValueBuffer[TEXTTCPSTMHOMESETPOSVALUE_SIZE];
+    static const uint16_t TEXTTCPSTMTARGETPOSVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textTcpSTMTargetPosValueBuffer[TEXTTCPSTMTARGETPOSVALUE_SIZE];
+    static const uint16_t TEXTTCPSTMSPEEDVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textTcpSTMSpeedValueBuffer[TEXTTCPSTMSPEEDVALUE_SIZE];
+    static const uint16_t TEXTTCPACTPOSVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textTcpActPosValueBuffer[TEXTTCPACTPOSVALUE_SIZE];
+    static const uint16_t TEXTTCPERRORCODEVALUE_SIZE = 10;
+    touchgfx::Unicode::UnicodeChar textTcpErrorCodeValueBuffer[TEXTTCPERRORCODEVALUE_SIZE];
 
 private:
 

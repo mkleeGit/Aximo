@@ -1,6 +1,7 @@
 #include <gui/main_screen/MainView.hpp>
 #include <touchgfx/Color.hpp>
 #include <math.h>
+
 MainView::MainView() {
 
 }
@@ -13,11 +14,10 @@ void MainView::setupScreen() {
 	} else {
 		;
 	}
-	//TestAdd;
 	//GVL_iModevalue = Position;
 	//GVLAddnumber = 1;
 	u8Screenpage = 1;
-	g_s8Mode = 1;
+	g_st_inverter.s8TouchgfxMode = Position;
 
 	PosOption.setVisible(true);
 	PosOption.invalidate();
@@ -40,7 +40,7 @@ void MainView::tearDownScreen() {
 	MainViewBase::tearDownScreen();
 }
 
-void MainView::List1ButtonOn() {
+void MainView::List1ButtonOn() {//Not use
 	/*if (g_bPowerstate == true) {
 		Popup_PowerState.setVisible(true);
 		Popup_PowerState.invalidate();
@@ -50,18 +50,30 @@ void MainView::List1ButtonOn() {
 	}*/
 }
 void MainView::PowerButtonON(){
+	if(g_st_inverter.bTouchgfx_PowerButton == true)
+		g_st_inverter.bTouchgfx_PowerButton = false;
+	else
+		//if(g_st_IO.IN_MCCB == true && g_st_IO.OUT_McIn == true && g_st_IO.OUT_McOut == true && g_st_Statusword.voltage_enabled == true)
+		if(g_st_Statusword.voltage_enabled == true)
+			g_st_inverter.bTouchgfx_PowerButton = true;
+		else
+		{
+			Popup_PowerState.setVisible(true);
+			Popup_PowerState.invalidate();
+		}
+	/*
 	if(g_st_inverter.s8Mode == Position)
 	{
 		if(g_st_Statusword.ready_to_switch_on == true && g_st_Statusword.switched_on ==  true && g_st_Statusword.switch_on_disabled == false)
 				g_st_controlword.enable_operation = 8;//GVL_enable_operation = 8;
-	}
+	}*/
 }
-void MainView::PowerButtonOFF(){
-	g_st_controlword.enable_operation = 0;//GVL_enable_operation = 0;
+void MainView::PowerButtonOFF(){//Not use
+	//g_st_controlword.enable_operation = 0;//GVL_enable_operation = 0;
 }
-void MainView::ComButtonONOFF()
+void MainView::ComButtonONOFF()// Not use
 {
-	if(GVLComstate == 8)
+	/*if(GVLComstate == 8)
 	{
 		GVLComon 		= false;
 		GVLComoff 		= true;
@@ -70,7 +82,7 @@ void MainView::ComButtonONOFF()
 	{
 		GVLComon 		= true;
 		GVLComoff		= false;
-	}
+	}*/
 }
 void MainView::DirectPosUpSetPadShowButton()
 {
@@ -287,32 +299,53 @@ void MainView::SettingHideButton()
 	temp_SetGearDen = 0;
 	temp_SetGearNum = 0;
 	temp_SetDiameter = 0;
-	temp_SetType = g_s32DriveSettingType;
+	temp_SetType = g_st_Setting.s32DriveSettingType;
 	temp_SetWire = 0;
-	temp_SetYoYo = bool(g_s32YoYo);
+	temp_SetYoYo = bool(g_st_Setting.s32YoYo);
+	temp_SetParking = bool(g_st_Setting.s32Parking);
+	temp_SetWireOut = bool(g_st_Setting.s32WireOut);
+	temp_SetEmgBrake = bool(g_st_Setting.s32EmgBrake);
 	temp_SetEncPulse = 0;
+
 	if(temp_SetYoYo == true)YoYoButton.setSelected(true);
 	else YoYoButton.setSelected(false);
+	if(temp_SetParking == true)ParkingButton.setSelected(true);
+	else ParkingButton.setSelected(false);
+	if(temp_SetWireOut == true)WireOutButton.setSelected(true);
+	else WireOutButton.setSelected(false);
+	if(temp_SetEmgBrake == true)EmgBrakeButton.setSelected(true);
+	else EmgBrakeButton.setSelected(false);
+
 	Setting.hide();
 }
 
 void MainView::SettingShowButton()
 {
-	oldtemp_SetMaxPos = g_s32MaxPosValue;
-	oldtemp_SetMinPos = g_s32MinPosValue;
+	oldtemp_SetMaxPos = g_st_Setting.s32MaxPosValue;
+	oldtemp_SetMinPos = g_st_Setting.s32MinPosValue;
 	oldtemp_SetGearDen = g_st_Setting.fGearDenominator;
 	oldtemp_SetGearNum = g_st_Setting.fGearNumerator;
 	oldtemp_SetDiameter = g_st_Setting.fDiameter;
-	oldtemp_SetMinMaxRpm = g_st_inverter.minmaxRpmvalue;
+	oldtemp_SetMinMaxRpm = g_st_inverter.MinMaxRpmvalue;
 
-	temp_SetType = g_s32DriveSettingType;
+	temp_SetType = g_st_Setting.s32DriveSettingType;
 
-	oldtemp_SetWire = g_fWire;
+	oldtemp_SetWire = g_st_Setting.fWire;
 	oldtemp_SetEncPulse = g_st_Direct.u16EncoderPulse;
 
-	temp_SetYoYo = bool(g_s32YoYo);
+	temp_SetYoYo = bool(g_st_Setting.s32YoYo);
+	temp_SetParking = bool(g_st_Setting.s32Parking);
+	temp_SetWireOut = bool(g_st_Setting.s32WireOut);
+	temp_SetEmgBrake = bool(g_st_Setting.s32EmgBrake);
+
 	if(temp_SetYoYo == true)YoYoButton.setSelected(true);
 	else YoYoButton.setSelected(false);
+	if(temp_SetParking == true)ParkingButton.setSelected(true);
+	else ParkingButton.setSelected(false);
+	if(temp_SetWireOut == true)WireOutButton.setSelected(true);
+	else WireOutButton.setSelected(false);
+	if(temp_SetEmgBrake == true)EmgBrakeButton.setSelected(true);
+	else EmgBrakeButton.setSelected(false);
 }
 void MainView::YoYoSelected()
 {
@@ -324,6 +357,37 @@ void MainView::YoYoDeselected()
 	YoYoButton.setSelected(false);
 	temp_SetYoYo = false;
 }
+void MainView::EmgBrakeSelected()
+{
+	EmgBrakeButton.setSelected(true);
+	temp_SetEmgBrake = true;
+}
+void MainView::EmgBrakeDeselected()
+{
+	EmgBrakeButton.setSelected(false);
+	temp_SetEmgBrake = false;
+}
+void MainView::WireOutSelected()
+{
+	WireOutButton.setSelected(true);
+	temp_SetWireOut = true;
+}
+void MainView::WireOutDeselected()
+{
+	WireOutButton.setSelected(false);
+	temp_SetWireOut = false;
+}
+void MainView::ParkingSelected()
+{
+	ParkingButton.setSelected(true);
+	temp_SetParking = true;
+}
+void MainView::ParkingDeselected()
+{
+	ParkingButton.setSelected(false);
+	temp_SetParking = false;
+}
+
 void MainView::Keypadhide()
 {
 	if(KeypadMode == KEYPAD_Velocity_RPM)g_s32Vel_input_Rpmvalue = 0;
@@ -424,12 +488,14 @@ void MainView::Num1Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.MinMaxRpmvalue, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -449,7 +515,7 @@ void MainView::Num1Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -474,17 +540,17 @@ void MainView::Num1Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -823,12 +889,14 @@ void MainView::Num2Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.MinMaxRpmvalue, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -848,7 +916,7 @@ void MainView::Num2Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -873,16 +941,16 @@ void MainView::Num2Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -898,267 +966,6 @@ void MainView::Num2Button()
 	default:
 		break;
 	}
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		if (g_s32Vel_input_Rpmvalue == 0){
-			g_s32Vel_input_Rpmvalue = 2;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue > 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) + 2;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue < 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) - 2;
-			if(g_s32Vel_input_Rpmvalue <= (g_st_inverter.minmaxRpmvalue * -1))
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue * -1;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM)
-	{
-		if(g_s32Pos_input_Rpmvalue == 0){
-			g_s32Pos_input_Rpmvalue = 2;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Pos_input_Rpmvalue > 0){
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue * 10) + 2;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if (g_s32Pos_input_Posvalue == 0){
-			g_s32Pos_input_Posvalue = 2;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue > 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) + 2;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue < 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) - 2;
-			if(g_s32Pos_input_Posvalue <= SettingPosmaxLow)
-				g_s32Pos_input_Posvalue = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-	{
-		if(temp_SetMaxPos == 0)
-		{
-			temp_SetMaxPos = 2;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos > 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) + 2;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos < 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) - 2;
-			if(temp_SetMaxPos <= SettingPosmaxLow)
-				temp_SetMaxPos = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos)
-	{
-		if(temp_SetMinPos == 0)
-		{
-			temp_SetMinPos = 2;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos > 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) + 2;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos < 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) - 2;
-			if(temp_SetMinPos <= SettingPosminLow)
-				temp_SetMinPos = SettingPosminLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS)
-	{
-		if (g_s32Home_input_Posvalue == 0){
-			g_s32Home_input_Posvalue = 2;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue > 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) + 2;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue < 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) - 2;
-			if(g_s32Home_input_Posvalue <= (g_s32MinPosValue))
-				g_s32Home_input_Posvalue = g_s32MinPosValue;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum == 0 && dot_state == false){
-			temp_SetGearNum = 2;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == false){
-			temp_SetGearNum = (temp_SetGearNum * 10) + 2;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.2;
-				dot_value = 1;
-			}
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.2;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-			}
-			else if(dot_value == 1){
-				temp_SetGearNum = temp_SetGearNum + 0.02;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearNum);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen == 0 && dot_state == false){
-			temp_SetGearDen = 2;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen > 0 && dot_state == false){
-			temp_SetGearDen = (temp_SetGearDen * 10) + 2;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.2;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-		}
-		else if(temp_SetGearDen > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.2;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else if(dot_value == 1){
-				temp_SetGearDen = temp_SetGearDen + 0.02;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearDen);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter == 0 && dot_state == false){
-			temp_SetDiameter = 2;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter > 0 && dot_state == false){
-			temp_SetDiameter = (temp_SetDiameter * 10) + 2;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.2;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-		}
-		else if(temp_SetDiameter > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.2;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else if(dot_value == 1){
-				temp_SetDiameter = temp_SetDiameter + 0.02;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetDiameter);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm == 0)
-		{
-			temp_SetMinMaxRpm = 2;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		else if(temp_SetMinMaxRpm > 0)
-		{
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm * 10) + 2;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	else if(KeypadMode == KEYPAD_Direct_Up_POS)
-	{
-		if (g_s32Direct_input_UpPosvalue == 0){
-			g_s32Direct_input_UpPosvalue = 2;
-			if(g_s32Direct_input_UpPosvalue >= g_s32MaxPosValue)
-				g_s32Direct_input_UpPosvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Direct_input_UpPosvalue > 0){
-			g_s32Direct_input_UpPosvalue = (g_s32Direct_input_UpPosvalue * 10) + 2;
-			if(g_s32Direct_input_UpPosvalue >= g_s32MaxPosValue)
-				g_s32Direct_input_UpPosvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Direct_input_UpPosvalue < 0){
-			g_s32Direct_input_UpPosvalue = (g_s32Direct_input_UpPosvalue * 10) - 2;
-			if(g_s32Direct_input_UpPosvalue <= (g_s32MinPosValue))
-				g_s32Direct_input_UpPosvalue = g_s32MinPosValue;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Direct_input_UpPosvalue);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::Num3Button()
 {
@@ -1219,12 +1026,14 @@ void MainView::Num3Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.MinMaxRpmvalue, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -1244,7 +1053,7 @@ void MainView::Num3Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -1269,17 +1078,17 @@ void MainView::Num3Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -1294,252 +1103,6 @@ void MainView::Num3Button()
 	default:
 		break;
 	}
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		if (g_s32Vel_input_Rpmvalue == 0){
-			g_s32Vel_input_Rpmvalue = 3;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue > 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) + 3;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue < 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) - 3;
-			if(g_s32Vel_input_Rpmvalue <= (g_st_inverter.minmaxRpmvalue * -1))
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue * -1;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM)
-	{
-		if(g_s32Pos_input_Rpmvalue == 0){
-			g_s32Pos_input_Rpmvalue = 3;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Pos_input_Rpmvalue > 0){
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue * 10) + 3;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if (g_s32Pos_input_Posvalue == 0){
-			g_s32Pos_input_Posvalue = 3;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue > 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) + 3;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue < 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) - 3;
-			if(g_s32Pos_input_Posvalue <= SettingPosmaxLow)
-				g_s32Pos_input_Posvalue = SettingPosmaxLow;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-	{
-		if(temp_SetMaxPos == 0)
-		{
-			temp_SetMaxPos = 3;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos > 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) + 3;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos < 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) - 3;
-			if(temp_SetMaxPos <= SettingPosmaxLow)
-				temp_SetMaxPos = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos)
-	{
-		if(temp_SetMinPos == 0)
-		{
-			temp_SetMinPos = 3;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos > 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) + 3;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos < 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) - 3;
-			if(temp_SetMinPos <= SettingPosminLow)
-				temp_SetMinPos = SettingPosminLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS)
-	{
-		if (g_s32Home_input_Posvalue == 0){
-			g_s32Home_input_Posvalue = 3;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue > 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) + 3;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue < 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) - 3;
-			if(g_s32Home_input_Posvalue <= (g_s32MinPosValue))
-				g_s32Home_input_Posvalue = g_s32MinPosValue;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum == 0 && dot_state == false){
-			temp_SetGearNum = 3;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == false){
-			temp_SetGearNum = (temp_SetGearNum * 10) + 3;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.3;
-				dot_value = 1;
-			}
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.3;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-			}
-			else if(dot_value == 1){
-				temp_SetGearNum = temp_SetGearNum + 0.03;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearNum);
-			}
-		}
-
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen == 0 && dot_state == false){
-			temp_SetGearDen = 3;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen > 0 && dot_state == false){
-			temp_SetGearDen = (temp_SetGearDen * 10) + 3;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.3;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-		}
-		else if(temp_SetGearDen > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.3;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else if(dot_value == 1){
-				temp_SetGearDen = temp_SetGearDen + 0.03;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearDen);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter == 0 && dot_state == false){
-			temp_SetDiameter = 3;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter > 0 && dot_state == false){
-			temp_SetDiameter = (temp_SetDiameter * 10) + 3;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.3;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-		}
-		else if(temp_SetDiameter > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.3;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else if(dot_value == 1){
-				temp_SetDiameter = temp_SetDiameter + 0.03;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetDiameter);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm == 0)
-		{
-			temp_SetMinMaxRpm = 3;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		else if(temp_SetMinMaxRpm > 0)
-		{
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm * 10) + 3;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::Num4Button()
 {
@@ -1600,12 +1163,12 @@ void MainView::Num4Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -1625,7 +1188,7 @@ void MainView::Num4Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -1650,17 +1213,17 @@ void MainView::Num4Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -1675,253 +1238,6 @@ void MainView::Num4Button()
 	default:
 		break;
 	}
-
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		if (g_s32Vel_input_Rpmvalue == 0){
-			g_s32Vel_input_Rpmvalue = 4;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue > 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) + 4;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue < 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) - 4;
-			if(g_s32Vel_input_Rpmvalue <= (g_st_inverter.minmaxRpmvalue * -1))
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue * -1;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM)
-	{
-		if(g_s32Pos_input_Rpmvalue == 0){
-			g_s32Pos_input_Rpmvalue = 4;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Pos_input_Rpmvalue > 0){
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue * 10) + 4;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if (g_s32Pos_input_Posvalue == 0){
-			g_s32Pos_input_Posvalue = 4;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue > 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) + 4;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue < 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) - 4;
-			if(g_s32Pos_input_Posvalue <= SettingPosmaxLow)
-				g_s32Pos_input_Posvalue = SettingPosmaxLow;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-	{
-		if(temp_SetMaxPos == 0)
-		{
-			temp_SetMaxPos = 4;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos > 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) + 4;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos < 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) - 4;
-			if(temp_SetMaxPos <= SettingPosmaxLow)
-				temp_SetMaxPos = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos)
-	{
-		if(temp_SetMinPos == 0)
-		{
-			temp_SetMinPos = 4;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos > 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) + 4;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos < 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) - 4;
-			if(temp_SetMinPos <= SettingPosminLow)
-				temp_SetMinPos = SettingPosminLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS)
-	{
-		if (g_s32Home_input_Posvalue == 0){
-			g_s32Home_input_Posvalue = 4;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue > 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) + 4;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue < 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) - 4;
-			if(g_s32Home_input_Posvalue <= (g_s32MinPosValue))
-				g_s32Home_input_Posvalue = g_s32MinPosValue;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum == 0 && dot_state == false){
-			temp_SetGearNum = 4;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == false){
-			temp_SetGearNum = (temp_SetGearNum * 10) + 4;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.4;
-				dot_value = 1;
-			}
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.4;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-			}
-			else if(dot_value == 1){
-				temp_SetGearNum = temp_SetGearNum + 0.04;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearNum);
-			}
-		}
-
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen == 0 && dot_state == false){
-			temp_SetGearDen = 4;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen > 0 && dot_state == false){
-			temp_SetGearDen = (temp_SetGearDen * 10) + 4;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.4;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-		}
-		else if(temp_SetGearDen > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.4;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else if(dot_value == 1){
-				temp_SetGearDen = temp_SetGearDen + 0.04;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearDen);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter == 0 && dot_state == false){
-			temp_SetDiameter = 4;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter > 0 && dot_state == false){
-			temp_SetDiameter = (temp_SetDiameter * 10) + 4;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.4;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-		}
-		else if(temp_SetDiameter > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.4;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else if(dot_value == 1){
-				temp_SetDiameter = temp_SetDiameter + 0.04;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetDiameter);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm == 0)
-		{
-			temp_SetMinMaxRpm = 4;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		else if(temp_SetMinMaxRpm > 0)
-		{
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm * 10) + 4;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::Num5Button()
 {
@@ -1982,12 +1298,14 @@ void MainView::Num5Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.MinMaxRpmvalue, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -2007,7 +1325,7 @@ void MainView::Num5Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -2032,17 +1350,17 @@ void MainView::Num5Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -2059,249 +1377,6 @@ void MainView::Num5Button()
 	default:
 		break;
 	}
-
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		if (g_s32Vel_input_Rpmvalue == 0){
-			g_s32Vel_input_Rpmvalue = 5;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue > 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) + 5;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue < 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) - 5;
-			if(g_s32Vel_input_Rpmvalue <= (g_st_inverter.minmaxRpmvalue * -1))
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue * -1;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM)
-	{
-		if(g_s32Pos_input_Rpmvalue == 0){
-			g_s32Pos_input_Rpmvalue = 5;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Pos_input_Rpmvalue > 0){
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue * 10) + 5;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if (g_s32Pos_input_Posvalue == 0){
-			g_s32Pos_input_Posvalue = 5;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue > 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) + 5;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue < 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) - 5;
-			if(g_s32Pos_input_Posvalue <= SettingPosmaxLow)
-				g_s32Pos_input_Posvalue = SettingPosmaxLow;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-	{
-		if(temp_SetMaxPos == 0)
-		{
-			temp_SetMaxPos = 5;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos > 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) + 5;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos < 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) - 5;
-			if(temp_SetMaxPos <= SettingPosmaxLow)
-				temp_SetMaxPos = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos)
-	{
-		if(temp_SetMinPos == 0)
-		{
-			temp_SetMinPos = 5;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos > 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) + 5;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos < 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) - 5;
-			if(temp_SetMinPos <= SettingPosminLow)
-				temp_SetMinPos = SettingPosminLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS)
-	{
-		if (g_s32Home_input_Posvalue == 0){
-			g_s32Home_input_Posvalue = 1;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue > 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) + 5;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue < 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) - 5;
-			if(g_s32Home_input_Posvalue <= (g_s32MinPosValue))
-				g_s32Home_input_Posvalue = g_s32MinPosValue;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum == 0 && dot_state == false){
-			temp_SetGearNum = 5;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == false){
-			temp_SetGearNum = (temp_SetGearNum * 10) + 5;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.5;
-				dot_value = 1;
-			}
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.5;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-			}
-			else if(dot_value == 1){
-				temp_SetGearNum = temp_SetGearNum + 0.05;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearNum);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen == 0 && dot_state == false){
-			temp_SetGearDen = 5;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen > 0 && dot_state == false){
-			temp_SetGearDen = (temp_SetGearDen * 10) + 5;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.5;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-		}
-		else if(temp_SetGearDen > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.5;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else if(dot_value == 1){
-				temp_SetGearDen = temp_SetGearDen + 0.05;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearDen);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter == 0 && dot_state == false){
-			temp_SetDiameter = 5;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter > 0 && dot_state == false){
-			temp_SetDiameter = (temp_SetDiameter * 10) + 5;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.5;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-		}
-		else if(temp_SetDiameter > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.5;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else if(dot_value == 1){
-				temp_SetDiameter = temp_SetDiameter + 0.05;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetDiameter);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm == 0)
-		{
-			temp_SetMinMaxRpm = 5;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		else if(temp_SetMinMaxRpm > 0)
-		{
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm * 10) + 5;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::Num6Button()
 {
@@ -2362,12 +1437,14 @@ void MainView::Num6Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.MinMaxRpmvalue, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -2387,7 +1464,7 @@ void MainView::Num6Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -2412,17 +1489,17 @@ void MainView::Num6Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -2439,247 +1516,6 @@ void MainView::Num6Button()
 	default:
 		break;
 	}
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		if (g_s32Vel_input_Rpmvalue == 0){
-			g_s32Vel_input_Rpmvalue = 6;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue > 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) + 6;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue < 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) - 6;
-			if(g_s32Vel_input_Rpmvalue <= (g_st_inverter.minmaxRpmvalue * -1))
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue * -1;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM)
-	{
-		if(g_s32Pos_input_Rpmvalue == 0){
-			g_s32Pos_input_Rpmvalue = 6;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Pos_input_Rpmvalue > 0){
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue * 10) + 6;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if (g_s32Pos_input_Posvalue == 0){
-			g_s32Pos_input_Posvalue = 6;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue > 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) + 6;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue < 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) - 6;
-			if(g_s32Pos_input_Posvalue <= SettingPosmaxLow)
-				g_s32Pos_input_Posvalue = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-	{
-		if(temp_SetMaxPos == 0)
-		{
-			temp_SetMaxPos = 6;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos > 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) + 6;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos < 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) - 6;
-			if(temp_SetMaxPos <= SettingPosmaxLow)
-				temp_SetMaxPos = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos)
-	{
-		if(temp_SetMinPos == 0)
-		{
-			temp_SetMinPos = 6;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos > 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) + 6;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos < 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) - 6;
-			if(temp_SetMinPos <= SettingPosminLow)
-				temp_SetMinPos = SettingPosminLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS)
-	{
-		if (g_s32Home_input_Posvalue == 0){
-			g_s32Home_input_Posvalue = 6;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue > 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) + 6;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue < 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) - 6;
-			if(g_s32Home_input_Posvalue <= (g_s32MinPosValue))
-				g_s32Home_input_Posvalue = g_s32MinPosValue;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum == 0 && dot_state == false){
-			temp_SetGearNum = 6;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == false){
-			temp_SetGearNum = (temp_SetGearNum * 10) + 6;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.6;
-				dot_value = 1;
-			}
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.6;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-			}
-			else if(dot_value == 1){
-				temp_SetGearNum = temp_SetGearNum + 0.06;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearNum);
-			}
-		}
-
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen == 0 && dot_state == false){
-			temp_SetGearDen = 6;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen > 0 && dot_state == false){
-			temp_SetGearDen = (temp_SetGearDen * 10) + 6;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.6;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-		}
-		else if(temp_SetGearDen > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.6;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else if(dot_value == 1){
-				temp_SetGearDen = temp_SetGearDen + 0.06;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearDen);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter == 0 && dot_state == false){
-			temp_SetDiameter = 6;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter > 0 && dot_state == false){
-			temp_SetDiameter = (temp_SetDiameter * 10) + 6;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.6;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-		}
-		else if(temp_SetDiameter > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.6;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else if(dot_value == 1){
-				temp_SetDiameter = temp_SetDiameter + 0.06;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetDiameter);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm == 0)
-		{
-			temp_SetMinMaxRpm = 6;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		else if(temp_SetMinMaxRpm > 0)
-		{
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm * 10) + 6;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::Num7Button()
 {
@@ -2740,12 +1576,14 @@ void MainView::Num7Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.MinMaxRpmvalue, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+//		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -2765,7 +1603,7 @@ void MainView::Num7Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -2790,17 +1628,17 @@ void MainView::Num7Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -2817,248 +1655,7 @@ void MainView::Num7Button()
 	default:
 		break;
 	}
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		if (g_s32Vel_input_Rpmvalue == 0){
-			g_s32Vel_input_Rpmvalue = 7;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue > 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) + 7;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue < 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) - 7;
-			if(g_s32Vel_input_Rpmvalue <= (g_st_inverter.minmaxRpmvalue * -1))
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue * -1;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM)
-	{
-		if(g_s32Pos_input_Rpmvalue == 0){
-			g_s32Pos_input_Rpmvalue = 7;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Pos_input_Rpmvalue > 0){
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue * 10) + 7;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if (g_s32Pos_input_Posvalue == 0){
-			g_s32Pos_input_Posvalue = 7;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue > 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) + 7;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue < 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) - 7;
-			if(g_s32Pos_input_Posvalue <= SettingPosmaxLow)
-				g_s32Pos_input_Posvalue = SettingPosmaxLow;
-		}
 
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-	{
-		if(temp_SetMaxPos == 0)
-		{
-			temp_SetMaxPos = 7;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos > 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) + 7;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos < 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) - 7;
-			if(temp_SetMaxPos <= SettingPosmaxLow)
-				temp_SetMaxPos = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos)
-	{
-		if(temp_SetMinPos == 0)
-		{
-			temp_SetMinPos = 7;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos > 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) + 7;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos < 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) - 7;
-			if(temp_SetMinPos <= SettingPosminLow)
-				temp_SetMinPos = SettingPosminLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS)
-	{
-		if (g_s32Home_input_Posvalue == 0){
-			g_s32Home_input_Posvalue = 7;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue > 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) + 7;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue < 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) - 7;
-			if(g_s32Home_input_Posvalue <= (g_s32MinPosValue))
-				g_s32Home_input_Posvalue = g_s32MinPosValue;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum == 0 && dot_state == false){
-			temp_SetGearNum = 7;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == false){
-			temp_SetGearNum = (temp_SetGearNum * 10) + 7;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.7;
-				dot_value = 1;
-			}
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.7;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-			}
-			else if(dot_value == 1){
-				temp_SetGearNum = temp_SetGearNum + 0.07;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearNum);
-			}
-		}
-
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen == 0 && dot_state == false){
-			temp_SetGearDen = 7;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen > 0 && dot_state == false){
-			temp_SetGearDen = (temp_SetGearDen * 10) + 7;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.7;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-		}
-		else if(temp_SetGearDen > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.7;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else if(dot_value == 1){
-				temp_SetGearDen = temp_SetGearDen + 0.07;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearDen);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter == 0 && dot_state == false){
-			temp_SetDiameter = 7;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter > 0 && dot_state == false){
-			temp_SetDiameter = (temp_SetDiameter * 10) + 7;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.7;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-		}
-		else if(temp_SetDiameter > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.7;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else if(dot_value == 1){
-				temp_SetDiameter = temp_SetDiameter + 0.07;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetDiameter);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm == 0)
-		{
-			temp_SetMinMaxRpm = 7;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		else if(temp_SetMinMaxRpm > 0)
-		{
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm * 10) + 7;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::Num8Button()
 {
@@ -3119,12 +1716,14 @@ void MainView::Num8Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.MinMaxRpmvalue, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -3144,7 +1743,7 @@ void MainView::Num8Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -3169,17 +1768,17 @@ void MainView::Num8Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -3196,249 +1795,6 @@ void MainView::Num8Button()
 	default:
 		break;
 	}
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		if (g_s32Vel_input_Rpmvalue == 0){
-			g_s32Vel_input_Rpmvalue = 8;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue > 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) + 8;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue < 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) - 8;
-			if(g_s32Vel_input_Rpmvalue <= (g_st_inverter.minmaxRpmvalue * -1))
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue * -1;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM)
-	{
-		if(g_s32Pos_input_Rpmvalue == 0){
-			g_s32Pos_input_Rpmvalue = 8;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Pos_input_Rpmvalue > 0){
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue * 10) + 8;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if (g_s32Pos_input_Posvalue == 0){
-			g_s32Pos_input_Posvalue = 8;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue > 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) + 8;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue < 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) - 8;
-			if(g_s32Pos_input_Posvalue <= SettingPosmaxLow)
-				g_s32Pos_input_Posvalue = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-	{
-		if(temp_SetMaxPos == 0)
-		{
-			temp_SetMaxPos = 1;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos > 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) + 8;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos < 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) - 8;
-			if(temp_SetMaxPos <= SettingPosmaxLow)
-				temp_SetMaxPos = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos)
-	{
-		if(temp_SetMinPos == 0)
-		{
-			temp_SetMinPos = 1;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos > 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) + 8;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos < 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) - 8;
-			if(temp_SetMinPos <= SettingPosminLow)
-				temp_SetMinPos = SettingPosminLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS)
-	{
-		if (g_s32Home_input_Posvalue == 0){
-			g_s32Home_input_Posvalue = 8;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue > 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) + 8;
-			if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-				g_s32Home_input_Posvalue = g_s32MaxPosValue;
-		}
-		else if(g_s32Home_input_Posvalue < 0){
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) - 8;
-			if(g_s32Home_input_Posvalue <= (g_s32MinPosValue))
-				g_s32Home_input_Posvalue = g_s32MinPosValue;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum == 0 && dot_state == false){
-			temp_SetGearNum = 8;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == false){
-			temp_SetGearNum = (temp_SetGearNum * 10) + 8;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.8;
-				dot_value = 1;
-			}
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.8;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-			}
-			else if(dot_value == 1){
-				temp_SetGearNum = temp_SetGearNum + 0.08;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearNum);
-			}
-		}
-
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen == 0 && dot_state == false){
-			temp_SetGearDen = 8;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen > 0 && dot_state == false){
-			temp_SetGearDen = (temp_SetGearDen * 10) + 8;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.8;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-		}
-		else if(temp_SetGearDen > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.8;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else if(dot_value == 1){
-				temp_SetGearDen = temp_SetGearDen + 0.08;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearDen);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter == 0 && dot_state == false){
-			temp_SetDiameter = 8;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter > 0 && dot_state == false){
-			temp_SetDiameter = (temp_SetDiameter * 10) + 8;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.8;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-		}
-		else if(temp_SetDiameter > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.8;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else if(dot_value == 1){
-				temp_SetDiameter = temp_SetDiameter + 0.08;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetDiameter);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm == 0)
-		{
-			temp_SetMinMaxRpm = 8;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		else if(temp_SetMinMaxRpm > 0)
-		{
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm * 10) + 8;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::Num9Button()
 {
@@ -3499,12 +1855,14 @@ void MainView::Num9Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.MinMaxRpmvalue, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -3524,7 +1882,7 @@ void MainView::Num9Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -3549,17 +1907,17 @@ void MainView::Num9Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -3576,252 +1934,7 @@ void MainView::Num9Button()
 	default:
 		break;
 	}
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		if (g_s32Vel_input_Rpmvalue == 0){
-			g_s32Vel_input_Rpmvalue = 9;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue > 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) + 9;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue < 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10) - 9;
-			if(g_s32Vel_input_Rpmvalue <= (g_st_inverter.minmaxRpmvalue * -1))
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue * -1;
-		}
 
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM)
-	{
-		if(g_s32Pos_input_Rpmvalue == 0){
-			g_s32Pos_input_Rpmvalue = 9;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Pos_input_Rpmvalue > 0){
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue * 10) + 9;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if (g_s32Pos_input_Posvalue == 0){
-			g_s32Pos_input_Posvalue = 9;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue > 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) + 9;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue < 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10) - 9;
-			if(g_s32Pos_input_Posvalue <= SettingPosmaxLow)
-				g_s32Pos_input_Posvalue = SettingPosmaxLow;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-	{
-		if(temp_SetMaxPos == 0)
-		{
-			temp_SetMaxPos = 1;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos > 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) + 9;
-			if(temp_SetMaxPos >= SettingPosmaxHigh)
-				temp_SetMaxPos = SettingPosmaxHigh;
-		}
-		else if(temp_SetMaxPos < 0)
-		{
-			temp_SetMaxPos = (temp_SetMaxPos * 10) - 9;
-			if(temp_SetMaxPos <= SettingPosmaxLow)
-				temp_SetMaxPos = SettingPosmaxLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos)
-	{
-		if(temp_SetMinPos == 0)
-		{
-			temp_SetMinPos = 1;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos > 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) + 9;
-			if(temp_SetMinPos >= SettingPosminHigh)
-				temp_SetMinPos = SettingPosminHigh;
-		}
-		else if(temp_SetMinPos < 0)
-		{
-			temp_SetMinPos = (temp_SetMinPos * 10) - 9;
-			if(temp_SetMinPos <= SettingPosminLow)
-				temp_SetMinPos = SettingPosminLow;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS)
-		{
-			if (g_s32Home_input_Posvalue == 0){
-				g_s32Home_input_Posvalue = 9;
-				if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-					g_s32Home_input_Posvalue = g_s32MaxPosValue;
-			}
-			else if(g_s32Home_input_Posvalue > 0){
-				g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) + 9;
-				if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-					g_s32Home_input_Posvalue = g_s32MaxPosValue;
-			}
-			else if(g_s32Home_input_Posvalue < 0){
-				g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10) - 9;
-				if(g_s32Home_input_Posvalue <= (g_s32MinPosValue))
-					g_s32Home_input_Posvalue = g_s32MinPosValue;
-			}
-
-			Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-		}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum == 0 && dot_state == false){
-			temp_SetGearNum = 9;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == false){
-			temp_SetGearNum = (temp_SetGearNum * 10) + 9;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.9;
-				dot_value = 1;
-			}
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearNum = temp_SetGearNum + 0.9;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-			}
-			else if(dot_value == 1){
-				temp_SetGearNum = temp_SetGearNum + 0.09;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearNum);
-			}
-		}
-
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen == 0 && dot_state == false){
-			temp_SetGearDen = 9;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen > 0 && dot_state == false){
-			temp_SetGearDen = (temp_SetGearDen * 10) + 9;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.9;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-		}
-		else if(temp_SetGearDen > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetGearDen = temp_SetGearDen + 0.9;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else if(dot_value == 1){
-				temp_SetGearDen = temp_SetGearDen + 0.09;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearDen);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter == 0 && dot_state == false){
-			temp_SetDiameter = 9;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter > 0 && dot_state == false){
-			temp_SetDiameter = (temp_SetDiameter * 10) + 9;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.9;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-		}
-		else if(temp_SetDiameter > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				temp_SetDiameter = temp_SetDiameter + 0.9;
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else if(dot_value == 1){
-				temp_SetDiameter = temp_SetDiameter + 0.09;
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetDiameter);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm == 0)
-		{
-			temp_SetMinMaxRpm = 9;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		else if(temp_SetMinMaxRpm > 0)
-		{
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm * 10) + 9;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::Num0Button()
 {
@@ -3848,13 +1961,13 @@ void MainView::Num0Button()
 	auto UpdateFloatInputValue = [&](float& value) {
 		if (dot_state) {
 			if (dot_value == 0) {
-				value = value;
+				value = value + 0.0f;
 				dot_value = 1;
 			}
-			else if (dot_value == 1) {
-				value = value;
+			/*else if (dot_value == 1) {
+				value = value + 0.00f;
 				dot_value = 2;
-			}
+			}*/
 		}
 		else {
 			value = (value * 10) + digit;
@@ -3881,12 +1994,14 @@ void MainView::Num0Button()
 	// KeypadMode에 따른 값 처리
 	switch (KeypadMode) {
 	case KEYPAD_Velocity_RPM:
-		UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.minmaxRpmvalue, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Vel_input_Rpmvalue, -g_st_inverter.MinMaxRpmvalue, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Vel_input_Rpmvalue, -100, 100);
 		UpdateKeypadDisplay(g_s32Vel_input_Rpmvalue, false, 0);
 		break;
 
 	case KEYPAD_Position_RPM:
-		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.minmaxRpmvalue);
+		//UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, g_st_inverter.MinMaxRpmvalue);
+		UpdateInputValue(g_s32Pos_input_Rpmvalue, 0, 100);
 		UpdateKeypadDisplay(g_s32Pos_input_Rpmvalue, false, 0);
 		break;
 
@@ -3906,7 +2021,7 @@ void MainView::Num0Button()
 		break;
 
 	case KEYPAD_Home_POS:
-		UpdateInputValue(g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Home_input_Posvalue, false, 0);
 		break;
 
@@ -3931,17 +2046,17 @@ void MainView::Num0Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Home_POS :
-		UpdateInputValue(g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_Homevalue, false, 0);
 		break;
 
@@ -3958,243 +2073,6 @@ void MainView::Num0Button()
 	default:
 		break;
 	}
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		if (g_s32Vel_input_Rpmvalue == 0){
-			g_s32Vel_input_Rpmvalue = 0;
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue > 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10);
-			if(g_s32Vel_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Vel_input_Rpmvalue < 0){
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue * 10);
-			if(g_s32Vel_input_Rpmvalue <= (g_st_inverter.minmaxRpmvalue * -1))
-				g_s32Vel_input_Rpmvalue = g_st_inverter.minmaxRpmvalue * -1;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM)
-	{
-		if(g_s32Pos_input_Rpmvalue == 0){
-			g_s32Pos_input_Rpmvalue = 0;
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-		else if(g_s32Pos_input_Rpmvalue > 0){
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue * 10);
-			if(g_s32Pos_input_Rpmvalue >= g_st_inverter.minmaxRpmvalue)
-				g_s32Pos_input_Rpmvalue = g_st_inverter.minmaxRpmvalue;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if (g_s32Pos_input_Posvalue == 0){
-			g_s32Pos_input_Posvalue = 0;
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue > 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10);
-			if(g_s32Pos_input_Posvalue >= SettingPosmaxHigh)
-				g_s32Pos_input_Posvalue = SettingPosmaxHigh;
-		}
-		else if(g_s32Pos_input_Posvalue < 0){
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue * 10);
-			if(g_s32Pos_input_Posvalue <= SettingPosmaxLow)
-				g_s32Pos_input_Posvalue = SettingPosmaxLow;
-		}
-
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-		{
-			if(temp_SetMaxPos == 0)
-			{
-				temp_SetMaxPos = 0;
-				if(temp_SetMaxPos >= SettingPosmaxHigh)
-					temp_SetMaxPos = SettingPosmaxHigh;
-			}
-			else if(temp_SetMaxPos > 0)
-			{
-				temp_SetMaxPos = (temp_SetMaxPos * 10);
-				if(temp_SetMaxPos >= SettingPosmaxHigh)
-					temp_SetMaxPos = SettingPosmaxHigh;
-			}
-			else if(temp_SetMaxPos < 0)
-			{
-				temp_SetMaxPos = (temp_SetMaxPos * 10);
-				if(temp_SetMaxPos <= SettingPosmaxLow)
-					temp_SetMaxPos = SettingPosmaxLow;
-			}
-			Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-		}
-		else if(KeypadMode == KEYPAD_Setting_Minpos)
-		{
-			if(temp_SetMinPos == 0)
-			{
-				temp_SetMinPos = 0;
-				if(temp_SetMinPos >= SettingPosminHigh)
-					temp_SetMinPos = SettingPosminHigh;
-			}
-			else if(temp_SetMinPos > 0)
-			{
-				temp_SetMinPos = (temp_SetMinPos * 10);
-				if(temp_SetMinPos >= SettingPosminHigh)
-					temp_SetMinPos = SettingPosminHigh;
-			}
-			else if(temp_SetMinPos < 0)
-			{
-				temp_SetMinPos = (temp_SetMinPos * 10);
-				if(temp_SetMinPos <= SettingPosminLow)
-					temp_SetMinPos = SettingPosminLow;
-			}
-			Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-		}
-	else if(KeypadMode == KEYPAD_Home_POS)
-		{
-			if (g_s32Home_input_Posvalue == 0){
-				g_s32Home_input_Posvalue = 0;
-				if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-					g_s32Home_input_Posvalue = g_s32MaxPosValue;
-			}
-			else if(g_s32Home_input_Posvalue > 0){
-				g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10);
-				if(g_s32Home_input_Posvalue >= g_s32MaxPosValue)
-					g_s32Home_input_Posvalue = g_s32MaxPosValue;
-			}
-			else if(g_s32Home_input_Posvalue < 0){
-				g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue * 10);
-				if(g_s32Home_input_Posvalue <= (g_s32MinPosValue))
-					g_s32Home_input_Posvalue = g_s32MinPosValue;
-			}
-
-			Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-		}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum == 0 && dot_state == false){
-			temp_SetGearNum = 0;
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == false){
-			temp_SetGearNum = (temp_SetGearNum * 10);
-			if(temp_SetGearNum >= 60000)
-				temp_SetGearNum = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				dot_value = 1;
-			}
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-		}
-		else if(temp_SetGearNum > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-			}
-			else if(dot_value == 1){
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearNum);
-			}
-		}
-
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen == 0 && dot_state == false){
-			temp_SetGearDen = 0;
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen > 0 && dot_state == false){
-			temp_SetGearDen = (temp_SetGearDen * 10);
-			if(temp_SetGearDen >= 60000)
-				temp_SetGearDen = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-		else if(temp_SetGearDen == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-		}
-		else if(temp_SetGearDen > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else if(dot_value == 1){
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetGearDen);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter == 0 && dot_state == false){
-			temp_SetDiameter = 0;
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter > 0 && dot_state == false){
-			temp_SetDiameter = (temp_SetDiameter * 10);
-			if(temp_SetDiameter >= 60000)
-				temp_SetDiameter = 60000;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-		else if(temp_SetDiameter == 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-		}
-		else if(temp_SetDiameter > 0 && dot_state == true)
-		{
-			if(dot_value == 0){
-				dot_value = 1;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else if(dot_value == 1){
-				dot_value = 2;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.2f", temp_SetDiameter);
-			}
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm == 0)
-		{
-			temp_SetMinMaxRpm = 0;
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		else if(temp_SetMinMaxRpm > 0)
-		{
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm * 10);
-			if(temp_SetMinMaxRpm >= SettingPosRpmMinMax)
-				temp_SetMinMaxRpm = SettingPosRpmMinMax;
-		}
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::MinusButton()
 {
@@ -4223,7 +2101,7 @@ void MainView::MinusButton()
             break;
 
         case KEYPAD_Position_POS:
-            ToggleSign(g_s32Pos_input_Posvalue, g_s32MinPosValue);
+            ToggleSign(g_s32Pos_input_Posvalue, g_st_Setting.s32MinPosValue);
             UpdateKeypadDisplay(g_s32Pos_input_Posvalue);
             break;
 
@@ -4238,58 +2116,28 @@ void MainView::MinusButton()
             break;
 
         case KEYPAD_Home_POS:
-            ToggleSign(g_s32Home_input_Posvalue, g_s32MinPosValue);
+            ToggleSign(g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue);
             UpdateKeypadDisplay(g_s32Home_input_Posvalue);
             break;
 
         case KEYPAD_Direct_Up_POS :
-        	TargetUpDownToggleSign(g_s32Direct_input_UpPosvalue,g_s32MinPosValue, g_s32MaxPosValue);
+        	TargetUpDownToggleSign(g_s32Direct_input_UpPosvalue,g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
         	UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue);
         	break;
 
         case KEYPAD_Direct_Down_POS :
-        	TargetUpDownToggleSign(g_s32Direct_input_DownPosvalue,g_s32MinPosValue, g_s32MaxPosValue);
+        	TargetUpDownToggleSign(g_s32Direct_input_DownPosvalue,g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
         	UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue);
         	break;
 
         case KEYPAD_Direct_Home_POS :
-        	ToggleSign(g_s32Direct_input_Homevalue,g_s32MinPosValue);
+        	ToggleSign(g_s32Direct_input_Homevalue,g_st_Setting.s32MinPosValue);
         	UpdateKeypadDisplay(g_s32Direct_input_Homevalue);
         	break;
 
         default:
             break;
     }
-	/*if(KeypadMode == KEYPAD_Velocity_RPM)
-	{
-		g_s32Vel_input_Rpmvalue = g_s32Vel_input_Rpmvalue * -1;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_POS)
-	{
-		if(g_s32Pos_input_Posvalue * -1 >= g_s32MinPosValue)
-			g_s32Pos_input_Posvalue = g_s32Pos_input_Posvalue * -1;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos)
-	{
-		if(temp_SetMaxPos * - 1 >= SettingPosmaxLow)
-			temp_SetMaxPos = temp_SetMaxPos * -1;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos)
-	{
-		if(temp_SetMinPos * -1 >= SettingPosminLow)
-			temp_SetMinPos = temp_SetMinPos * -1;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS)
-	{
-		if(g_s32Home_input_Posvalue * -1 >= g_s32MinPosValue)
-			g_s32Home_input_Posvalue = g_s32Home_input_Posvalue * -1;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::EntButton()
 {
@@ -4313,12 +2161,12 @@ void MainView::EntButton()
             break;
 
         case KEYPAD_Position_RPM:
-            g_st_inverter.PosSetRpmvalue = g_s32Pos_input_Rpmvalue;
+            g_st_inverter.PosSetRpmvalue = (int)(((float)g_s32Pos_input_Rpmvalue / 100) * g_st_inverter.MinMaxRpmvalue);
             g_s32Pos_input_Rpmvalue = 0;
             break;
 
         case KEYPAD_Position_POS:
-            SetValue(g_st_inverter.PosSetPosvalue, g_s32Pos_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+            SetValue(g_st_inverter.PosSetPosvalue, g_s32Pos_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
             break;
 
         case KEYPAD_Setting_Maxpos:
@@ -4332,7 +2180,7 @@ void MainView::EntButton()
             break;
 
         case KEYPAD_Home_POS:
-            SetValue(g_st_inverter.HomeSetPosvalue, g_s32Home_input_Posvalue, g_s32MinPosValue, g_s32MaxPosValue);
+            SetValue(g_st_inverter.HomeSetPosvalue, g_s32Home_input_Posvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
             break;
 
         case KEYPAD_Setting_GearDen:
@@ -4369,7 +2217,7 @@ void MainView::EntButton()
             if (temp_SetMinMaxRpm > 0)
                 oldtemp_SetMinMaxRpm = temp_SetMinMaxRpm;
             else
-                oldtemp_SetMinMaxRpm = g_st_inverter.minmaxRpmvalue;
+                oldtemp_SetMinMaxRpm = g_st_inverter.MinMaxRpmvalue;
             break;
 
         case KEYPAD_Direct_Up_POS:
@@ -4377,8 +2225,8 @@ void MainView::EntButton()
         		g_st_Direct.s16UpPosSetValue = (int16_t)g_st_Direct.s32DirectActPos;
         	else
         	{
-        		if(g_s32Direct_input_UpPosvalue >= g_s32MaxPosValue)
-        			g_st_Direct.s16UpPosSetValue = (int16_t)g_s32MaxPosValue;
+        		if(g_s32Direct_input_UpPosvalue >= g_st_Setting.s32MaxPosValue)
+        			g_st_Direct.s16UpPosSetValue = (int16_t)g_st_Setting.s32MaxPosValue;
         		else
         			g_st_Direct.s16UpPosSetValue = (int16_t)g_s32Direct_input_UpPosvalue;
         	}
@@ -4390,8 +2238,8 @@ void MainView::EntButton()
 				g_st_Direct.s16DownPosSetValue = (int16_t)g_st_Direct.s32DirectActPos;
 			else
 			{
-				if(g_s32Direct_input_DownPosvalue <= g_s32MinPosValue)
-					g_st_Direct.s16DownPosSetValue = (int16_t)g_s32MinPosValue;
+				if(g_s32Direct_input_DownPosvalue <= g_st_Setting.s32MinPosValue)
+					g_st_Direct.s16DownPosSetValue = (int16_t)g_st_Setting.s32MinPosValue;
 				else
 					g_st_Direct.s16DownPosSetValue = (int16_t)g_s32Direct_input_DownPosvalue;
 			}
@@ -4399,14 +2247,14 @@ void MainView::EntButton()
         	break;
 
         case KEYPAD_Direct_Home_POS :
-        	SetValue(g_st_Direct.s16HomePosSetValue, g_s32Direct_input_Homevalue, g_s32MinPosValue, g_s32MaxPosValue);
+        	SetValue(g_st_Direct.s16HomePosSetValue, g_s32Direct_input_Homevalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
         	break;
 
         case KEYPAD_Wire :
         	if (temp_SetWire > 0)
 				oldtemp_SetWire = temp_SetWire;
 			else
-				oldtemp_SetWire = g_fWire;
+				oldtemp_SetWire = g_st_Setting.fWire;
         	Unicode::snprintfFloat(textWirevalueBuffer, TEXTWIREVALUE_SIZE, "%.2f", oldtemp_SetWire);
 			textWirevalue.invalidate();
         	break;
@@ -4424,114 +2272,6 @@ void MainView::EntButton()
     // 키패드 숨기기
     Numkeypad.hide();
     Numkeypad.invalidate();
-	/*
-	if(KeypadMode == KEYPAD_Velocity_RPM){
-		g_st_inverter.VelsetRpmvalue = g_s32Vel_input_Rpmvalue;
-		g_s32Vel_input_Rpmvalue = 0;
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM){
-		g_st_inverter.PossetRpmvalue = g_s32Pos_input_Rpmvalue;
-		g_s32Pos_input_Rpmvalue = 0;
-	}
-	else if(KeypadMode == KEYPAD_Position_POS){
-		if(g_s32MinPosValue <= g_s32Pos_input_Posvalue && g_s32Pos_input_Posvalue <= g_s32MaxPosValue)
-		{
-			g_st_inverter.PosSetPosvalue = g_s32Pos_input_Posvalue;
-			g_s32Pos_input_Posvalue = 0;
-		}
-		else if(g_s32MinPosValue > g_s32Pos_input_Posvalue)
-		{
-			g_st_inverter.PosSetPosvalue = g_s32MinPosValue;
-			g_s32Pos_input_Posvalue = 0;
-		}
-		else if(g_s32Pos_input_Posvalue > g_s32MaxPosValue)
-		{
-			g_st_inverter.PosSetPosvalue = g_s32MaxPosValue;
-			g_s32Pos_input_Posvalue = 0;
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos){
-		if(temp_SetMaxPos > oldtemp_SetMinPos)
-			oldtemp_SetMaxPos = temp_SetMaxPos;
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos){
-		if(temp_SetMinPos < oldtemp_SetMaxPos)
-			oldtemp_SetMinPos = temp_SetMinPos;
-	}
-	else if(KeypadMode == KEYPAD_Home_POS){
-		if(g_s32MinPosValue <= g_s32Home_input_Posvalue && g_s32Home_input_Posvalue <= g_s32MaxPosValue)
-		{
-			g_st_inverter.HomeSetPosvalue = g_s32Home_input_Posvalue;
-			g_s32Home_input_Posvalue = 0;
-		}
-		else if(g_s32MinPosValue > g_s32Home_input_Posvalue)
-		{
-			g_st_inverter.HomeSetPosvalue = g_s32MinPosValue;
-			g_s32Home_input_Posvalue = 0;
-		}
-		else if(g_s32Home_input_Posvalue > g_s32MaxPosValue)
-		{
-			g_st_inverter.HomeSetPosvalue = g_s32MaxPosValue;
-			g_s32Home_input_Posvalue = 0;
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen)
-	{
-		if(temp_SetGearDen > 0)
-			oldtemp_SetGearDen = temp_SetGearDen;
-		else if(temp_SetGearDen <= 0)
-			oldtemp_SetGearDen = g_st_inverter.iGearDenominator;
-
-		Unicode :: snprintfFloat(textGearDeno_valueBuffer,TEXTGEARDENO_VALUE_SIZE, "%.2f", temp_SetGearDen);
-		textGearDeno_value.invalidate();
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearNum)
-	{
-		if(temp_SetGearNum > 0)
-			oldtemp_SetGearNum = temp_SetGearNum;
-		else if(temp_SetGearNum <= 0)
-			oldtemp_SetGearNum = g_st_inverter.iGearNumerator;
-
-		Unicode :: snprintfFloat(textGearNum_valueBuffer,TEXTGEARNUM_VALUE_SIZE, "%.2f", temp_SetGearNum);
-		textGearNum_value.invalidate();
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter)
-	{
-		if(temp_SetDiameter > 0)
-			oldtemp_SetDiameter = temp_SetDiameter;
-		else if(temp_SetDiameter <= 0)
-			oldtemp_SetDiameter = g_st_inverter.idiameter;
-
-		Unicode :: snprintfFloat(textGearDeno_valueBuffer,TEXTGEARDENO_VALUE_SIZE, "%.2f", temp_SetDiameter);
-		textGearDeno_value.invalidate();
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel)
-	{
-		if(temp_SetMinMaxRpm > 0)
-			oldtemp_SetMinMaxRpm = temp_SetMinMaxRpm;
-		else if(temp_SetMinMaxRpm = 0)
-			oldtemp_SetMinMaxRpm = g_st_inverter.minmaxRpmvalue;
-	}
-	else if(KeypadMode == KEYPAD_Direct_Up_POS)
-	{
-		if(g_s32MinPosValue <= g_s32Direct_input_UpPosvalue && g_s32Direct_input_UpPosvalue <= g_s32MaxPosValue)
-		{
-			g_st_Direct.s16UpPosSetValue = g_s32Direct_input_UpPosvalue;
-			g_s32Direct_input_UpPosvalue = 0;
-		}
-		else if(g_s32MinPosValue > g_s32Home_input_Posvalue)
-		{
-			g_st_Direct.s16UpPosSetValue = g_s32MinPosValue;
-			g_s32Direct_input_UpPosvalue = 0;
-		}
-		else if(g_s32Home_input_Posvalue > g_s32MaxPosValue)
-		{
-			g_st_Direct.s16UpPosSetValue = g_s32MaxPosValue;
-			g_s32Direct_input_UpPosvalue = 0;
-		}
-	}
-	Numkeypad.hide();
-	Numkeypad.invalidate();*/
 }
 void MainView::BackspaceButton()
 {
@@ -4667,137 +2407,6 @@ void MainView::BackspaceButton()
 			UpdateKeypadDisplay(temp_SetEncPulse, false, 0);
 			break;
 	}
-	/*
-	if(KeypadMode == KEYPAD_Velocity_RPM){
-		if(g_s32Vel_input_Rpmvalue >= 10 || g_s32Vel_input_Rpmvalue <= -10)
-			g_s32Vel_input_Rpmvalue = (g_s32Vel_input_Rpmvalue / 10);
-		else
-			g_s32Vel_input_Rpmvalue = 0;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Vel_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_RPM){
-		if(g_s32Pos_input_Rpmvalue >= 10 || g_s32Pos_input_Rpmvalue <= -10)
-			g_s32Pos_input_Rpmvalue = (g_s32Pos_input_Rpmvalue / 10);
-		else
-			g_s32Pos_input_Rpmvalue = 0;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Rpmvalue);
-	}
-	else if(KeypadMode == KEYPAD_Position_POS){
-		if(g_s32Pos_input_Posvalue >= 10 || g_s32Pos_input_Posvalue <= -10)
-			g_s32Pos_input_Posvalue = (g_s32Pos_input_Posvalue / 10);
-		else
-			g_s32Pos_input_Posvalue = 0;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Pos_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Maxpos){
-		if(temp_SetMaxPos >= 10 || temp_SetMaxPos <= -10)
-			temp_SetMaxPos = (temp_SetMaxPos / 10);
-		else
-			temp_SetMaxPos = 0;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMaxPos);
-	}
-	else if(KeypadMode == KEYPAD_Setting_Minpos){
-		if(temp_SetMinPos >= 10 || temp_SetMinPos <= -10)
-			temp_SetMinPos = (temp_SetMinPos / 10);
-		else
-			temp_SetMinPos = 0;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinPos);
-	}
-	else if(KeypadMode == KEYPAD_Home_POS){
-		if(g_s32Home_input_Posvalue >= 10 || g_s32Home_input_Posvalue <= -10)
-			g_s32Home_input_Posvalue = (g_s32Home_input_Posvalue / 10);
-		else
-			g_s32Home_input_Posvalue = 0;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", g_s32Home_input_Posvalue);
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearNum){
-		if(temp_SetGearNum >= 10)
-		{
-			if(dot_state == true){
-				if(dot_value == 1){
-					temp_SetGearNum = floor(temp_SetGearNum);
-					dot_value = 0;
-					dot_state = false;
-					Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-				}
-				else if(dot_value == 2){
-					temp_SetGearNum = floor(temp_SetGearNum * 10) / 10;
-					dot_value = 1;
-					Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearNum);
-				}
-			}
-			else{
-				temp_SetGearNum = floor(temp_SetGearNum / 10);
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-			}
-		}
-		else{
-			temp_SetGearNum = 0;
-			dot_state = false;
-			dot_value = 0;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearNum);
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_GearDen){
-		if(temp_SetGearDen >= 10)
-		{
-			if(dot_state == true){
-				temp_SetGearDen = floor(temp_SetGearDen);
-				dot_value = 0;
-				dot_state = false;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-			}
-			else if(dot_value == 2){
-				temp_SetGearDen = floor(temp_SetGearDen * 10) / 10;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetGearDen);
-			}
-			else{
-				temp_SetGearDen = floor(temp_SetGearDen / 10);
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-			}
-		}
-		else{
-			temp_SetGearDen = 0;
-			dot_state = false;
-			dot_value = 0;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetGearDen);
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_Diameter){
-		if(temp_SetDiameter >= 10)
-		{
-			if(dot_state == true){
-				temp_SetDiameter = floor(temp_SetDiameter);
-				dot_value = 0;
-				dot_state = false;
-				Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-			}
-			else if(dot_value == 2){
-				temp_SetDiameter = floor(temp_SetDiameter * 10) / 10;
-				dot_value = 1;
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.1f", temp_SetDiameter);
-			}
-			else{
-				temp_SetDiameter = floor(temp_SetDiameter / 10);
-				Unicode::snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-			}
-		}
-		else{
-			temp_SetDiameter = 0;
-			dot_state = false;
-			dot_value = 0;
-			Unicode :: snprintfFloat(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%.f", temp_SetDiameter);
-		}
-	}
-	else if(KeypadMode == KEYPAD_Setting_MinMaxVel){
-		if(temp_SetMinMaxRpm >= 10 || temp_SetMinMaxRpm <= -10)
-			temp_SetMinMaxRpm = (temp_SetMinMaxRpm / 10);
-		else
-			temp_SetMinMaxRpm = 0;
-		Unicode :: snprintf(KeypadinputvalueBuffer,KEYPADINPUTVALUE_SIZE, "%d", temp_SetMinMaxRpm);
-	}
-	Keypadinputvalue.invalidate();*/
 }
 void MainView::NumdotButton()
 {
@@ -4846,10 +2455,12 @@ void MainView::NumdotButton()
 void MainView::Resetbutton()
 {
 	g_st_controlword.fault_reset = 128;
+	g_u16Errorcode = 0;
+	g_st_IO.OUTError = false;
 }
 void MainView::EableButtonOn()
 {
-	if(g_st_Statusword.ready_to_switch_on == false && g_st_Statusword.switched_on == false && g_st_Statusword.switch_on_disabled == true )
+	/*if(g_st_Statusword.ready_to_switch_on == false && g_st_Statusword.switched_on == false && g_st_Statusword.switch_on_disabled == true )
 	{
 		g_st_controlword.switch_on = 1;
 		g_st_controlword.enable_voltage = 2;
@@ -4860,180 +2471,192 @@ void MainView::EableButtonOn()
 		g_st_controlword.switch_on = 0;
 		g_st_controlword.enable_voltage = 0;
 		g_st_controlword.no_quick_stop = 0;
-	}
-
+	}*/
 }
 void MainView::ModeButtonOn()
 {
-	if(u8Screenpage == 1 && g_bLocal == true)
+	if(u8Screenpage == 1 && g_st_IO.IN_Local == true)
 	{
-		g_s8Mode = Position;
-		g_bModeWrite = true;
+		g_st_inverter.s8TouchgfxMode = Position;
+		g_st_inverter.bTouchgfxModeWrite = true;
 	}
-	else if(u8Screenpage == 2 && g_bLocal == true)
+	else if(u8Screenpage == 2 && g_st_IO.IN_Local == true)
 	{
-		g_s8Mode = Home;
-		g_bModeWrite = true;
+		g_st_inverter.s8TouchgfxMode = Home;
+		g_st_inverter.bTouchgfxModeWrite = true;
 	}
 }
 void MainView::PositionScreenButton()
 {
 	u8Screenpage = 1;
-	g_s8Mode = Position;
-	g_bModeWrite = true;
+	g_st_inverter.s8TouchgfxMode = Position;
+	g_st_inverter.bTouchgfxModeWrite = true;
 }
 void MainView::HomingScreenButton()
 {
 	u8Screenpage = 2;
-	g_s8Mode = Home;
-	g_bModeWrite = true;
+	g_st_inverter.s8TouchgfxMode = Home;
+	g_st_inverter.bTouchgfxModeWrite = true;
 }
 void MainView::PositionStartButton()
 {
-	if(g_st_inverter.s8Mode == 1){
-		g_st_controlword.op_mode_spec_four = 16;
-		g_st_controlword.op_mode_spec_five = 32;
-	}
+	if(g_st_inverter.s8CurrentMode == Position)
+		g_st_inverter.bTouchgfx_StartButton = true;
 }
 void MainView::PositionStopButton()
 {
-	if(g_st_inverter.s8Mode == 1)
-		g_st_controlword.halt = 256;
+	if(g_st_inverter.s8CurrentMode == Position)
+		g_st_inverter.bTouchgfx_StopButton = true;
 }
 void MainView::HomeSetbutton()
 {
-	if(g_st_inverter.s8Mode == 6)
-		g_st_controlword.op_mode_spec_four = 16;
+	if(g_st_inverter.s8CurrentMode == Home)
+		g_st_inverter.bTouchgfx_HomingButton = true;
 }
 void MainView::SetType_D_Button()
 {
-	temp_SetType = 1;
+	temp_SetType = Direct_No_Enc;
 }
-void MainView::SetType_D_ENC_Button()
+void MainView::SetType_D_INC_Button()
 {
-	temp_SetType = 2;
+	temp_SetType = Direct_INC;
 }
-void MainView::SetType_INV_ENC_Button()
+void MainView::SetType_INV_ABS_Button()
 {
-	temp_SetType = 4;
+	temp_SetType = Inverter_ABS;
 }
 void MainView::SettingSaveButton()
 {
 	if(oldtemp_SetMaxPos != 0)
 	{
-		g_u32FlashSaveMaxPos = *(int*)&oldtemp_SetMaxPos;
-		g_bFlashWrite = true;
+		g_st_FlashMemory.u32FlashSaveMaxPos = *(int*)&oldtemp_SetMaxPos;
+		g_st_FlashMemory.bFlashWrite = true;
 	}
 	if(oldtemp_SetMinPos != 0)
 	{
-		g_u32FlashSaveMinPos = *(int*)&oldtemp_SetMinPos;
-		g_bFlashWrite = true;
+		g_st_FlashMemory.u32FlashSaveMinPos = *(int*)&oldtemp_SetMinPos;
+		g_st_FlashMemory.bFlashWrite = true;
 	}
 
 	if(oldtemp_SetGearDen != 0)
 	{
-		g_u32FlashSaveDen = *(uint32_t*)&oldtemp_SetGearDen;
-		g_bFlashWrite = true;
+		g_st_FlashMemory.u32FlashSaveDen = *(uint32_t*)&oldtemp_SetGearDen;
+		g_st_FlashMemory.bFlashWrite = true;
 	}
 
 	if(oldtemp_SetGearNum != 0)
 	{
-		g_u32FlashSaveNum = *(uint32_t*)&oldtemp_SetGearNum;
-		g_bFlashWrite = true;
+		g_st_FlashMemory.u32FlashSaveNum = *(uint32_t*)&oldtemp_SetGearNum;
+		g_st_FlashMemory.bFlashWrite = true;
 	}
 
 	if(oldtemp_SetDiameter != 0)
 	{
-		g_u32FlashSaveDiameter = *(uint32_t*)&oldtemp_SetDiameter;
-		g_bFlashWrite = true;
+		g_st_FlashMemory.u32FlashSaveDiameter = *(uint32_t*)&oldtemp_SetDiameter;
+		g_st_FlashMemory.bFlashWrite = true;
 	}
 
 	if(oldtemp_SetMinMaxRpm != 0)
 	{
-		g_u32FlashSaveMinMaxRpm = *(uint32_t*)&oldtemp_SetMinMaxRpm;
-		g_bFlashWrite = true;
+		g_st_FlashMemory.u32FlashSaveMinMaxRpm = *(uint32_t*)&oldtemp_SetMinMaxRpm;
+		g_st_FlashMemory.bFlashWrite = true;
 	}
 
-	g_u32FlashSaveDriveType = *(uint32_t*)&temp_SetType;
-	g_bFlashWrite = true;
+	g_st_FlashMemory.u32FlashSaveDriveType = *(uint32_t*)&temp_SetType;
+	g_st_FlashMemory.bFlashWrite = true;
 
 	if(oldtemp_SetWire != 0)
 	{
-		g_u32FlashSaveWire = *(uint32_t*)&oldtemp_SetWire;
-		g_bFlashWrite = true;
+		g_st_FlashMemory.u32FlashSaveWire = *(uint32_t*)&oldtemp_SetWire;
+		g_st_FlashMemory.bFlashWrite = true;
 	}
 
-	g_u32FlashSaveYoYo = *(uint32_t*)&temp_SetYoYo;
+	g_st_FlashMemory.u32FlashSaveYoYo = 0x0000000000000000 | temp_SetYoYo;//*(uint32_t*)&temp_SetYoYo;
+	g_st_FlashMemory.u32FlashSaveParking = 0x0000000000000000 | temp_SetParking;//*(uint32_t*)&temp_SetSecondBrake;
+	g_st_FlashMemory.u32FlashSaveWireOut = 0x0000000000000000 | temp_SetWireOut;//*(uint32_t*)&temp_SetWireOut;
+	g_st_FlashMemory.u32FlashSaveEmgBrake = 0x0000000000000000 | temp_SetEmgBrake;//*(uint32_t*)&temp_SetEmgBrake;
 
 	if(oldtemp_SetEncPulse != 0)
 	{
-		g_u32FlashSaveEncPulse = *(uint32_t*)&oldtemp_SetEncPulse;
-		g_bFlashWrite = true;
+		g_st_FlashMemory.u32FlashSaveEncPulse = *(uint32_t*)&oldtemp_SetEncPulse;
+		g_st_FlashMemory.bFlashWrite = true;
 	}
 }
 void MainView::MC_ON_Button()
 {
-	if(g_bMCinputstate == false && g_bMCoutputstate == false)
+	if(g_st_IO.IN_McIn == false && g_st_IO.IN_McOut == false)
 	{
-		g_bMCinput = true;
-		g_bMCoutput = true;
+		g_st_IO.OUT_McIn = true;
+		g_st_IO.OUT_McOut = true;
 	}
 	else
 	{
-		g_bMCinput = false;
-		g_bMCoutput = false;
+		g_st_IO.OUT_McIn = false;
+		g_st_IO.OUT_McOut = false;
 	}
 }
 
 void MainView::ServconnectionButton()
 {
-	GVLTCP_connection = 0;
+	g_u8Ethernet_TcpStatus = 0;
 }
+void MainView::IOStateShowButton()
+{
+	IOState.show();
+	bIOPageShowButton = true;
+}
+
+void MainView::IOStateHidButton()
+{
+	IOState.hide();
+	bIOPageShowButton = false;
+}
+
 
 void MainView::DirectMoveUpButton()
 {
-	//if(g_st_Setting.bPosLimit == true && g_st_Setting.bFinalPosLimit == true)
-	//{
-		g_st_Direct.bUp = true;
-		g_st_Direct.bDown = false;
-	/*}
+	if(g_st_Setting.s32DriveSettingType == Direct_No_Enc || g_st_Setting.s32DriveSettingType == Direct_INC)
+	{
+		g_st_Direct.bTouchgfxUpButton = true;
+		g_st_Direct.bTouchgfxDownButton = false;
+	}
 	else
 	{
-		g_st_Direct.bUp = false;
-		g_st_Direct.bDown = false;
-	}*/
+		g_st_Direct.bTouchgfxUpButton = false;
+		g_st_Direct.bTouchgfxDownButton = false;
+	}
 }
 void MainView::DirectMoveDownButton()
 {
-	//if(g_st_Setting.bNegLimit == true && g_st_Setting.bFinalNegLimit == true)
-	//{
-		g_st_Direct.bUp = false;
-		g_st_Direct.bDown = true;
-	/*}
+	if(g_st_Setting.s32DriveSettingType == Direct_No_Enc || g_st_Setting.s32DriveSettingType == Direct_INC)
+	{
+		g_st_Direct.bTouchgfxUpButton = false;
+		g_st_Direct.bTouchgfxDownButton = true;
+	}
 	else
 	{
-		g_st_Direct.bUp = false;
-		g_st_Direct.bDown = false;
-	}*/
+		g_st_Direct.bTouchgfxUpButton = false;
+		g_st_Direct.bTouchgfxDownButton = false;
 
+	}
 }
 void MainView::DirectMoveStopButton()
 {
-	g_st_Direct.bUp = false;
-	g_st_Direct.bDown = false;
+	g_st_Direct.bTouchgfxUpButton = false;
+	g_st_Direct.bTouchgfxDownButton = false;
 }
 void MainView::DirectHomeSetbutton()
 {
 	if(g_st_Direct.s16UpPosSetValue>= g_st_Direct.s16HomePosSetValue && g_st_Direct.s16HomePosSetValue >= g_st_Direct.s16DownPosSetValue)
 	{
 		g_st_Direct.s32DirectHomeOffset = g_st_Direct.s16HomePosSetValue;
-		g_bDirect_HomeTrig = true;
+		g_st_Direct.bHoming = true;
 	}
 }
 
 void MainView::handleTickEvent()
 {
-	if(g_st_inverter.s8Mode == 1)
+	if(g_st_inverter.s8CurrentMode == Position)
 	{
 		PosOption.setVisible(true);
 		PosOption.invalidate();
@@ -5046,7 +2669,7 @@ void MainView::handleTickEvent()
 		HomeScreenBox.invalidate();
 
 	}
-	else if(g_st_inverter.s8Mode == 6)
+	else if(g_st_inverter.s8CurrentMode == Home)
 	{
 		PosOption.setVisible(false);
 		PosOption.invalidate();
@@ -5058,15 +2681,30 @@ void MainView::handleTickEvent()
 		HomeScreenBox.setColor(touchgfx::Color::getColorFromRGB(255, 225, 255));
 		HomeScreenBox.invalidate();
 	}
-	if(g_bLocal)
+	if(g_st_IO.IN_Local == true)
 	{
 		RemoteAlarm.setVisible(false);
 		RemoteAlarm.invalidate();
 	}
-	else{
+	else
+	{
 		RemoteAlarm.setVisible(true);
 		RemoteAlarm.invalidate();
 	}
+
+	//STM EMERGENCY
+	if(g_st_IO.IN_EMG == false)
+		STM_EMG.setVisible(true);
+	else
+		STM_EMG.setVisible(false);
+	STM_EMG.invalidate();
+
+	//STM ERROR Box
+	if(g_bError == true)
+		ResetBox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+	else
+		ResetBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+	ResetBox.invalidate();
 
 	//Gear Denominator, Numberator
 	Unicode::snprintfFloat(textGearDeno_valueBuffer,TEXTGEARDENO_VALUE_SIZE, "%.2f", oldtemp_SetGearDen);
@@ -5103,24 +2741,24 @@ void MainView::handleTickEvent()
 	Unicode :: snprintf(textReadyStateValueBuffer,TEXTREADYSTATEVALUE_SIZE,g_st_inverter.cReadystate);
 	textReadyStateValue.invalidate();
 
-	Unicode :: snprintf(textStateValueBuffer,TEXTSTATEVALUE_SIZE,g_st_inverter.cState);
+	Unicode :: snprintf(textStateValueBuffer,TEXTSTATEVALUE_SIZE,g_st_inverter.cStateStringDisplay);
 	textStateValue.invalidate();
 
-	Unicode :: snprintf(textErrorValueBuffer,TEXTERRORVALUE_SIZE,g_st_inverter.cError);
+	Unicode :: snprintf(textErrorValueBuffer,TEXTERRORVALUE_SIZE,g_st_inverter.cErrorStringDisplay);
 	textErrorValue.invalidate();
 
 
-	Unicode :: snprintf(textMODEStateBuffer,TEXTMODESTATE_SIZE, g_st_inverter.cMode);
+	Unicode :: snprintf(textMODEStateBuffer,TEXTMODESTATE_SIZE, g_st_inverter.cModeStringDisplay);
 	textMODEState.invalidate();
 
 	//Position mode Set Rpm value
-	//Unicode :: snprintf(textPosSetRpmValueBuffer,TEXTPOSSETRPMVALUE_SIZE, "%d", GVLinverter[GVLAddnumber].PossetRpmvalue);
-	Unicode :: snprintfFloat(textPosSetRpmValueBuffer,TEXTPOSSETRPMVALUE_SIZE, "%.f%", float(g_st_inverter.PosSetRpmvalue) / g_st_inverter.minmaxRpmvalue * 100);
+	//Unicode :: snprintfFloat(textPosSetRpmValueBuffer,TEXTPOSSETRPMVALUE_SIZE, "%.f%", float(g_st_inverter.PosSetRpmvalue) / g_st_inverter.MinMaxRpmvalue * 100);
+	Unicode :: snprintf(textPosSetRpmValueBuffer,TEXTPOSSETRPMVALUE_SIZE, "%d", int((float)g_st_inverter.PosSetRpmvalue / g_st_inverter.MinMaxRpmvalue * 100));
 	textPosSetRpmValue.invalidate();
 
 	//Position mode Actual Rpm value
-	//Unicode :: snprintf(textPosActRpmValueBuffer,TEXTPOSACTRPMVALUE_SIZE, "%d", GVLinverter[GVLAddnumber].actRpmvalue);
-	Unicode :: snprintfFloat(textPosActRpmValueBuffer,TEXTPOSACTRPMVALUE_SIZE, "%.f%", float(g_st_inverter.actRpmvalue) / g_st_inverter.minmaxRpmvalue * 100);
+	//Unicode :: snprintfFloat(textPosActRpmValueBuffer,TEXTPOSACTRPMVALUE_SIZE, "%.f%", float(g_st_inverter.ActRpmvalue) / g_st_inverter.MinMaxRpmvalue * 100);
+	Unicode :: snprintf(textPosActRpmValueBuffer,TEXTPOSACTRPMVALUE_SIZE, "%d", int((float)g_st_inverter.ActRpmvalue / g_st_inverter.MinMaxRpmvalue * 100));
 	textPosActRpmValue.invalidate();
 
 	//Direct Encoder Mode Actual Pos value
@@ -5129,6 +2767,7 @@ void MainView::handleTickEvent()
 
 	//Direct mode Set Home value
 	Unicode::snprintf(textD_HomeSetValueBuffer, TEXTD_HOMESETVALUE_SIZE, "%d", g_st_Direct.s16HomePosSetValue);
+	textD_HomeSetValue.invalidate();
 
 	//Direct mode Set Pos value
 	Unicode::snprintf(textD_PosUpSetValueBuffer, TEXTD_POSUPSETVALUE_SIZE, "%d", g_st_Direct.s16UpPosSetValue);
@@ -5200,7 +2839,7 @@ void MainView::handleTickEvent()
 
 	/*Limit	Begin*/
 	//Final Up Limit
-	if(g_st_Setting.bFinalPosLimit == true){
+	if(g_st_IO.IN_FinalPosLimit == true){
 		D_FUP_LimitBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
 		D_FUP_LimitBox.invalidate();
 	}
@@ -5210,7 +2849,7 @@ void MainView::handleTickEvent()
 		D_FUP_LimitBox.invalidate();
 	}
 	//Up Limit
-	if(g_st_Setting.bPosLimit == true){
+	if(g_st_IO.IN_PosLimit == true){
 		D_UP_LimitBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
 		D_UP_LimitBox.invalidate();
 	}
@@ -5220,7 +2859,7 @@ void MainView::handleTickEvent()
 		D_UP_LimitBox.invalidate();
 	}
 	//Down Limit
-	if(g_st_Setting.bNegLimit == true){
+	if(g_st_IO.IN_NegLimit == true){
 		D_DN_LimitBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
 		D_DN_LimitBox.invalidate();
 	}
@@ -5230,7 +2869,7 @@ void MainView::handleTickEvent()
 		D_DN_LimitBox.invalidate();
 	}
 	//Final Down Limit
-	if(g_st_Setting.bFinalNegLimit == true){
+	if(g_st_IO.IN_FinalNegLimit == true){
 		D_FDN_LimitBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
 		D_FDN_LimitBox.invalidate();
 	}
@@ -5242,7 +2881,7 @@ void MainView::handleTickEvent()
 	/*Limit	End*/
 
 	//MC State
-	if(g_bMCinputstate == true && g_bMCoutputstate == true){
+	if(g_st_IO.IN_McIn == true && g_st_IO.IN_McOut == true){
 		MC_OnBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
 		MC_OnBox.invalidate();
 	}
@@ -5279,89 +2918,88 @@ void MainView::handleTickEvent()
 		PowerONBox.invalidate();
 	}
 
-	if(GVLComstate == 8)
+	/*if(GVLComstate == 8)
 	{
-		g_bPoweroff = true;
-		g_bPoweron = false;
 		Unicode::snprintf(textCom_onoffBuffer, TEXTCOM_ONOFF_SIZE, "EtherCAT");
 		textCom_onoff.invalidate();
 		Com_onoff_box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
 		Com_onoff_box.invalidate();
 	}
+
 	else if(GVLComstate == 0)
 	{
 		Unicode::snprintf(textCom_onoffBuffer, TEXTCOM_ONOFF_SIZE, "SERIAL");
 		textCom_onoff.invalidate();
 		Com_onoff_box.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
 		Com_onoff_box.invalidate();
-	}
-	if(temp_SetType == 0)
+	}*/
+	if(temp_SetType == No_Type)
 	{
-		if(g_s32DriveSettingType == 1)
+		if(g_st_Setting.s32DriveSettingType == Direct_No_Enc)
 		{
 			TypeD_Box.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
 			TypeD_Box.invalidate();
-			TypeD_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-			TypeD_ENCBox.invalidate();
-			TypeINV_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-			TypeINV_ENCBox.invalidate();
+			TypeD_INCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+			TypeD_INCBox.invalidate();
+			TypeINV_ABSBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+			TypeINV_ABSBox.invalidate();
 		}
-		else if(g_s32DriveSettingType == 2)
+		else if(g_st_Setting.s32DriveSettingType == Direct_INC)
 		{
 
-			TypeD_ENCBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
-			TypeD_ENCBox.invalidate();
+			TypeD_INCBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
+			TypeD_INCBox.invalidate();
 			TypeD_Box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
 			TypeD_Box.invalidate();
-			TypeINV_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-			TypeINV_ENCBox.invalidate();
+			TypeINV_ABSBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+			TypeINV_ABSBox.invalidate();
 		}
-		else if(g_s32DriveSettingType == 3)
+		else if(g_st_Setting.s32DriveSettingType == 3)
 		{
 			;
 		}
-		else if(g_s32DriveSettingType == 4)
+		else if(g_st_Setting.s32DriveSettingType == Inverter_ABS)
 		{
-			TypeINV_ENCBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
-			TypeINV_ENCBox.invalidate();
-			TypeD_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-			TypeD_ENCBox.invalidate();
+			TypeINV_ABSBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
+			TypeINV_ABSBox.invalidate();
+			TypeD_INCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+			TypeD_INCBox.invalidate();
 			TypeD_Box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
 			TypeD_Box.invalidate();
 		}
 	}
 	else
 	{
-		if(temp_SetType == 1)
+		if(temp_SetType == Direct_No_Enc)
 		{
 			TypeD_Box.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
 			TypeD_Box.invalidate();
-			TypeD_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-			TypeD_ENCBox.invalidate();
-			TypeINV_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-			TypeINV_ENCBox.invalidate();
+			TypeD_INCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+			TypeD_INCBox.invalidate();
+			TypeINV_ABSBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+			TypeINV_ABSBox.invalidate();
 		}
-		else if(temp_SetType == 2)
+		else if(temp_SetType == Direct_INC)
 		{
-			TypeD_ENCBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
-			TypeD_ENCBox.invalidate();
+			TypeD_INCBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
+			TypeD_INCBox.invalidate();
 			TypeD_Box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
 			TypeD_Box.invalidate();
-			TypeINV_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-			TypeINV_ENCBox.invalidate();
+			TypeINV_ABSBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+			TypeINV_ABSBox.invalidate();
 		}
-		else if(temp_SetType == 4)
+		else if(temp_SetType == Inverter_ABS)
 		{
-			TypeINV_ENCBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
-			TypeINV_ENCBox.invalidate();
+			TypeINV_ABSBox.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
+			TypeINV_ABSBox.invalidate();
 			TypeD_Box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
 			TypeD_Box.invalidate();
-			TypeD_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-			TypeD_ENCBox.invalidate();
+			TypeD_INCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+			TypeD_INCBox.invalidate();
 		}
 	}
 
-	if(g_s32DriveSettingType == Direct_No_encoder)
+	if(g_st_Setting.s32DriveSettingType == Direct_No_Enc)
 	{
 		Direct.setVisible(true);
 		Direct.invalidate();
@@ -5370,7 +3008,7 @@ void MainView::handleTickEvent()
 		INVERTER.setVisible(false);
 		INVERTER.invalidate();
 	}
-	else if(g_s32DriveSettingType == Direct_encoder)
+	else if(g_st_Setting.s32DriveSettingType == Direct_INC)
 	{
 		Direct.setVisible(true);
 		Direct.invalidate();
@@ -5379,12 +3017,372 @@ void MainView::handleTickEvent()
 		INVERTER.setVisible(false);
 		INVERTER.invalidate();
 	}
-	else if (g_s32DriveSettingType == inverter_encoder)
+	else if (g_st_Setting.s32DriveSettingType == Inverter_ABS)
 	{
 		Direct.setVisible(false);
 		Direct.invalidate();
 		INVERTER.setVisible(true);
 		INVERTER.invalidate();
 	}
+	else
+	{
+		Direct.setVisible(false);
+		Direct.invalidate();
+		INVERTER.setVisible(false);
+		INVERTER.invalidate();
+	}
 
+
+	if(bIOPageShowButton)
+	{
+		//IOState//
+		//Input
+		if(g_bIO_Input[0] == true)//Input01
+			IO_INPUT_LAMP_Box1.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box1.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box1.invalidate();
+
+		if(g_bIO_Input[1] == true)//Input02
+			IO_INPUT_LAMP_Box2.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box2.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box2.invalidate();
+
+		if(g_bIO_Input[2] == true)//Input03
+			IO_INPUT_LAMP_Box3.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box3.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box3.invalidate();
+
+		if(g_bIO_Input[3] == true)//Input04
+			IO_INPUT_LAMP_Box4.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box4.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box4.invalidate();
+
+		if(g_bIO_Input[4] == true)//Input05
+			IO_INPUT_LAMP_Box5.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box5.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box5.invalidate();
+
+		if(g_bIO_Input[5] == true)//Input06
+			IO_INPUT_LAMP_Box6.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box6.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box6.invalidate();
+
+		if(g_bIO_Input[6] == true)//Input07
+			IO_INPUT_LAMP_Box7.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box7.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box7.invalidate();
+
+		if(g_bIO_Input[7] == true)//Input08
+			IO_INPUT_LAMP_Box8.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box8.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box8.invalidate();
+
+		if(g_bIO_Input[8] == true)//Input09
+			IO_INPUT_LAMP_Box9.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box9.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box9.invalidate();
+
+		if(g_bIO_Input[9] == true)//Input010
+			IO_INPUT_LAMP_Box10.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box10.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box10.invalidate();
+
+		if(g_bIO_Input[10] == true)//Input011
+			IO_INPUT_LAMP_Box11.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box11.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box11.invalidate();
+
+		if(g_bIO_Input[11] == true)//Input012
+			IO_INPUT_LAMP_Box12.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box12.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box12.invalidate();
+
+		if(g_bIO_Input[12] == true)//Input013
+			IO_INPUT_LAMP_Box13.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box13.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box13.invalidate();
+
+		if(g_bIO_Input[13] == true)//Input014
+			IO_INPUT_LAMP_Box14.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box14.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box14.invalidate();
+
+		if(g_bIO_Input[14] == true)//Input015
+			IO_INPUT_LAMP_Box15.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box15.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box15.invalidate();
+
+		if(g_bIO_Input[15] == true)//Input016
+			IO_INPUT_LAMP_Box16.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_INPUT_LAMP_Box16.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_INPUT_LAMP_Box16.invalidate();
+
+		//OUTPUT//
+		if(g_bIO_Output[0] == true)//Output01
+			IO_OUTPUT_LAMP_Box1.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box1.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box1.invalidate();
+		if(g_bIO_Output[1] == true)//Output02
+			IO_OUTPUT_LAMP_Box2.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box2.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box2.invalidate();
+
+		if(g_bIO_Output[2] == true)//Output03
+			IO_OUTPUT_LAMP_Box3.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box3.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box3.invalidate();
+
+		if(g_bIO_Output[3] == true)//Output04
+			IO_OUTPUT_LAMP_Box4.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box4.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box4.invalidate();
+
+		if(g_bIO_Output[4] == true)//Output05
+			IO_OUTPUT_LAMP_Box5.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box5.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box5.invalidate();
+
+		if(g_bIO_Output[5] == true)//Output06
+			IO_OUTPUT_LAMP_Box6.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box6.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box6.invalidate();
+
+		if(g_bIO_Output[6] == true)//Output7
+			IO_OUTPUT_LAMP_Box7.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box7.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box7.invalidate();
+
+		if(g_bIO_Output[7] == true)//Output8
+			IO_OUTPUT_LAMP_Box8.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box8.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box8.invalidate();
+
+		if(g_bIO_Output[8] == true)//Output09
+			IO_OUTPUT_LAMP_Box9.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box9.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box9.invalidate();
+
+		if(g_bIO_Output[9] == true)//Output10
+			IO_OUTPUT_LAMP_Box10.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			IO_OUTPUT_LAMP_Box10.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		IO_OUTPUT_LAMP_Box10.invalidate();
+	}
+
+	//Remote Tcp
+	if(g_st_IO.IN_Local == false)
+	{
+		//RemoteEnable
+		if(g_Tcp_STM_RemoteEnable)
+			TcpSTMRemoteEnablebox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMRemoteEnablebox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMRemoteEnablebox.invalidate();
+		//ConsoleEmg
+		if(g_Tcp_ConsoleEMG)
+			TcpSTMConsoleEmgbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMConsoleEmgbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMConsoleEmgbox.invalidate();
+
+		//McOn
+		if(g_Tcp_McOn)
+			TcpSTMMcOnbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMMcOnbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMMcOnbox.invalidate();
+
+		//DriveType
+		if(g_Tcp_DriveType == Direct_No_Enc)
+		{
+			Unicode :: snprintf(textTcpSTMDriveTypeValueBuffer,TEXTTCPSTMDRIVETYPEVALUE_SIZE,"D_NO");
+			textTcpErrorCodeValue.invalidate();
+		}
+		else if(g_Tcp_DriveType == Direct_INC)
+		{
+			Unicode :: snprintf(textTcpSTMDriveTypeValueBuffer,TEXTTCPSTMDRIVETYPEVALUE_SIZE,"D_INC");
+			textTcpErrorCodeValue.invalidate();
+		}
+		else if(g_Tcp_DriveType == Direct_ABS)
+		{
+			Unicode :: snprintf(textTcpSTMDriveTypeValueBuffer,TEXTTCPSTMDRIVETYPEVALUE_SIZE,"D_ABS");
+			textTcpErrorCodeValue.invalidate();
+		}
+		else if(g_Tcp_DriveType == Inverter_No_Enc)
+		{
+			Unicode :: snprintf(textTcpSTMDriveTypeValueBuffer,TEXTTCPSTMDRIVETYPEVALUE_SIZE,"I_NO");
+			textTcpErrorCodeValue.invalidate();
+		}
+		else if(g_Tcp_DriveType == Inverter_INC)
+		{
+			Unicode :: snprintf(textTcpSTMDriveTypeValueBuffer,TEXTTCPSTMDRIVETYPEVALUE_SIZE,"I_INC");
+			textTcpErrorCodeValue.invalidate();
+		}
+		else if(g_Tcp_DriveType == Inverter_ABS)
+		{
+			Unicode :: snprintf(textTcpSTMDriveTypeValueBuffer,TEXTTCPSTMDRIVETYPEVALUE_SIZE,"I_ABS");
+			textTcpErrorCodeValue.invalidate();
+		}
+		else if(g_Tcp_DriveType == No_Type)
+		{
+			Unicode :: snprintf(textTcpSTMDriveTypeValueBuffer,TEXTTCPSTMDRIVETYPEVALUE_SIZE,"NO");
+			textTcpErrorCodeValue.invalidate();
+		}
+
+		Unicode :: snprintf(textTcpErrorCodeValueBuffer, TEXTTCPERRORCODEVALUE_SIZE, "%d",g_Tcp_ErrorCode);
+		textTcpErrorCodeValue.invalidate();
+
+		Unicode :: snprintf(textTcpActPosValueBuffer, TEXTTCPACTPOSVALUE_SIZE, "%d", g_Tcp_ActPos);
+		textTcpActPosValue.invalidate();
+
+		Unicode :: snprintf(textTcpSTMTargetPosValueBuffer, TEXTTCPSTMTARGETPOSVALUE_SIZE, "%d", g_Tcp_TargetPos);
+		textTcpSTMTargetPosValue.invalidate();
+
+		Unicode :: snprintf(textTcpSTMSpeedValueBuffer, TEXTTCPSTMSPEEDVALUE_SIZE, "%d", g_Tcp_Speed);
+		textTcpSTMSpeedValue.invalidate();
+
+		Unicode :: snprintf(textTcpSTMHomeSetPosValueBuffer, TEXTTCPSTMHOMESETPOSVALUE_SIZE, "%d", g_Tcp_HomeSetPos);
+		textTcpSTMHomeSetPosValue.invalidate();
+
+		//Tcp Power
+		if(g_Tcp_Power)
+			TcpSTMPowerbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMPowerbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMPowerbox.invalidate();
+		//Tcp Start
+		if(g_Tcp_Start)
+			TcpSTMStartbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMStartbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMStartbox.invalidate();
+		//Tcp Stop
+		if(g_Tcp_Stop)
+			TcpSTMStopbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMStopbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMStopbox.invalidate();
+		//Tcp Reset
+		if(g_Tcp_Reset)
+			TcpSTMResetbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMResetbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMResetbox.invalidate();
+
+		if(g_Tcp_HomeSet)
+			TcpSTMHomeSetbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMHomeSetbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMHomeSetbox.invalidate();
+
+		if(g_Tcp_DirectUp)
+			TcpSTMDirectUpbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMDirectUpbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMDirectUpbox.invalidate();
+
+		if(g_Tcp_DirectDown)
+			TcpSTMDirectDownbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMDirectDownbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMDirectDownbox.invalidate();
+
+		if(g_Tcp_DirectStop)
+			TcpSTMDirectStopbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpSTMDirectStopbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpSTMDirectStopbox.invalidate();
+
+		//
+		if(g_Tcp_LocalCtrlOn)
+			TcpIsLocalCtrlOnbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpIsLocalCtrlOnbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpIsLocalCtrlOnbox.invalidate();
+
+		if(g_Tcp_PowerStatus)
+			TcpIsPowerStatusbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpIsPowerStatusbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpIsPowerStatusbox.invalidate();
+
+		if(g_Tcp_IsRunning)
+			TcpIsRunningbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpIsRunningbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpIsRunningbox.invalidate();
+
+		if(g_Tcp_Arrived)
+			TcpIsArrivedbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpIsArrivedbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpIsArrivedbox.invalidate();
+
+		if(g_Tcp_IsError)
+			TcpIsErrorbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpIsErrorbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpIsErrorbox.invalidate();
+
+		if(g_Tcp_LimitFF)
+			TcpLimitFFbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpLimitFFbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpLimitFFbox.invalidate();
+
+		if(g_Tcp_LimitF)
+			TcpLimitFbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpLimitFbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpLimitFbox.invalidate();
+
+		if(g_Tcp_LimitR)
+			TcpLimitRbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpLimitRbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpLimitRbox.invalidate();
+
+		if(g_Tcp_LimitFR)
+			TcpLimitFRbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpLimitFRbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpLimitFRbox.invalidate();
+
+		if(g_Tcp_WireOut)
+			TcpWireOutbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpWireOutbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpWireOutbox.invalidate();
+
+		if(g_Tcp_EmgBrake)
+			TcpEmgBrakebox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
+		else
+			TcpEmgBrakebox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		TcpEmgBrakebox.invalidate();
+	}
 }

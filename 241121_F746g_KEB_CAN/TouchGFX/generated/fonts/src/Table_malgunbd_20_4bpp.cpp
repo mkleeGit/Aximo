@@ -133,7 +133,6 @@ KEEP extern const touchgfx::GlyphNode glyphs_malgunbd_20_4bpp[] FONT_TABLE_LOCAT
     {   324, 0xC900,  18,  17,  16,   1,  20,   0,   0, 0x00 },
     {   477, 0xC9C0,  17,  18,  17,   1,  20,   0,   0, 0x00 },
     {   639, 0xCE58,  17,  18,  17,   1,  20,   0,   0, 0x00 },
-    {   801, 0xCF1C,  17,  18,  17,   1,  20,   0,   0, 0x00 },
     {     0, 0xD0DC,  16,  18,  17,   2,  20,   0,   0, 0x00 },
     {   144, 0xD130,  16,  18,  17,   2,  20,   0,   0, 0x00 },
     {   288, 0xD45C,  18,  16,  16,   1,  20,   0,   0, 0x00 },
@@ -195,6 +194,6 @@ touchgfx::GeneratedFont& getFont_malgunbd_20_4bpp();
 
 touchgfx::GeneratedFont& getFont_malgunbd_20_4bpp()
 {
-    static touchgfx::GeneratedFont malgunbd_20_4bpp(glyphs_malgunbd_20_4bpp, 136, 25, 20, 0, 0, 4, 1, 2, 1, unicodes_malgunbd_20_4bpp, kerning_malgunbd_20_4bpp, 63, 0, 0, 0);
+    static touchgfx::GeneratedFont malgunbd_20_4bpp(glyphs_malgunbd_20_4bpp, 135, 25, 20, 0, 0, 4, 1, 2, 1, unicodes_malgunbd_20_4bpp, kerning_malgunbd_20_4bpp, 63, 0, 0, 0);
     return malgunbd_20_4bpp;
 }

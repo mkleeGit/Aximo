@@ -62,10 +62,10 @@ uint8_t* SerialWriteTx(uint8_t x)
 		cParaAdd[1] = 0x35;
 		cParaAdd[2] = 0x30;
 		cParaAdd[3] = 0x30;
-		cParaData[0] = GVL_cControlword[0];
-		cParaData[1] = GVL_cControlword[1];
-		cParaData[2] = GVL_cControlword[2];
-		cParaData[3] = GVL_cControlword[3];
+		cParaData[0] = g_st_PDOBuffer.u8RPDOControlword[0];
+		cParaData[1] = g_st_PDOBuffer.u8RPDOControlword[1];
+		cParaData[2] = g_st_PDOBuffer.u8RPDOControlword[2];
+		cParaData[3] = g_st_PDOBuffer.u8RPDOControlword[3];
 		cParaData[4] = 0;
 		cParaData[5] = 0;
 		cParaData[6] = 0;

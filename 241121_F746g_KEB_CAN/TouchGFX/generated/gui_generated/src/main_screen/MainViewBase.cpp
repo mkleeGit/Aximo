@@ -24,14 +24,16 @@ MainViewBase::MainViewBase() :
     add(MAIN_BACKGROUND);
 
     TITLE_BACKGROUND.setPosition(0, 0, 480, 39);
-    TITLE_BACKGROUND.setColor(touchgfx::Color::getColorFromRGB(41, 119, 255));
+    TITLE_BACKGROUND.setColor(touchgfx::Color::getColorFromRGB(92, 154, 255));
     add(TITLE_BACKGROUND);
 
-    KEB_Image.setXY(0, 0);
-    KEB_Image.setBitmap(touchgfx::Bitmap(BITMAP_KEB_ID));
-    add(KEB_Image);
+    AXIMOPICTURE.setBitmap(touchgfx::Bitmap(BITMAP_AXIMO200X146_ID));
+    AXIMOPICTURE.setPosition(-12, -34, 131, 106);
+    AXIMOPICTURE.setScalingAlgorithm(touchgfx::ScalableImage::NEAREST_NEIGHBOR);
+    add(AXIMOPICTURE);
 
-    Direct.setPosition(2, 39, 479, 233);
+    Direct.setPosition(0, 39, 479, 233);
+    Direct.setVisible(false);
     StopButton.setPosition(91, 84, 65, 65);
     DirectStopBox.setPosition(0, 0, 65, 65);
     DirectStopBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
@@ -277,7 +279,6 @@ MainViewBase::MainViewBase() :
     add(Direct);
 
     INVERTER.setPosition(0, 0, 481, 272);
-    INVERTER.setVisible(false);
     Homescreen.setPosition(223, -6, 100, 38);
     HomeScreenButton.setBoxWithBorderPosition(0, 0, 100, 38);
     HomeScreenButton.setBorderSize(5);
@@ -324,7 +325,7 @@ MainViewBase::MainViewBase() :
 
     INVERTER.add(Positionscreen);
 
-    STATE.setPosition(1, 39, 284, 89);
+    STATE.setPosition(1, 39, 477, 87);
     textEror.setXY(4, 56);
     textEror.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textEror.setLinespacing(0);
@@ -373,6 +374,7 @@ MainViewBase::MainViewBase() :
     INVERTER.add(STATE);
 
     Com_onoff.setPosition(394, 79, 86, 30);
+    Com_onoff.setVisible(false);
     Com_onoff_box.setPosition(0, 0, 86, 30);
     Com_onoff_box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     Com_onoff_box.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -567,10 +569,17 @@ MainViewBase::MainViewBase() :
 
     INVERTER.add(PosOption);
 
-    Reset.setPosition(285, 41, 80, 40);
+    Reset.setPosition(398, 43, 80, 40);
+    ResetBox.setPosition(0, 0, 80, 40);
+    ResetBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    ResetBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    ResetBox.setBorderSize(3);
+    Reset.add(ResetBox);
+
     ResetButton.setBoxWithBorderPosition(0, 0, 80, 40);
     ResetButton.setBorderSize(3);
     ResetButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    ResetButton.setAlpha(100);
     ResetButton.setAction(flexButtonCallback);
     ResetButton.setPosition(0, 0, 80, 40);
     Reset.add(ResetButton);
@@ -583,8 +592,9 @@ MainViewBase::MainViewBase() :
 
     INVERTER.add(Reset);
 
-    INVPOWER.setPosition(2, 155, 121, 115);
+    INVPOWER.setPosition(2, 155, 134, 114);
     Enable.setPosition(1, 26, 120, 39);
+    Enable.setVisible(false);
     EnableBox.setPosition(0, 0, 120, 39);
     EnableBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     EnableBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -607,22 +617,22 @@ MainViewBase::MainViewBase() :
 
     INVPOWER.add(Enable);
 
-    PowerON.setPosition(1, 70, 55, 45);
-    PowerONBox.setPosition(0, 0, 55, 45);
+    PowerON.setPosition(3, 45, 64, 61);
+    PowerONBox.setPosition(0, 0, 64, 61);
     PowerONBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     PowerONBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     PowerONBox.setBorderSize(3);
     PowerON.add(PowerONBox);
 
-    PowerONButton.setBoxWithBorderPosition(0, 0, 55, 45);
+    PowerONButton.setBoxWithBorderPosition(0, 0, 64, 61);
     PowerONButton.setBorderSize(3);
     PowerONButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     PowerONButton.setAlpha(100);
     PowerONButton.setAction(flexButtonCallback);
-    PowerONButton.setPosition(0, 0, 55, 45);
+    PowerONButton.setPosition(0, 0, 64, 61);
     PowerON.add(PowerONButton);
 
-    textPowerON.setXY(8, 10);
+    textPowerON.setXY(12, 18);
     textPowerON.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textPowerON.setLinespacing(0);
     textPowerON.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QEIH));
@@ -631,6 +641,7 @@ MainViewBase::MainViewBase() :
     INVPOWER.add(PowerON);
 
     PowerOFF.setPosition(66, 70, 55, 45);
+    PowerOFF.setVisible(false);
     PowerOFFBox.setPosition(0, 0, 55, 45);
     PowerOFFBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     PowerOFFBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -653,35 +664,13 @@ MainViewBase::MainViewBase() :
 
     INVPOWER.add(PowerOFF);
 
-    textPower.setXY(37, 0);
+    textPower.setXY(11, 13);
     textPower.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textPower.setLinespacing(0);
     textPower.setTypedText(touchgfx::TypedText(T___SINGLEUSE_FCVV));
     INVPOWER.add(textPower);
 
     INVERTER.add(INVPOWER);
-
-    MC_ON.setPosition(401, 41, 75, 35);
-    MC_ONbutton.setBoxWithBorderPosition(0, 0, 68, 30);
-    MC_ONbutton.setBorderSize(2);
-    MC_ONbutton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
-    MC_ONbutton.setAction(flexButtonCallback);
-    MC_ONbutton.setPosition(0, 0, 68, 30);
-    MC_ON.add(MC_ONbutton);
-
-    MC_OnBox.setPosition(0, 0, 75, 35);
-    MC_OnBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    MC_OnBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    MC_OnBox.setBorderSize(2);
-    MC_ON.add(MC_OnBox);
-
-    textMC_ON.setXY(2, 5);
-    textMC_ON.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textMC_ON.setLinespacing(0);
-    textMC_ON.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SBQJ));
-    MC_ON.add(textMC_ON);
-
-    INVERTER.add(MC_ON);
 
     Mode.setPosition(2, 122, 274, 33);
     MODEButton.setBoxWithBorderPosition(0, 0, 61, 33);
@@ -736,13 +725,13 @@ MainViewBase::MainViewBase() :
     Setting.setShadeColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     Setting.setShadeAlpha(150);
     Setting.hide();
-    textsettingMinpos.setXY(26, 97);
+    textsettingMinpos.setXY(25, 97);
     textsettingMinpos.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textsettingMinpos.setLinespacing(0);
     textsettingMinpos.setTypedText(touchgfx::TypedText(T___SINGLEUSE_36GT));
     Setting.add(textsettingMinpos);
 
-    textSettingMaxpos.setXY(26, 67);
+    textSettingMaxpos.setXY(25, 67);
     textSettingMaxpos.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textSettingMaxpos.setLinespacing(0);
     textSettingMaxpos.setTypedText(touchgfx::TypedText(T___SINGLEUSE_WT0J));
@@ -754,21 +743,21 @@ MainViewBase::MainViewBase() :
     textGearRatio.setTypedText(touchgfx::TypedText(T___SINGLEUSE_KWPH));
     Setting.add(textGearRatio);
 
-    GearDenominator_button.setBoxWithBorderPosition(0, 0, 105, 25);
+    GearDenominator_button.setBoxWithBorderPosition(0, 0, 99, 24);
     GearDenominator_button.setBorderSize(2);
     GearDenominator_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     GearDenominator_button.setAction(flexButtonCallback);
-    GearDenominator_button.setPosition(146, 163, 105, 25);
+    GearDenominator_button.setPosition(114, 163, 99, 24);
     Setting.add(GearDenominator_button);
 
-    GearNumerator_button.setBoxWithBorderPosition(0, 0, 105, 25);
+    GearNumerator_button.setBoxWithBorderPosition(0, 0, 99, 23);
     GearNumerator_button.setBorderSize(2);
     GearNumerator_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     GearNumerator_button.setAction(flexButtonCallback);
-    GearNumerator_button.setPosition(146, 125, 105, 25);
+    GearNumerator_button.setPosition(114, 125, 99, 23);
     Setting.add(GearNumerator_button);
 
-    textGearNum_value.setXY(156, 128);
+    textGearNum_value.setXY(124, 128);
     textGearNum_value.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textGearNum_value.setLinespacing(0);
     Unicode::snprintf(textGearNum_valueBuffer, TEXTGEARNUM_VALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_8Q96).getText());
@@ -777,13 +766,13 @@ MainViewBase::MainViewBase() :
     textGearNum_value.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BD09));
     Setting.add(textGearNum_value);
 
-    textMaxrpm.setXY(26, 39);
+    textMaxrpm.setXY(25, 39);
     textMaxrpm.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textMaxrpm.setLinespacing(0);
     textMaxrpm.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PE1M));
     Setting.add(textMaxrpm);
 
-    textGearDeno_value.setXY(154, 166);
+    textGearDeno_value.setXY(124, 166);
     textGearDeno_value.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textGearDeno_value.setLinespacing(0);
     Unicode::snprintf(textGearDeno_valueBuffer, TEXTGEARDENO_VALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_5U36).getText());
@@ -792,7 +781,7 @@ MainViewBase::MainViewBase() :
     textGearDeno_value.setTypedText(touchgfx::TypedText(T___SINGLEUSE_2UVS));
     Setting.add(textGearDeno_value);
 
-    line1.setPosition(135, 149, 134, 15);
+    line1.setPosition(103, 149, 134, 15);
     line1Painter.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     line1.setPainter(line1Painter);
     line1.setStart(5, 7);
@@ -805,17 +794,17 @@ MainViewBase::MainViewBase() :
     settingMaxposbutton.setBorderSize(2);
     settingMaxposbutton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 116, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     settingMaxposbutton.setAction(flexButtonCallback);
-    settingMaxposbutton.setPosition(111, 66, 75, 20);
+    settingMaxposbutton.setPosition(114, 66, 75, 20);
     Setting.add(settingMaxposbutton);
 
     settingMinposbutton.setBoxWithBorderPosition(0, 0, 75, 20);
     settingMinposbutton.setBorderSize(2);
     settingMinposbutton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 116, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     settingMinposbutton.setAction(flexButtonCallback);
-    settingMinposbutton.setPosition(111, 96, 75, 20);
+    settingMinposbutton.setPosition(114, 96, 75, 20);
     Setting.add(settingMinposbutton);
 
-    textsettingMaxposvalue.setXY(118, 67);
+    textsettingMaxposvalue.setXY(124, 67);
     textsettingMaxposvalue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textsettingMaxposvalue.setLinespacing(0);
     Unicode::snprintf(textsettingMaxposvalueBuffer, TEXTSETTINGMAXPOSVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_UQ7V).getText());
@@ -824,7 +813,7 @@ MainViewBase::MainViewBase() :
     textsettingMaxposvalue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SS0A));
     Setting.add(textsettingMaxposvalue);
 
-    textsettingMinposvalue.setXY(118, 98);
+    textsettingMinposvalue.setXY(124, 97);
     textsettingMinposvalue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textsettingMinposvalue.setLinespacing(0);
     Unicode::snprintf(textsettingMinposvalueBuffer, TEXTSETTINGMINPOSVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_KADZ).getText());
@@ -837,10 +826,10 @@ MainViewBase::MainViewBase() :
     SettingRpmButton.setBorderSize(2);
     SettingRpmButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     SettingRpmButton.setAction(flexButtonCallback);
-    SettingRpmButton.setPosition(146, 39, 75, 20);
+    SettingRpmButton.setPosition(114, 39, 75, 20);
     Setting.add(SettingRpmButton);
 
-    textsettingMaxrpmvalue.setXY(154, 40);
+    textsettingMaxrpmvalue.setXY(124, 40);
     textsettingMaxrpmvalue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textsettingMaxrpmvalue.setLinespacing(0);
     Unicode::snprintf(textsettingMaxrpmvalueBuffer, TEXTSETTINGMAXRPMVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_TOLI).getText());
@@ -855,15 +844,15 @@ MainViewBase::MainViewBase() :
     settingclosebutton.setAction(buttonCallback);
     Setting.add(settingclosebutton);
 
-    SettingSave.setPosition(398, 237, 76, 28);
-    SettingSavebutton.setBoxWithBorderPosition(0, 0, 76, 28);
+    SettingSave.setPosition(395, 230, 79, 36);
+    SettingSavebutton.setBoxWithBorderPosition(0, 0, 79, 36);
     SettingSavebutton.setBorderSize(2);
     SettingSavebutton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
     SettingSavebutton.setAction(flexButtonCallback);
-    SettingSavebutton.setPosition(0, 0, 76, 28);
+    SettingSavebutton.setPosition(0, 0, 79, 36);
     SettingSave.add(SettingSavebutton);
 
-    textSettingSave.setXY(17, 4);
+    textSettingSave.setXY(20, 9);
     textSettingSave.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textSettingSave.setLinespacing(0);
     textSettingSave.setTypedText(touchgfx::TypedText(T___SINGLEUSE_L7G2));
@@ -931,32 +920,32 @@ MainViewBase::MainViewBase() :
     textIP.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QKB3));
     Setting.add(textIP);
 
-    textmm1.setXY(189, 67);
+    textmm1.setXY(190, 67);
     textmm1.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textmm1.setLinespacing(0);
     textmm1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MDU8));
     Setting.add(textmm1);
 
-    textmm2.setXY(188, 98);
+    textmm2.setXY(190, 98);
     textmm2.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textmm2.setLinespacing(0);
     textmm2.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MS94));
     Setting.add(textmm2);
 
-    textmm3.setXY(234, 200);
+    textmm3.setXY(213, 199);
     textmm3.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textmm3.setLinespacing(0);
     textmm3.setTypedText(touchgfx::TypedText(T___SINGLEUSE_GC18));
     Setting.add(textmm3);
 
-    SettingDiameterButton.setBoxWithBorderPosition(0, 0, 105, 25);
+    SettingDiameterButton.setBoxWithBorderPosition(0, 0, 97, 25);
     SettingDiameterButton.setBorderSize(2);
     SettingDiameterButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     SettingDiameterButton.setAction(flexButtonCallback);
-    SettingDiameterButton.setPosition(126, 196, 105, 25);
+    SettingDiameterButton.setPosition(116, 196, 97, 25);
     Setting.add(SettingDiameterButton);
 
-    textDiametervalue.setXY(134, 199);
+    textDiametervalue.setXY(123, 200);
     textDiametervalue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textDiametervalue.setLinespacing(0);
     Unicode::snprintf(textDiametervalueBuffer, TEXTDIAMETERVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_JV73).getText());
@@ -965,7 +954,7 @@ MainViewBase::MainViewBase() :
     textDiametervalue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HNZT));
     Setting.add(textDiametervalue);
 
-    textDiameter.setXY(28, 199);
+    textDiameter.setXY(24, 199);
     textDiameter.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textDiameter.setLinespacing(0);
     textDiameter.setTypedText(touchgfx::TypedText(T___SINGLEUSE_0H9W));
@@ -978,61 +967,61 @@ MainViewBase::MainViewBase() :
     ServconnetButton.setPosition(17, 230, 92, 31);
     Setting.add(ServconnetButton);
 
-    textservconnect.setXY(39, 235);
+    textservconnect.setXY(23, 237);
     textservconnect.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textservconnect.setLinespacing(0);
     textservconnect.setTypedText(touchgfx::TypedText(T___SINGLEUSE_CVKH));
     Setting.add(textservconnect);
 
-    DriveTypeScroll.setPosition(290, 42, 125, 48);
+    DriveTypeScroll.setPosition(295, 7, 125, 48);
     DriveTypeScroll.setScrollbarsColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     DriveTypeScroll.setScrollbarsAlpha(255);
     DriveTypeScroll.setScrollbarsPermanentlyVisible();
-    TypeD_ENC.setPosition(3, 35, 100, 25);
-    TypeD_ENCBox.setPosition(0, 0, 100, 25);
-    TypeD_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    TypeD_ENCBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    TypeD_ENCBox.setBorderSize(2);
-    TypeD_ENC.add(TypeD_ENCBox);
+    TypeD_INC.setPosition(3, 35, 100, 25);
+    TypeD_INCBox.setPosition(0, 0, 100, 25);
+    TypeD_INCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    TypeD_INCBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeD_INCBox.setBorderSize(2);
+    TypeD_INC.add(TypeD_INCBox);
 
-    TypeD_ENCButton.setBoxWithBorderPosition(0, 0, 100, 25);
-    TypeD_ENCButton.setBorderSize(2);
-    TypeD_ENCButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
-    TypeD_ENCButton.setAlpha(100);
-    TypeD_ENCButton.setAction(flexButtonCallback);
-    TypeD_ENCButton.setPosition(0, 0, 100, 25);
-    TypeD_ENC.add(TypeD_ENCButton);
+    TypeD_INCButton.setBoxWithBorderPosition(0, 0, 100, 25);
+    TypeD_INCButton.setBorderSize(2);
+    TypeD_INCButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeD_INCButton.setAlpha(100);
+    TypeD_INCButton.setAction(flexButtonCallback);
+    TypeD_INCButton.setPosition(0, 0, 100, 25);
+    TypeD_INC.add(TypeD_INCButton);
 
-    textTypeD_ENC.setXY(22, 4);
-    textTypeD_ENC.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textTypeD_ENC.setLinespacing(0);
-    textTypeD_ENC.setTypedText(touchgfx::TypedText(T___SINGLEUSE_I5KW));
-    TypeD_ENC.add(textTypeD_ENC);
+    textTypeD_INC.setXY(22, 4);
+    textTypeD_INC.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTypeD_INC.setLinespacing(0);
+    textTypeD_INC.setTypedText(touchgfx::TypedText(T___SINGLEUSE_I5KW));
+    TypeD_INC.add(textTypeD_INC);
 
-    DriveTypeScroll.add(TypeD_ENC);
+    DriveTypeScroll.add(TypeD_INC);
 
-    TypeINV_ENC.setPosition(3, 67, 100, 25);
-    TypeINV_ENCBox.setPosition(0, 0, 100, 25);
-    TypeINV_ENCBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    TypeINV_ENCBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    TypeINV_ENCBox.setBorderSize(2);
-    TypeINV_ENC.add(TypeINV_ENCBox);
+    TypeINV_ABS.setPosition(3, 67, 100, 25);
+    TypeINV_ABSBox.setPosition(0, 0, 100, 25);
+    TypeINV_ABSBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    TypeINV_ABSBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeINV_ABSBox.setBorderSize(2);
+    TypeINV_ABS.add(TypeINV_ABSBox);
 
-    TypeINV_ENCButton.setBoxWithBorderPosition(0, 0, 100, 25);
-    TypeINV_ENCButton.setBorderSize(2);
-    TypeINV_ENCButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
-    TypeINV_ENCButton.setAlpha(100);
-    TypeINV_ENCButton.setAction(flexButtonCallback);
-    TypeINV_ENCButton.setPosition(0, 0, 100, 25);
-    TypeINV_ENC.add(TypeINV_ENCButton);
+    TypeINV_ABSButton.setBoxWithBorderPosition(0, 0, 100, 25);
+    TypeINV_ABSButton.setBorderSize(2);
+    TypeINV_ABSButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TypeINV_ABSButton.setAlpha(100);
+    TypeINV_ABSButton.setAction(flexButtonCallback);
+    TypeINV_ABSButton.setPosition(0, 0, 100, 25);
+    TypeINV_ABS.add(TypeINV_ABSButton);
 
-    textTypeINV_ENC.setXY(18, 4);
-    textTypeINV_ENC.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    textTypeINV_ENC.setLinespacing(0);
-    textTypeINV_ENC.setTypedText(touchgfx::TypedText(T___SINGLEUSE_IIL6));
-    TypeINV_ENC.add(textTypeINV_ENC);
+    textTypeINV_ABS.setXY(18, 4);
+    textTypeINV_ABS.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTypeINV_ABS.setLinespacing(0);
+    textTypeINV_ABS.setTypedText(touchgfx::TypedText(T___SINGLEUSE_IIL6));
+    TypeINV_ABS.add(textTypeINV_ABS);
 
-    DriveTypeScroll.add(TypeINV_ENC);
+    DriveTypeScroll.add(TypeINV_ABS);
 
     TypeD.setPosition(3, 3, 100, 25);
     TypeD_Box.setPosition(0, 0, 100, 25);
@@ -1063,27 +1052,78 @@ MainViewBase::MainViewBase() :
     
     radioButtonGroup1.setRadioButtonDeselectedHandler(radioButtonDeselectedCallback);
     
-    YoYoButton.setXY(333, 115);
+    YoYoButton.setXY(298, 80);
     YoYoButton.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_RADIO_MEDIUM_ROUNDED_ON_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_ON_DARK_ID));
     YoYoButton.setSelected(true);
     YoYoButton.setDeselectionEnabled(true);
     radioButtonGroup1.add(YoYoButton);
     Setting.add(YoYoButton);
 
-    textYoYo.setXY(277, 124);
+    radioButtonGroup3.setRadioButtonSelectedHandler(radioButtonSelectedCallback);
+    
+    radioButtonGroup3.setRadioButtonDeselectedHandler(radioButtonDeselectedCallback);
+    
+    WireOutButton.setXY(328, 124);
+    WireOutButton.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_RADIO_MEDIUM_ROUNDED_ON_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_ON_DARK_ID));
+    WireOutButton.setSelected(true);
+    WireOutButton.setDeselectionEnabled(true);
+    radioButtonGroup3.add(WireOutButton);
+    Setting.add(WireOutButton);
+
+    textYoYo.setXY(253, 93);
     textYoYo.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textYoYo.setLinespacing(0);
     textYoYo.setTypedText(touchgfx::TypedText(T___SINGLEUSE_88S8));
     Setting.add(textYoYo);
 
+    radioButtonGroup2.setRadioButtonSelectedHandler(radioButtonSelectedCallback);
+    
+    radioButtonGroup2.setRadioButtonDeselectedHandler(radioButtonDeselectedCallback);
+    
+    EmgBrakeButton.setXY(426, 80);
+    EmgBrakeButton.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_RADIO_MEDIUM_ROUNDED_ON_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_ON_DARK_ID));
+    EmgBrakeButton.setSelected(true);
+    EmgBrakeButton.setDeselectionEnabled(true);
+    radioButtonGroup2.add(EmgBrakeButton);
+    Setting.add(EmgBrakeButton);
+
+    radioButtonGroup4.setRadioButtonSelectedHandler(radioButtonSelectedCallback);
+    
+    radioButtonGroup4.setRadioButtonDeselectedHandler(radioButtonDeselectedCallback);
+    
+    ParkingButton.setXY(436, 124);
+    ParkingButton.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_RADIO_MEDIUM_ROUNDED_ON_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_OFF_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_RADIOBUTTON_CHECK_MEDIUM_ROUNDED_ON_DARK_ID));
+    ParkingButton.setSelected(true);
+    ParkingButton.setDeselectionEnabled(true);
+    radioButtonGroup4.add(ParkingButton);
+    Setting.add(ParkingButton);
+
+    textEmgBrake.setXY(342, 92);
+    textEmgBrake.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textEmgBrake.setLinespacing(0);
+    textEmgBrake.setTypedText(touchgfx::TypedText(T___SINGLEUSE_NGNR));
+    Setting.add(textEmgBrake);
+
+    textParking.setXY(370, 134);
+    textParking.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textParking.setLinespacing(0);
+    textParking.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ZSM5));
+    Setting.add(textParking);
+
+    textWireOut.setXY(253, 134);
+    textWireOut.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textWireOut.setLinespacing(0);
+    textWireOut.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SBYH));
+    Setting.add(textWireOut);
+
     SettingWireButton.setBoxWithBorderPosition(0, 0, 66, 24);
     SettingWireButton.setBorderSize(2);
     SettingWireButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     SettingWireButton.setAction(flexButtonCallback);
-    SettingWireButton.setPosition(331, 160, 66, 24);
+    SettingWireButton.setPosition(334, 161, 66, 24);
     Setting.add(SettingWireButton);
 
-    textWirevalue.setXY(340, 163);
+    textWirevalue.setXY(349, 164);
     textWirevalue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textWirevalue.setLinespacing(0);
     Unicode::snprintf(textWirevalueBuffer, TEXTWIREVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_GAKW).getText());
@@ -1092,19 +1132,19 @@ MainViewBase::MainViewBase() :
     textWirevalue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_KM0I));
     Setting.add(textWirevalue);
 
-    textWire.setXY(277, 163);
+    textWire.setXY(253, 164);
     textWire.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textWire.setLinespacing(0);
     textWire.setTypedText(touchgfx::TypedText(T___SINGLEUSE_KNRI));
     Setting.add(textWire);
 
-    textmm4.setXY(401, 165);
+    textmm4.setXY(405, 165);
     textmm4.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textmm4.setLinespacing(0);
     textmm4.setTypedText(touchgfx::TypedText(T___SINGLEUSE_A8KO));
     Setting.add(textmm4);
 
-    textEncPulse.setXY(277, 201);
+    textEncPulse.setXY(253, 188);
     textEncPulse.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textEncPulse.setLinespacing(0);
     textEncPulse.setTypedText(touchgfx::TypedText(T___SINGLEUSE_JDYF));
@@ -1114,10 +1154,10 @@ MainViewBase::MainViewBase() :
     SettingEncPulseButton.setBorderSize(2);
     SettingEncPulseButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     SettingEncPulseButton.setAction(flexButtonCallback);
-    SettingEncPulseButton.setPosition(376, 197, 66, 24);
+    SettingEncPulseButton.setPosition(336, 197, 66, 24);
     Setting.add(SettingEncPulseButton);
 
-    textEncPulsevalue.setXY(386, 201);
+    textEncPulsevalue.setXY(349, 200);
     textEncPulsevalue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textEncPulsevalue.setLinespacing(0);
     Unicode::snprintf(textEncPulsevalueBuffer, TEXTENCPULSEVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_FH78).getText());
@@ -1126,19 +1166,322 @@ MainViewBase::MainViewBase() :
     textEncPulsevalue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SPBS));
     Setting.add(textEncPulsevalue);
 
-    textmm5.setXY(444, 202);
+    textmm5.setXY(406, 202);
     textmm5.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textmm5.setLinespacing(0);
     textmm5.setTypedText(touchgfx::TypedText(T___SINGLEUSE_TTS8));
     Setting.add(textmm5);
 
-    textType.setXY(244, 48);
+    textType.setXY(253, 12);
     textType.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textType.setLinespacing(0);
     textType.setTypedText(touchgfx::TypedText(T___SINGLEUSE_O7ZE));
     Setting.add(textType);
 
+    IOPOPUPShowButton.setXY(203, 228);
+    IOPOPUPShowButton.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_REGULAR_HEIGHT_36_TINY_ROUNDED_INACTIVE_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_REGULAR_HEIGHT_36_TINY_ROUNDED_NORMAL_ID));
+    IOPOPUPShowButton.setLabelText(touchgfx::TypedText(T___SINGLEUSE_XBNR));
+    IOPOPUPShowButton.setLabelColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IOPOPUPShowButton.setLabelColorPressed(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IOPOPUPShowButton.setAction(buttonCallback);
+    Setting.add(IOPOPUPShowButton);
+
+    MC_ON.setPosition(119, 228, 75, 35);
+    MC_ONbutton.setBoxWithBorderPosition(0, 0, 75, 35);
+    MC_ONbutton.setBorderSize(2);
+    MC_ONbutton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    MC_ONbutton.setAction(flexButtonCallback);
+    MC_ONbutton.setPosition(0, 0, 75, 35);
+    MC_ON.add(MC_ONbutton);
+
+    MC_OnBox.setPosition(0, 0, 75, 35);
+    MC_OnBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    MC_OnBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    MC_OnBox.setBorderSize(2);
+    MC_OnBox.setAlpha(100);
+    MC_ON.add(MC_OnBox);
+
+    textMC_ON.setXY(2, 5);
+    textMC_ON.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textMC_ON.setLinespacing(0);
+    textMC_ON.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SBQJ));
+    MC_ON.add(textMC_ON);
+
+    Setting.add(MC_ON);
+
     add(Setting);
+
+    IOState.setBackground(touchgfx::BitmapId(BITMAP_ALTERNATE_THEME_IMAGES_CONTAINERS_MEDIUM_NARROW_OUTLINED_LIGHT_ID), 120, 1);
+    IOState.setShadeColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IOState.setShadeAlpha(150);
+    IOState.hide();
+    IO_INPUT_text01.setXY(13, 12);
+    IO_INPUT_text01.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text01.setLinespacing(0);
+    IO_INPUT_text01.setTypedText(touchgfx::TypedText(T___SINGLEUSE_UQUK));
+    IOState.add(IO_INPUT_text01);
+
+    IO_INPUT_text02.setXY(13, 36);
+    IO_INPUT_text02.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text02.setLinespacing(0);
+    IO_INPUT_text02.setTypedText(touchgfx::TypedText(T___SINGLEUSE_TMC5));
+    IOState.add(IO_INPUT_text02);
+
+    IO_INPUT_text03.setXY(13, 62);
+    IO_INPUT_text03.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text03.setLinespacing(0);
+    IO_INPUT_text03.setTypedText(touchgfx::TypedText(T___SINGLEUSE_1G5X));
+    IOState.add(IO_INPUT_text03);
+
+    IO_INPUT_text04.setXY(13, 87);
+    IO_INPUT_text04.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text04.setLinespacing(0);
+    IO_INPUT_text04.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MEDN));
+    IOState.add(IO_INPUT_text04);
+
+    IO_INPUT_text05.setXY(13, 113);
+    IO_INPUT_text05.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text05.setLinespacing(0);
+    IO_INPUT_text05.setTypedText(touchgfx::TypedText(T___SINGLEUSE_34WB));
+    IOState.add(IO_INPUT_text05);
+
+    IO_INPUT_text06.setXY(13, 139);
+    IO_INPUT_text06.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text06.setLinespacing(0);
+    IO_INPUT_text06.setTypedText(touchgfx::TypedText(T___SINGLEUSE_YTJG));
+    IOState.add(IO_INPUT_text06);
+
+    IO_INPUT_text07.setXY(13, 165);
+    IO_INPUT_text07.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text07.setLinespacing(0);
+    IO_INPUT_text07.setTypedText(touchgfx::TypedText(T___SINGLEUSE_747V));
+    IOState.add(IO_INPUT_text07);
+
+    IO_INPUT_text08.setXY(13, 190);
+    IO_INPUT_text08.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text08.setLinespacing(0);
+    IO_INPUT_text08.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SRW7));
+    IOState.add(IO_INPUT_text08);
+
+    IO_INPUT_text09.setXY(13, 216);
+    IO_INPUT_text09.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text09.setLinespacing(0);
+    IO_INPUT_text09.setTypedText(touchgfx::TypedText(T___SINGLEUSE_TH71));
+    IOState.add(IO_INPUT_text09);
+
+    IO_INPUT_text10.setXY(13, 242);
+    IO_INPUT_text10.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text10.setLinespacing(0);
+    IO_INPUT_text10.setTypedText(touchgfx::TypedText(T___SINGLEUSE_YHRV));
+    IOState.add(IO_INPUT_text10);
+
+    IO_INPUT_text11.setXY(84, 12);
+    IO_INPUT_text11.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text11.setLinespacing(0);
+    IO_INPUT_text11.setTypedText(touchgfx::TypedText(T___SINGLEUSE_EHTW));
+    IOState.add(IO_INPUT_text11);
+
+    IO_INPUT_text12.setXY(83, 36);
+    IO_INPUT_text12.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text12.setLinespacing(0);
+    IO_INPUT_text12.setTypedText(touchgfx::TypedText(T___SINGLEUSE_4D9J));
+    IOState.add(IO_INPUT_text12);
+
+    IO_INPUT_text13.setXY(83, 62);
+    IO_INPUT_text13.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text13.setLinespacing(0);
+    IO_INPUT_text13.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SQ7M));
+    IOState.add(IO_INPUT_text13);
+
+    IO_INPUT_text14.setXY(82, 87);
+    IO_INPUT_text14.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text14.setLinespacing(0);
+    IO_INPUT_text14.setTypedText(touchgfx::TypedText(T___SINGLEUSE_Y59I));
+    IOState.add(IO_INPUT_text14);
+
+    IO_INPUT_text15.setXY(83, 113);
+    IO_INPUT_text15.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text15.setLinespacing(0);
+    IO_INPUT_text15.setTypedText(touchgfx::TypedText(T___SINGLEUSE_NAYO));
+    IOState.add(IO_INPUT_text15);
+
+    IO_INPUT_text16.setXY(84, 140);
+    IO_INPUT_text16.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_INPUT_text16.setLinespacing(0);
+    IO_INPUT_text16.setTypedText(touchgfx::TypedText(T___SINGLEUSE_2KKV));
+    IOState.add(IO_INPUT_text16);
+
+    IO_INPUT_LAMP_Box1.setPosition(58, 14, 18, 18);
+    IO_INPUT_LAMP_Box1.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box1);
+
+    IO_INPUT_LAMP_Box11.setPosition(127, 14, 18, 18);
+    IO_INPUT_LAMP_Box11.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box11);
+
+    IO_INPUT_LAMP_Box12.setPosition(127, 38, 18, 18);
+    IO_INPUT_LAMP_Box12.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box12);
+
+    IO_INPUT_LAMP_Box13.setPosition(127, 65, 18, 18);
+    IO_INPUT_LAMP_Box13.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box13);
+
+    IO_INPUT_LAMP_Box14.setPosition(127, 88, 18, 18);
+    IO_INPUT_LAMP_Box14.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box14);
+
+    IO_INPUT_LAMP_Box15.setPosition(127, 115, 18, 18);
+    IO_INPUT_LAMP_Box15.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box15);
+
+    IO_INPUT_LAMP_Box16.setPosition(127, 141, 18, 18);
+    IO_INPUT_LAMP_Box16.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box16);
+
+    IO_INPUT_LAMP_Box2.setPosition(58, 38, 18, 18);
+    IO_INPUT_LAMP_Box2.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box2);
+
+    IO_INPUT_LAMP_Box3.setPosition(58, 64, 18, 18);
+    IO_INPUT_LAMP_Box3.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box3);
+
+    IO_INPUT_LAMP_Box4.setPosition(58, 90, 18, 18);
+    IO_INPUT_LAMP_Box4.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box4);
+
+    IO_INPUT_LAMP_Box5.setPosition(58, 116, 18, 18);
+    IO_INPUT_LAMP_Box5.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box5);
+
+    IO_INPUT_LAMP_Box6.setPosition(58, 140, 18, 18);
+    IO_INPUT_LAMP_Box6.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box6);
+
+    IO_INPUT_LAMP_Box7.setPosition(58, 168, 18, 18);
+    IO_INPUT_LAMP_Box7.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box7);
+
+    IO_INPUT_LAMP_Box8.setPosition(58, 192, 18, 18);
+    IO_INPUT_LAMP_Box8.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box8);
+
+    IO_INPUT_LAMP_Box9.setPosition(58, 218, 18, 18);
+    IO_INPUT_LAMP_Box9.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box9);
+
+    IO_INPUT_LAMP_Box10.setPosition(58, 242, 18, 18);
+    IO_INPUT_LAMP_Box10.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_INPUT_LAMP_Box10);
+
+    IO_OUTPUT_text01.setXY(162, 42);
+    IO_OUTPUT_text01.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text01.setLinespacing(0);
+    IO_OUTPUT_text01.setTypedText(touchgfx::TypedText(T___SINGLEUSE_0E2H));
+    IOState.add(IO_OUTPUT_text01);
+
+    IO_OUTPUT_text02.setXY(162, 64);
+    IO_OUTPUT_text02.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text02.setLinespacing(0);
+    IO_OUTPUT_text02.setTypedText(touchgfx::TypedText(T___SINGLEUSE_CEQ6));
+    IOState.add(IO_OUTPUT_text02);
+
+    IO_OUTPUT_text03.setXY(162, 86);
+    IO_OUTPUT_text03.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text03.setLinespacing(0);
+    IO_OUTPUT_text03.setTypedText(touchgfx::TypedText(T___SINGLEUSE_T9AF));
+    IOState.add(IO_OUTPUT_text03);
+
+    IO_OUTPUT_text04.setXY(162, 109);
+    IO_OUTPUT_text04.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text04.setLinespacing(0);
+    IO_OUTPUT_text04.setTypedText(touchgfx::TypedText(T___SINGLEUSE_NGI5));
+    IOState.add(IO_OUTPUT_text04);
+
+    IO_OUTPUT_text05.setXY(162, 133);
+    IO_OUTPUT_text05.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text05.setLinespacing(0);
+    IO_OUTPUT_text05.setTypedText(touchgfx::TypedText(T___SINGLEUSE_OA7A));
+    IOState.add(IO_OUTPUT_text05);
+
+    IO_OUTPUT_text06.setXY(162, 155);
+    IO_OUTPUT_text06.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text06.setLinespacing(0);
+    IO_OUTPUT_text06.setTypedText(touchgfx::TypedText(T___SINGLEUSE_68ED));
+    IOState.add(IO_OUTPUT_text06);
+
+    IO_OUTPUT_text07.setXY(162, 177);
+    IO_OUTPUT_text07.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text07.setLinespacing(0);
+    IO_OUTPUT_text07.setTypedText(touchgfx::TypedText(T___SINGLEUSE_J6H5));
+    IOState.add(IO_OUTPUT_text07);
+
+    IO_OUTPUT_text08.setXY(162, 200);
+    IO_OUTPUT_text08.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text08.setLinespacing(0);
+    IO_OUTPUT_text08.setTypedText(touchgfx::TypedText(T___SINGLEUSE_UQ5Y));
+    IOState.add(IO_OUTPUT_text08);
+
+    IO_OUTPUT_text09.setXY(162, 223);
+    IO_OUTPUT_text09.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text09.setLinespacing(0);
+    IO_OUTPUT_text09.setTypedText(touchgfx::TypedText(T___SINGLEUSE_TXKK));
+    IOState.add(IO_OUTPUT_text09);
+
+    IO_OUTPUT_text10.setXY(162, 247);
+    IO_OUTPUT_text10.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    IO_OUTPUT_text10.setLinespacing(0);
+    IO_OUTPUT_text10.setTypedText(touchgfx::TypedText(T___SINGLEUSE_WUYP));
+    IOState.add(IO_OUTPUT_text10);
+
+    IO_OUTPUT_LAMP_Box1.setPosition(213, 44, 18, 18);
+    IO_OUTPUT_LAMP_Box1.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box1);
+
+    IO_OUTPUT_LAMP_Box2.setPosition(213, 65, 18, 18);
+    IO_OUTPUT_LAMP_Box2.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box2);
+
+    IO_OUTPUT_LAMP_Box3.setPosition(213, 88, 18, 18);
+    IO_OUTPUT_LAMP_Box3.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box3);
+
+    IO_OUTPUT_LAMP_Box4.setPosition(213, 110, 18, 18);
+    IO_OUTPUT_LAMP_Box4.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box4);
+
+    IO_OUTPUT_LAMP_Box5.setPosition(213, 134, 18, 18);
+    IO_OUTPUT_LAMP_Box5.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box5);
+
+    IO_OUTPUT_LAMP_Box6.setPosition(213, 156, 18, 18);
+    IO_OUTPUT_LAMP_Box6.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box6);
+
+    IO_OUTPUT_LAMP_Box7.setPosition(213, 178, 18, 18);
+    IO_OUTPUT_LAMP_Box7.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box7);
+
+    IO_OUTPUT_LAMP_Box8.setPosition(213, 201, 18, 18);
+    IO_OUTPUT_LAMP_Box8.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box8);
+
+    IO_OUTPUT_LAMP_Box9.setPosition(213, 223, 18, 18);
+    IO_OUTPUT_LAMP_Box9.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box9);
+
+    IO_OUTPUT_LAMP_Box10.setPosition(213, 245, 18, 18);
+    IO_OUTPUT_LAMP_Box10.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    IOState.add(IO_OUTPUT_LAMP_Box10);
+
+    IOPOPUPclosebutton.setXY(203, 1);
+    IOPOPUPclosebutton.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_ICON_ROUNDED_MICRO_OUTLINE_NORMAL_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_ICON_ROUNDED_MICRO_OUTLINE_PRESSED_ID), touchgfx::Bitmap(BITMAP_ICON_THEME_IMAGES_NAVIGATION_CLOSE_50_50_000000_SVG_ID), touchgfx::Bitmap(BITMAP_ICON_THEME_IMAGES_CONTENT_CLEAR_50_50_FFFFFF_SVG_ID));
+    IOPOPUPclosebutton.setIconXY(-7, -7);
+    IOPOPUPclosebutton.setAction(buttonCallback);
+    IOState.add(IOPOPUPclosebutton);
+
+    add(IOState);
 
     Popup_PowerState.setBackground(touchgfx::BitmapId(BITMAP_ALTERNATE_THEME_IMAGES_CONTAINERS_SMALL_WIDE_OUTLINED_LIGHT_ID), 133, 61);
     Popup_PowerState.setShadeColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -1307,20 +1650,363 @@ MainViewBase::MainViewBase() :
 
     add(Numkeypad);
 
-    RemoteAlarm.setBackground(touchgfx::BitmapId(BITMAP_ALTERNATE_THEME_IMAGES_CONTAINERS_SMALL_WIDE_OUTLINED_LIGHT_ID), 133, 61);
+    STM_EMG.setPosition(5, 164, 240, 103);
+    STM_EMG.setVisible(false);
+    boxWithBorder5.setPosition(0, 0, 240, 103);
+    boxWithBorder5.setColor(touchgfx::Color::getColorFromRGB(255, 130, 130));
+    boxWithBorder5.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    boxWithBorder5.setBorderSize(1);
+    STM_EMG.add(boxWithBorder5);
+
+    textArea12.setXY(83, 71);
+    textArea12.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textArea12.setLinespacing(0);
+    textArea12.setTypedText(touchgfx::TypedText(T___SINGLEUSE_VY2I));
+    STM_EMG.add(textArea12);
+
+    scalableImage2.setBitmap(touchgfx::Bitmap(BITMAP_FREE_ICON_CAUTION_SIGN_75243_ID));
+    scalableImage2.setPosition(96, 12, 51, 50);
+    scalableImage2.setScalingAlgorithm(touchgfx::ScalableImage::NEAREST_NEIGHBOR);
+    STM_EMG.add(scalableImage2);
+
+    add(STM_EMG);
+
+    RemoteAlarm.setBackground(touchgfx::BitmapId(BITMAP_ALTERNATE_THEME_IMAGES_CONTAINERS_MEDIUM_WIDE_OUTLINED_LIGHT_ID), 55, 1);
     RemoteAlarm.setShadeColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     RemoteAlarm.setShadeAlpha(150);
     RemoteAlarm.hide();
-    textremotealarm.setXY(41, 79);
+    textremotealarm.setXY(127, 12);
     textremotealarm.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textremotealarm.setLinespacing(0);
     textremotealarm.setTypedText(touchgfx::TypedText(T___SINGLEUSE_U5E9));
     RemoteAlarm.add(textremotealarm);
 
     AlarmImage.setBitmap(touchgfx::Bitmap(BITMAP_FREE_ICON_CAUTION_SIGN_75243_ID));
-    AlarmImage.setPosition(72, 11, 68, 68);
+    AlarmImage.setPosition(81, 3, 37, 35);
     AlarmImage.setScalingAlgorithm(touchgfx::ScalableImage::NEAREST_NEIGHBOR);
     RemoteAlarm.add(AlarmImage);
+
+    TcpSTMDrivescroll.setPosition(7, 49, 171, 208);
+    TcpSTMDrivescroll.setScrollbarsColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TcpSTMDrivescroll.setScrollbarsAlpha(255);
+    TcpSTMDrivescroll.setScrollbarsPermanentlyVisible();
+    textTcpRemoteEnable.setXY(2, -3);
+    textTcpRemoteEnable.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpRemoteEnable.setLinespacing(0);
+    textTcpRemoteEnable.setTypedText(touchgfx::TypedText(T___SINGLEUSE_K6W9));
+    TcpSTMDrivescroll.add(textTcpRemoteEnable);
+
+    textTcpConsoleEMG.setXY(2, 34);
+    textTcpConsoleEMG.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpConsoleEMG.setLinespacing(0);
+    textTcpConsoleEMG.setTypedText(touchgfx::TypedText(T___SINGLEUSE_4UTS));
+    TcpSTMDrivescroll.add(textTcpConsoleEMG);
+
+    textTcpMcOn.setXY(2, 54);
+    textTcpMcOn.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpMcOn.setLinespacing(0);
+    textTcpMcOn.setTypedText(touchgfx::TypedText(T___SINGLEUSE_AOLN));
+    TcpSTMDrivescroll.add(textTcpMcOn);
+
+    textTcpSTMDriveType.setXY(2, 74);
+    textTcpSTMDriveType.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMDriveType.setLinespacing(0);
+    textTcpSTMDriveType.setTypedText(touchgfx::TypedText(T___SINGLEUSE_EAE9));
+    TcpSTMDrivescroll.add(textTcpSTMDriveType);
+
+    textTcpSTMDriveTypeValue.setXY(103, 75);
+    textTcpSTMDriveTypeValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMDriveTypeValue.setLinespacing(0);
+    Unicode::snprintf(textTcpSTMDriveTypeValueBuffer, TEXTTCPSTMDRIVETYPEVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_R20L).getText());
+    textTcpSTMDriveTypeValue.setWildcard(textTcpSTMDriveTypeValueBuffer);
+    textTcpSTMDriveTypeValue.resizeToCurrentText();
+    textTcpSTMDriveTypeValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_33P2));
+    TcpSTMDrivescroll.add(textTcpSTMDriveTypeValue);
+
+    textTcpSTMPower.setXY(2, 94);
+    textTcpSTMPower.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMPower.setLinespacing(0);
+    textTcpSTMPower.setTypedText(touchgfx::TypedText(T___SINGLEUSE_G19Z));
+    TcpSTMDrivescroll.add(textTcpSTMPower);
+
+    textTcpSTMStart.setXY(2, 113);
+    textTcpSTMStart.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMStart.setLinespacing(0);
+    textTcpSTMStart.setTypedText(touchgfx::TypedText(T___SINGLEUSE_9D1P));
+    TcpSTMDrivescroll.add(textTcpSTMStart);
+
+    textTcpSTMStop.setXY(2, 132);
+    textTcpSTMStop.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMStop.setLinespacing(0);
+    textTcpSTMStop.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ZLW9));
+    TcpSTMDrivescroll.add(textTcpSTMStop);
+
+    textTcpSTMReset.setXY(2, 151);
+    textTcpSTMReset.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMReset.setLinespacing(0);
+    textTcpSTMReset.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BPGJ));
+    TcpSTMDrivescroll.add(textTcpSTMReset);
+
+    textTcpSTMHomeSet.setXY(2, 171);
+    textTcpSTMHomeSet.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMHomeSet.setLinespacing(0);
+    textTcpSTMHomeSet.setTypedText(touchgfx::TypedText(T___SINGLEUSE_YH1I));
+    TcpSTMDrivescroll.add(textTcpSTMHomeSet);
+
+    textTcpHomeSetPos.setXY(2, 192);
+    textTcpHomeSetPos.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpHomeSetPos.setLinespacing(0);
+    textTcpHomeSetPos.setTypedText(touchgfx::TypedText(T___SINGLEUSE_YYOT));
+    TcpSTMDrivescroll.add(textTcpHomeSetPos);
+
+    textTcpSTMHomeSetPosValue.setXY(103, 192);
+    textTcpSTMHomeSetPosValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMHomeSetPosValue.setLinespacing(0);
+    Unicode::snprintf(textTcpSTMHomeSetPosValueBuffer, TEXTTCPSTMHOMESETPOSVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_BY5X).getText());
+    textTcpSTMHomeSetPosValue.setWildcard(textTcpSTMHomeSetPosValueBuffer);
+    textTcpSTMHomeSetPosValue.resizeToCurrentText();
+    textTcpSTMHomeSetPosValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_3Z1A));
+    TcpSTMDrivescroll.add(textTcpSTMHomeSetPosValue);
+
+    textTcpSTMTargetPos.setXY(2, 212);
+    textTcpSTMTargetPos.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMTargetPos.setLinespacing(0);
+    textTcpSTMTargetPos.setTypedText(touchgfx::TypedText(T___SINGLEUSE_JJ4I));
+    TcpSTMDrivescroll.add(textTcpSTMTargetPos);
+
+    textTcpSTMTargetPosValue.setXY(103, 212);
+    textTcpSTMTargetPosValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMTargetPosValue.setLinespacing(0);
+    Unicode::snprintf(textTcpSTMTargetPosValueBuffer, TEXTTCPSTMTARGETPOSVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_PW02).getText());
+    textTcpSTMTargetPosValue.setWildcard(textTcpSTMTargetPosValueBuffer);
+    textTcpSTMTargetPosValue.resizeToCurrentText();
+    textTcpSTMTargetPosValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QW4A));
+    TcpSTMDrivescroll.add(textTcpSTMTargetPosValue);
+
+    textTcpSTMSpeed.setXY(2, 232);
+    textTcpSTMSpeed.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMSpeed.setLinespacing(0);
+    textTcpSTMSpeed.setTypedText(touchgfx::TypedText(T___SINGLEUSE_OTJF));
+    TcpSTMDrivescroll.add(textTcpSTMSpeed);
+
+    textTcpSTMSpeedValue.setXY(103, 231);
+    textTcpSTMSpeedValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMSpeedValue.setLinespacing(0);
+    Unicode::snprintf(textTcpSTMSpeedValueBuffer, TEXTTCPSTMSPEEDVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_XCC8).getText());
+    textTcpSTMSpeedValue.setWildcard(textTcpSTMSpeedValueBuffer);
+    textTcpSTMSpeedValue.resizeToCurrentText();
+    textTcpSTMSpeedValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_JV77));
+    TcpSTMDrivescroll.add(textTcpSTMSpeedValue);
+
+    textTcpSTMDirectUp.setXY(0, 253);
+    textTcpSTMDirectUp.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMDirectUp.setLinespacing(0);
+    textTcpSTMDirectUp.setTypedText(touchgfx::TypedText(T___SINGLEUSE_CC56));
+    TcpSTMDrivescroll.add(textTcpSTMDirectUp);
+
+    textTcpSTMDirectDown.setXY(0, 272);
+    textTcpSTMDirectDown.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMDirectDown.setLinespacing(0);
+    textTcpSTMDirectDown.setTypedText(touchgfx::TypedText(T___SINGLEUSE_IHSQ));
+    TcpSTMDrivescroll.add(textTcpSTMDirectDown);
+
+    textTcpSTMDirectStop.setXY(0, 291);
+    textTcpSTMDirectStop.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpSTMDirectStop.setLinespacing(0);
+    textTcpSTMDirectStop.setTypedText(touchgfx::TypedText(T___SINGLEUSE_NIUL));
+    TcpSTMDrivescroll.add(textTcpSTMDirectStop);
+
+    TcpSTMRemoteEnablebox.setPosition(105, 7, 15, 15);
+    TcpSTMRemoteEnablebox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMRemoteEnablebox);
+
+    TcpSTMConsoleEmgbox.setPosition(105, 36, 15, 15);
+    TcpSTMConsoleEmgbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMConsoleEmgbox);
+
+    TcpSTMMcOnbox.setPosition(105, 57, 15, 15);
+    TcpSTMMcOnbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMMcOnbox);
+
+    TcpSTMPowerbox.setPosition(105, 96, 15, 15);
+    TcpSTMPowerbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMPowerbox);
+
+    TcpSTMStartbox.setPosition(105, 115, 15, 15);
+    TcpSTMStartbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMStartbox);
+
+    TcpSTMStopbox.setPosition(105, 135, 15, 15);
+    TcpSTMStopbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMStopbox);
+
+    TcpSTMResetbox.setPosition(105, 154, 15, 15);
+    TcpSTMResetbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMResetbox);
+
+    TcpSTMHomeSetbox.setPosition(105, 174, 15, 15);
+    TcpSTMHomeSetbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMHomeSetbox);
+
+    TcpSTMDirectUpbox.setPosition(105, 254, 15, 15);
+    TcpSTMDirectUpbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMDirectUpbox);
+
+    TcpSTMDirectDownbox.setPosition(105, 275, 15, 15);
+    TcpSTMDirectDownbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMDirectDownbox);
+
+    TcpSTMDirectStopbox.setPosition(105, 295, 15, 15);
+    TcpSTMDirectStopbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDrivescroll.add(TcpSTMDirectStopbox);
+
+    RemoteAlarm.add(TcpSTMDrivescroll);
+
+    TcpSTMDisplayDirvescroll.setPosition(194, 49, 167, 208);
+    TcpSTMDisplayDirvescroll.setScrollbarsColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    TcpSTMDisplayDirvescroll.setScrollbarsAlpha(255);
+    TcpSTMDisplayDirvescroll.setScrollbarsPermanentlyVisible();
+    textTcpLocalCtrlOn.setXY(2, -2);
+    textTcpLocalCtrlOn.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpLocalCtrlOn.setLinespacing(0);
+    textTcpLocalCtrlOn.setTypedText(touchgfx::TypedText(T___SINGLEUSE_TYQU));
+    TcpSTMDisplayDirvescroll.add(textTcpLocalCtrlOn);
+
+    textTcpPowerStatus.setXY(2, 17);
+    textTcpPowerStatus.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpPowerStatus.setLinespacing(0);
+    textTcpPowerStatus.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HOO0));
+    TcpSTMDisplayDirvescroll.add(textTcpPowerStatus);
+
+    textTcpIsRunning.setXY(2, 35);
+    textTcpIsRunning.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpIsRunning.setLinespacing(0);
+    textTcpIsRunning.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PH8C));
+    TcpSTMDisplayDirvescroll.add(textTcpIsRunning);
+
+    textTcpIsArrived.setXY(2, 54);
+    textTcpIsArrived.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpIsArrived.setLinespacing(0);
+    textTcpIsArrived.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MGI4));
+    TcpSTMDisplayDirvescroll.add(textTcpIsArrived);
+
+    textTcpActPos.setXY(2, 74);
+    textTcpActPos.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpActPos.setLinespacing(0);
+    textTcpActPos.setTypedText(touchgfx::TypedText(T___SINGLEUSE_VGAV));
+    TcpSTMDisplayDirvescroll.add(textTcpActPos);
+
+    textTcpActPosValue.setXY(106, 75);
+    textTcpActPosValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpActPosValue.setLinespacing(0);
+    Unicode::snprintf(textTcpActPosValueBuffer, TEXTTCPACTPOSVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_XC4D).getText());
+    textTcpActPosValue.setWildcard(textTcpActPosValueBuffer);
+    textTcpActPosValue.resizeToCurrentText();
+    textTcpActPosValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_47VB));
+    TcpSTMDisplayDirvescroll.add(textTcpActPosValue);
+
+    textTcpIsError.setXY(2, 94);
+    textTcpIsError.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpIsError.setLinespacing(0);
+    textTcpIsError.setTypedText(touchgfx::TypedText(T___SINGLEUSE_SO8W));
+    TcpSTMDisplayDirvescroll.add(textTcpIsError);
+
+    textTcpErrorCode.setXY(2, 112);
+    textTcpErrorCode.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpErrorCode.setLinespacing(0);
+    textTcpErrorCode.setTypedText(touchgfx::TypedText(T___SINGLEUSE_XRF0));
+    TcpSTMDisplayDirvescroll.add(textTcpErrorCode);
+
+    textTcpErrorCodeValue.setXY(106, 114);
+    textTcpErrorCodeValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpErrorCodeValue.setLinespacing(0);
+    Unicode::snprintf(textTcpErrorCodeValueBuffer, TEXTTCPERRORCODEVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_Q8TG).getText());
+    textTcpErrorCodeValue.setWildcard(textTcpErrorCodeValueBuffer);
+    textTcpErrorCodeValue.resizeToCurrentText();
+    textTcpErrorCodeValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MF07));
+    TcpSTMDisplayDirvescroll.add(textTcpErrorCodeValue);
+
+    textTcpLimitFF.setXY(2, 132);
+    textTcpLimitFF.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpLimitFF.setLinespacing(0);
+    textTcpLimitFF.setTypedText(touchgfx::TypedText(T___SINGLEUSE_R9F2));
+    TcpSTMDisplayDirvescroll.add(textTcpLimitFF);
+
+    textTcpLimitF.setXY(2, 153);
+    textTcpLimitF.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpLimitF.setLinespacing(0);
+    textTcpLimitF.setTypedText(touchgfx::TypedText(T___SINGLEUSE_CMIQ));
+    TcpSTMDisplayDirvescroll.add(textTcpLimitF);
+
+    textTcpLimitR.setXY(1, 172);
+    textTcpLimitR.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpLimitR.setLinespacing(0);
+    textTcpLimitR.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MX12));
+    TcpSTMDisplayDirvescroll.add(textTcpLimitR);
+
+    textTcpLimitFR.setXY(1, 192);
+    textTcpLimitFR.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpLimitFR.setLinespacing(0);
+    textTcpLimitFR.setTypedText(touchgfx::TypedText(T___SINGLEUSE_I5AX));
+    TcpSTMDisplayDirvescroll.add(textTcpLimitFR);
+
+    textTcpWireOut.setXY(1, 212);
+    textTcpWireOut.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpWireOut.setLinespacing(0);
+    textTcpWireOut.setTypedText(touchgfx::TypedText(T___SINGLEUSE_Q9DX));
+    TcpSTMDisplayDirvescroll.add(textTcpWireOut);
+
+    textTcpBrake.setXY(0, 231);
+    textTcpBrake.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textTcpBrake.setLinespacing(0);
+    textTcpBrake.setTypedText(touchgfx::TypedText(T___SINGLEUSE_JANO));
+    TcpSTMDisplayDirvescroll.add(textTcpBrake);
+
+    TcpIsLocalCtrlOnbox.setPosition(106, 1, 15, 15);
+    TcpIsLocalCtrlOnbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpIsLocalCtrlOnbox);
+
+    TcpIsPowerStatusbox.setPosition(106, 20, 15, 15);
+    TcpIsPowerStatusbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpIsPowerStatusbox);
+
+    TcpIsRunningbox.setPosition(106, 39, 15, 15);
+    TcpIsRunningbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpIsRunningbox);
+
+    TcpIsArrivedbox.setPosition(106, 57, 15, 15);
+    TcpIsArrivedbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpIsArrivedbox);
+
+    TcpIsErrorbox.setPosition(106, 96, 15, 15);
+    TcpIsErrorbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpIsErrorbox);
+
+    TcpLimitFFbox.setPosition(106, 135, 15, 15);
+    TcpLimitFFbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpLimitFFbox);
+
+    TcpLimitFbox.setPosition(106, 155, 15, 15);
+    TcpLimitFbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpLimitFbox);
+
+    TcpLimitRbox.setPosition(106, 175, 15, 15);
+    TcpLimitRbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpLimitRbox);
+
+    TcpLimitFRbox.setPosition(106, 195, 15, 15);
+    TcpLimitFRbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpLimitFRbox);
+
+    TcpWireOutbox.setPosition(106, 214, 15, 15);
+    TcpWireOutbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpWireOutbox);
+
+    TcpEmgBrakebox.setPosition(106, 234, 15, 15);
+    TcpEmgBrakebox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+    TcpSTMDisplayDirvescroll.add(TcpEmgBrakebox);
+
+    RemoteAlarm.add(TcpSTMDisplayDirvescroll);
 
     add(RemoteAlarm);
 }
@@ -1538,19 +2224,19 @@ void MainViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonConta
         //Call DirectPosUpSetPadShowButton
         DirectPosUpSetPadShowButton();
     }
-    if (&src == &TypeD_ENCButton)
+    if (&src == &TypeD_INCButton)
     {
-        //SetType_D_ENC_Button
-        //When TypeD_ENCButton clicked call virtual function
-        //Call SetType_D_ENC_Button
-        SetType_D_ENC_Button();
+        //SetType_D_INC_Button
+        //When TypeD_INCButton clicked call virtual function
+        //Call SetType_D_INC_Button
+        SetType_D_INC_Button();
     }
-    if (&src == &TypeINV_ENCButton)
+    if (&src == &TypeINV_ABSButton)
     {
-        //SetType_INV_ENC_Button
-        //When TypeINV_ENCButton clicked call virtual function
-        //Call SetType_INV_ENC_Button
-        SetType_INV_ENC_Button();
+        //SetType_INV_ABS_Button
+        //When TypeINV_ABSButton clicked call virtual function
+        //Call SetType_INV_ABS_Button
+        SetType_INV_ABS_Button();
     }
     if (&src == &D_PosDownSetPadShowButton)
     {
@@ -1718,6 +2404,20 @@ void MainViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
         //Call NumdotButton
         NumdotButton();
     }
+    if (&src == &IOPOPUPShowButton)
+    {
+        //IOStateShowButton
+        //When IOPOPUPShowButton clicked call virtual function
+        //Call IOStateShowButton
+        IOStateShowButton();
+    }
+    if (&src == &IOPOPUPclosebutton)
+    {
+        //IOStateHidButton
+        //When IOPOPUPclosebutton clicked call virtual function
+        //Call IOStateHidButton
+        IOStateHidButton();
+    }
 }
 
 void MainViewBase::radioButtonSelectedCallbackHandler(const touchgfx::AbstractButton& src)
@@ -1729,6 +2429,27 @@ void MainViewBase::radioButtonSelectedCallbackHandler(const touchgfx::AbstractBu
         //Call YoYoSelected
         YoYoSelected();
     }
+    if (&src == &ParkingButton)
+    {
+        //ParkingSelected
+        //When ParkingButton selected call virtual function
+        //Call ParkingSelected
+        ParkingSelected();
+    }
+    if (&src == &WireOutButton)
+    {
+        //WireOutSelected
+        //When WireOutButton selected call virtual function
+        //Call WireOutSelected
+        WireOutSelected();
+    }
+    if (&src == &EmgBrakeButton)
+    {
+        //EmgBrakeSelected
+        //When EmgBrakeButton selected call virtual function
+        //Call EmgBrakeSelected
+        EmgBrakeSelected();
+    }
 }
 
 void MainViewBase::radioButtonDeselectedCallbackHandler(const touchgfx::AbstractButton& src)
@@ -1739,5 +2460,26 @@ void MainViewBase::radioButtonDeselectedCallbackHandler(const touchgfx::Abstract
         //When YoYoButton deselected call virtual function
         //Call YoYoDeselected
         YoYoDeselected();
+    }
+    if (&src == &ParkingButton)
+    {
+        //ParkingDeselected
+        //When ParkingButton deselected call virtual function
+        //Call ParkingDeselected
+        ParkingDeselected();
+    }
+    if (&src == &WireOutButton)
+    {
+        //WireOutDeselected
+        //When WireOutButton deselected call virtual function
+        //Call WireOutDeselected
+        WireOutDeselected();
+    }
+    if (&src == &EmgBrakeButton)
+    {
+        //EmgBrakeDeselected
+        //When EmgBrakeButton deselected call virtual function
+        //Call EmgBrakeDeselected
+        EmgBrakeDeselected();
     }
 }

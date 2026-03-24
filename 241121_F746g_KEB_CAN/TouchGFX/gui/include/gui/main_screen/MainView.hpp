@@ -4,6 +4,7 @@
 #include <gui_generated/main_screen/MainViewBase.hpp>
 #include <gui/main_screen/MainPresenter.hpp>
 #include "global.h"
+#include "main.h"
 
 class MainView : public MainViewBase
 {
@@ -57,11 +58,25 @@ public:
 	virtual void SettingWireSetPadShow();
 	//Setting
 	virtual void SetType_D_Button();
-	virtual void SetType_D_ENC_Button();
-	virtual void SetType_INV_ENC_Button();
+	virtual void SetType_D_INC_Button();
+	virtual void SetType_INV_ABS_Button();
 	virtual void YoYoSelected();
 	virtual void YoYoDeselected();
+	virtual void ParkingSelected();
+	virtual void ParkingDeselected();
+	virtual void WireOutSelected();
+	virtual void WireOutDeselected();
+	virtual void EmgBrakeSelected();
+	virtual void EmgBrakeDeselected();
+
+
+
+
 	virtual void SettingEncPulseSetPadShow();
+
+	//IOState
+	virtual void IOStateShowButton();
+	virtual void IOStateHidButton();
 
 	//Direct
 	virtual void DirectMoveUpButton();
@@ -72,7 +87,6 @@ public:
 	virtual void DirectPosUpSetPadShowButton();
 	virtual void DirectPosDownSetPadShowButton();
 	virtual void DirectHomeSetPadShow();
-
 
 
 
@@ -136,6 +150,15 @@ protected:
 	//Setting YoYo
 	bool temp_SetYoYo;
 
+	//Setting Parking
+	bool temp_SetParking;
+
+	//Setting WireOut
+	bool temp_SetWireOut;
+
+	//Setting EmgBrake
+	bool temp_SetEmgBrake;
+
 	//Setting Encoder Pulse
 	int32_t temp_SetEncPulse;
 	int oldtemp_SetEncPulse;
@@ -148,6 +171,8 @@ protected:
     int SettingPosminLow = SettingPosmaxLow - 1;
 
     int SettingPosRpmMinMax = 10000;
+
+    bool bIOPageShowButton;
 };
 
 #endif // MAINVIEW_HPP

@@ -61,7 +61,7 @@ void MX_LWIP_Init(void)
   IP_ADDRESS[0] = 192;
   IP_ADDRESS[1] = 168;
   IP_ADDRESS[2] = 0;
-  IP_ADDRESS[3] = 190;
+  IP_ADDRESS[3] = 191;
   NETMASK_ADDRESS[0] = 255;
   NETMASK_ADDRESS[1] = 255;
   NETMASK_ADDRESS[2] = 255;
@@ -99,7 +99,7 @@ void MX_LWIP_Init(void)
 /* USER CODE BEGIN H7_OS_THREAD_DEF_CREATE_CMSIS_RTOS_V1 */
   osThreadDef(EthLink, ethernet_link_thread, osPriorityBelowNormal, 0, configMINIMAL_STACK_SIZE *2);
   osThreadCreate (osThread(EthLink), &gnetif);
-/* USER CODE END H7_OS_THREAD_DEF_CREATE_CMSIS_RTOS_V1 */
+/* USER CODE END H7_OS_THREAD_DEF_CREATE_CMSIS_RTOS_V1
 
 /* USER CODE BEGIN 3 */
 

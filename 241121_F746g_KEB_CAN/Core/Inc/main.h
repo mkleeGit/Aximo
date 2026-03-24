@@ -392,7 +392,7 @@ void Error_Handler(void);
 #define DEST_IP_ADDR0 (uint8_t)192
 #define DEST_IP_ADDR1 (uint8_t)168
 #define DEST_IP_ADDR2 (uint8_t)0
-#define DEST_IP_ADDR3 (uint8_t)42
+#define DEST_IP_ADDR3 (uint8_t)200
 //Server Port
 #define DEST_PORT (uint32_t)7889
 

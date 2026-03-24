@@ -345,6 +345,19 @@ void KEB_CAN_FUNC::KEB_CAN_ModeChange(bool& u8ModeWrite, int8_t& s8TouchMode, in
 		{
 			u8ModeWrite = false;
 			u8Modestep = 0;
+
+			s16ModeChange_Timeout = 0;
+		}
+		else
+		{
+			s16ModeChange_Timeout = s16ModeChange_Timeout + 1;
+			if(s16ModeChange_Timeout >= 1000)
+			{
+				u8ModeWrite = false;
+				u8Modestep = 0;
+
+				s16ModeChange_Timeout = 0;
+			}
 		}
 		break;
 	case 20:

@@ -23,25 +23,28 @@
             "Width": 480,
             "Height": 39,
             "Color": {
-              "Red": 41,
-              "Green": 119,
+              "Red": 92,
+              "Green": 154,
               "Blue": 255
             }
           },
           {
-            "Type": "Image",
-            "Name": "KEB_Image",
-            "Width": 85,
-            "Height": 39,
-            "RelativeFilename": "KEB.png"
+            "Type": "ScalableImage",
+            "Name": "AXIMOPICTURE",
+            "X": -12,
+            "Y": -34,
+            "Width": 131,
+            "Height": 106,
+            "Filename": "AXIMO200x146.png",
+            "ScalingAlgorithm": "Nearest-neighbor"
           },
           {
             "Type": "Container",
             "Name": "Direct",
-            "X": 2,
             "Y": 39,
             "Width": 479,
             "Height": 233,
+            "Visible": false,
             "Components": [
               {
                 "Type": "Container",
@@ -653,7 +656,6 @@
             "Name": "INVERTER",
             "Width": 481,
             "Height": 272,
-            "Visible": false,
             "Components": [
               {
                 "Type": "Container",
@@ -798,8 +800,8 @@
                 "Name": "STATE",
                 "X": 1,
                 "Y": 39,
-                "Width": 284,
-                "Height": 89,
+                "Width": 477,
+                "Height": 87,
                 "Components": [
                   {
                     "Type": "TextArea",
@@ -839,7 +841,7 @@
                     "Name": "textErrorValue",
                     "X": 60,
                     "Y": 55,
-                    "Width": 216,
+                    "Width": 408,
                     "Height": 24,
                     "TextId": "__SingleUse_BR5X",
                     "TextRotation": "0",
@@ -855,7 +857,7 @@
                     "Name": "textStateValue",
                     "X": 59,
                     "Y": 30,
-                    "Width": 216,
+                    "Width": 312,
                     "Height": 24,
                     "TextId": "__SingleUse_A4K0",
                     "TextRotation": "0",
@@ -891,6 +893,7 @@
                 "Y": 79,
                 "Width": 86,
                 "Height": 30,
+                "Visible": false,
                 "Components": [
                   {
                     "Type": "BoxWithBorder",
@@ -1395,16 +1398,29 @@
               {
                 "Type": "Container",
                 "Name": "Reset",
-                "X": 285,
-                "Y": 41,
+                "X": 398,
+                "Y": 43,
                 "Width": 80,
                 "Height": 40,
                 "Components": [
+                  {
+                    "Type": "BoxWithBorder",
+                    "Name": "ResetBox",
+                    "Width": 80,
+                    "Height": 40,
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "BorderSize": 3
+                  },
                   {
                     "Type": "FlexButton",
                     "Name": "ResetButton",
                     "Width": 80,
                     "Height": 40,
+                    "Alpha": 100,
                     "ButtonTrigger": {
                       "Type": "ClickButtonTrigger"
                     },
@@ -1446,8 +1462,8 @@
                 "Name": "INVPOWER",
                 "X": 2,
                 "Y": 155,
-                "Width": 121,
-                "Height": 115,
+                "Width": 134,
+                "Height": 114,
                 "Components": [
                   {
                     "Type": "Container",
@@ -1456,6 +1472,7 @@
                     "Y": 26,
                     "Width": 120,
                     "Height": 39,
+                    "Visible": false,
                     "Components": [
                       {
                         "Type": "BoxWithBorder",
@@ -1514,16 +1531,16 @@
                   {
                     "Type": "Container",
                     "Name": "PowerON",
-                    "X": 1,
-                    "Y": 70,
-                    "Width": 55,
-                    "Height": 45,
+                    "X": 3,
+                    "Y": 45,
+                    "Width": 64,
+                    "Height": 61,
                     "Components": [
                       {
                         "Type": "BoxWithBorder",
                         "Name": "PowerONBox",
-                        "Width": 55,
-                        "Height": 45,
+                        "Width": 64,
+                        "Height": 61,
                         "Color": {
                           "Red": 255,
                           "Green": 255,
@@ -1534,8 +1551,8 @@
                       {
                         "Type": "FlexButton",
                         "Name": "PowerONButton",
-                        "Width": 55,
-                        "Height": 45,
+                        "Width": 64,
+                        "Height": 61,
                         "Alpha": 100,
                         "ButtonTrigger": {
                           "Type": "ClickButtonTrigger"
@@ -1543,8 +1560,8 @@
                         "ButtonStyles": [
                           {
                             "Type": "BoxWithBorderButtonStyle",
-                            "Width": 55,
-                            "Height": 45,
+                            "Width": 64,
+                            "Height": 61,
                             "LockToFlexButtonSize": true,
                             "BorderSize": 3,
                             "ColorReleased": {
@@ -1563,8 +1580,8 @@
                       {
                         "Type": "TextArea",
                         "Name": "textPowerON",
-                        "X": 8,
-                        "Y": 10,
+                        "X": 12,
+                        "Y": 18,
                         "Width": 40,
                         "Height": 27,
                         "TextId": "__SingleUse_QEIH",
@@ -1580,6 +1597,7 @@
                     "Y": 70,
                     "Width": 55,
                     "Height": 45,
+                    "Visible": false,
                     "Components": [
                       {
                         "Type": "BoxWithBorder",
@@ -1643,79 +1661,10 @@
                   {
                     "Type": "TextArea",
                     "Name": "textPower",
-                    "X": 37,
-                    "Width": 40,
+                    "X": 11,
+                    "Y": 13,
                     "Height": 27,
                     "TextId": "__SingleUse_FCVV",
-                    "TextRotation": "0",
-                    "AutoSize": true
-                  }
-                ]
-              },
-              {
-                "Type": "Container",
-                "Name": "MC_ON",
-                "X": 401,
-                "Y": 41,
-                "Width": 75,
-                "Height": 35,
-                "Components": [
-                  {
-                    "Type": "FlexButton",
-                    "Name": "MC_ONbutton",
-                    "Width": 68,
-                    "Height": 30,
-                    "ButtonTrigger": {
-                      "Type": "ClickButtonTrigger"
-                    },
-                    "ButtonStyles": [
-                      {
-                        "Type": "BoxWithBorderButtonStyle",
-                        "Width": 68,
-                        "Height": 30,
-                        "LockToFlexButtonSize": true,
-                        "BorderSize": 2,
-                        "ColorReleased": {
-                          "Red": 255,
-                          "Green": 255,
-                          "Blue": 255
-                        },
-                        "ColorPressed": {
-                          "Green": 153,
-                          "Blue": 204
-                        },
-                        "ColorBorderReleased": {
-                          "Green": 51,
-                          "Blue": 102
-                        },
-                        "ColorBorderPressed": {
-                          "Red": 51,
-                          "Green": 102,
-                          "Blue": 153
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "Type": "BoxWithBorder",
-                    "Name": "MC_OnBox",
-                    "Width": 75,
-                    "Height": 35,
-                    "Color": {
-                      "Red": 255,
-                      "Green": 255,
-                      "Blue": 255
-                    },
-                    "BorderSize": 2
-                  },
-                  {
-                    "Type": "TextArea",
-                    "Name": "textMC_ON",
-                    "X": 2,
-                    "Y": 5,
-                    "Width": 69,
-                    "Height": 24,
-                    "TextId": "__SingleUse_SBQJ",
                     "TextRotation": "0",
                     "AutoSize": true
                   }
@@ -1864,10 +1813,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textsettingMinpos",
-                "X": 26,
+                "X": 25,
                 "Y": 97,
-                "Width": 78,
-                "Height": 18,
+                "Width": 74,
+                "Height": 20,
                 "TextId": "__SingleUse_36GT",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -1875,10 +1824,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textSettingMaxpos",
-                "X": 26,
+                "X": 25,
                 "Y": 67,
-                "Width": 81,
-                "Height": 18,
+                "Width": 78,
+                "Height": 20,
                 "TextId": "__SingleUse_WT0J",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -1888,8 +1837,8 @@
                 "Name": "textGearRatio",
                 "X": 25,
                 "Y": 145,
-                "Width": 104,
-                "Height": 18,
+                "Width": 55,
+                "Height": 40,
                 "TextId": "__SingleUse_KWPH",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -1897,18 +1846,18 @@
               {
                 "Type": "FlexButton",
                 "Name": "GearDenominator_button",
-                "X": 146,
+                "X": 114,
                 "Y": 163,
-                "Width": 105,
-                "Height": 25,
+                "Width": 99,
+                "Height": 24,
                 "ButtonTrigger": {
                   "Type": "ClickButtonTrigger"
                 },
                 "ButtonStyles": [
                   {
                     "Type": "BoxWithBorderButtonStyle",
-                    "Width": 105,
-                    "Height": 25,
+                    "Width": 99,
+                    "Height": 24,
                     "LockToFlexButtonSize": true,
                     "BorderSize": 2,
                     "ColorReleased": {
@@ -1926,18 +1875,18 @@
               {
                 "Type": "FlexButton",
                 "Name": "GearNumerator_button",
-                "X": 146,
+                "X": 114,
                 "Y": 125,
-                "Width": 105,
-                "Height": 25,
+                "Width": 99,
+                "Height": 23,
                 "ButtonTrigger": {
                   "Type": "ClickButtonTrigger"
                 },
                 "ButtonStyles": [
                   {
                     "Type": "BoxWithBorderButtonStyle",
-                    "Width": 105,
-                    "Height": 25,
+                    "Width": 99,
+                    "Height": 23,
                     "LockToFlexButtonSize": true,
                     "BorderSize": 2,
                     "ColorReleased": {
@@ -1955,10 +1904,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textGearNum_value",
-                "X": 156,
+                "X": 124,
                 "Y": 128,
-                "Width": 90,
-                "Height": 18,
+                "Width": 81,
+                "Height": 20,
                 "TextId": "__SingleUse_BD09",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -1971,10 +1920,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textMaxrpm",
-                "X": 26,
+                "X": 25,
                 "Y": 39,
-                "Width": 117,
-                "Height": 18,
+                "Width": 82,
+                "Height": 20,
                 "TextId": "__SingleUse_PE1M",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -1982,10 +1931,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textGearDeno_value",
-                "X": 154,
+                "X": 124,
                 "Y": 166,
-                "Width": 90,
-                "Height": 18,
+                "Width": 81,
+                "Height": 20,
                 "TextId": "__SingleUse_2UVS",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -1998,7 +1947,7 @@
               {
                 "Type": "Line",
                 "Name": "line1",
-                "X": 135,
+                "X": 103,
                 "Y": 149,
                 "Width": 134,
                 "Height": 15,
@@ -2012,7 +1961,7 @@
               {
                 "Type": "FlexButton",
                 "Name": "settingMaxposbutton",
-                "X": 111,
+                "X": 114,
                 "Y": 66,
                 "Width": 75,
                 "Height": 20,
@@ -2042,7 +1991,7 @@
               {
                 "Type": "FlexButton",
                 "Name": "settingMinposbutton",
-                "X": 111,
+                "X": 114,
                 "Y": 96,
                 "Width": 75,
                 "Height": 20,
@@ -2072,10 +2021,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textsettingMaxposvalue",
-                "X": 118,
+                "X": 124,
                 "Y": 67,
-                "Width": 60,
-                "Height": 18,
+                "Width": 54,
+                "Height": 20,
                 "TextId": "__SingleUse_SS0A",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2088,10 +2037,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textsettingMinposvalue",
-                "X": 118,
-                "Y": 98,
-                "Width": 60,
-                "Height": 18,
+                "X": 124,
+                "Y": 97,
+                "Width": 54,
+                "Height": 20,
                 "TextId": "__SingleUse_XBX9",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2104,7 +2053,7 @@
               {
                 "Type": "FlexButton",
                 "Name": "SettingRpmButton",
-                "X": 146,
+                "X": 114,
                 "Y": 39,
                 "Width": 75,
                 "Height": 20,
@@ -2133,10 +2082,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textsettingMaxrpmvalue",
-                "X": 154,
+                "X": 124,
                 "Y": 40,
-                "Width": 60,
-                "Height": 18,
+                "Width": 54,
+                "Height": 20,
                 "TextId": "__SingleUse_J0QV",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2166,24 +2115,24 @@
               {
                 "Type": "Container",
                 "Name": "SettingSave",
-                "X": 398,
-                "Y": 237,
-                "Width": 76,
-                "Height": 28,
+                "X": 395,
+                "Y": 230,
+                "Width": 79,
+                "Height": 36,
                 "Components": [
                   {
                     "Type": "FlexButton",
                     "Name": "SettingSavebutton",
-                    "Width": 76,
-                    "Height": 28,
+                    "Width": 79,
+                    "Height": 36,
                     "ButtonTrigger": {
                       "Type": "ClickButtonTrigger"
                     },
                     "ButtonStyles": [
                       {
                         "Type": "BoxWithBorderButtonStyle",
-                        "Width": 76,
-                        "Height": 28,
+                        "Width": 79,
+                        "Height": 36,
                         "LockToFlexButtonSize": true,
                         "BorderSize": 2,
                         "ColorReleased": {
@@ -2211,10 +2160,10 @@
                   {
                     "Type": "TextArea",
                     "Name": "textSettingSave",
-                    "X": 17,
-                    "Y": 4,
-                    "Width": 39,
-                    "Height": 18,
+                    "X": 20,
+                    "Y": 9,
+                    "Width": 36,
+                    "Height": 20,
                     "TextId": "__SingleUse_L7G2",
                     "TextRotation": "0",
                     "AutoSize": true
@@ -2226,8 +2175,8 @@
                 "Name": "textIP2dot",
                 "X": 175,
                 "Y": 15,
-                "Width": 5,
-                "Height": 18,
+                "Width": 4,
+                "Height": 20,
                 "TextId": "__SingleUse_LBNE",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2237,8 +2186,8 @@
                 "Name": "textIP1dot",
                 "X": 134,
                 "Y": 15,
-                "Width": 5,
-                "Height": 18,
+                "Width": 4,
+                "Height": 20,
                 "TextId": "__SingleUse_ZRTI",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2248,8 +2197,8 @@
                 "Name": "textIP0dot",
                 "X": 94,
                 "Y": 15,
-                "Width": 5,
-                "Height": 18,
+                "Width": 4,
+                "Height": 20,
                 "TextId": "__SingleUse_BUMY",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2260,7 +2209,7 @@
                 "X": 183,
                 "Y": 15,
                 "Width": 30,
-                "Height": 18,
+                "Height": 20,
                 "TextId": "__SingleUse_4VOZ",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2276,7 +2225,7 @@
                 "X": 142,
                 "Y": 15,
                 "Width": 30,
-                "Height": 18,
+                "Height": 20,
                 "TextId": "__SingleUse_PZCS",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2292,7 +2241,7 @@
                 "X": 102,
                 "Y": 15,
                 "Width": 30,
-                "Height": 18,
+                "Height": 20,
                 "TextId": "__SingleUse_7RDT",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2308,7 +2257,7 @@
                 "X": 62,
                 "Y": 15,
                 "Width": 30,
-                "Height": 18,
+                "Height": 20,
                 "TextId": "__SingleUse_0LTE",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2323,8 +2272,8 @@
                 "Name": "textIP",
                 "X": 26,
                 "Y": 15,
-                "Width": 27,
-                "Height": 18,
+                "Width": 23,
+                "Height": 20,
                 "TextId": "__SingleUse_QKB3",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2332,10 +2281,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textmm1",
-                "X": 189,
+                "X": 190,
                 "Y": 67,
-                "Width": 30,
-                "Height": 18,
+                "Width": 28,
+                "Height": 20,
                 "TextId": "__SingleUse_MDU8",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2343,10 +2292,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textmm2",
-                "X": 188,
+                "X": 190,
                 "Y": 98,
-                "Width": 30,
-                "Height": 18,
+                "Width": 28,
+                "Height": 20,
                 "TextId": "__SingleUse_MS94",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2354,10 +2303,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textmm3",
-                "X": 234,
-                "Y": 200,
-                "Width": 30,
-                "Height": 18,
+                "X": 213,
+                "Y": 199,
+                "Width": 28,
+                "Height": 20,
                 "TextId": "__SingleUse_GC18",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2365,9 +2314,9 @@
               {
                 "Type": "FlexButton",
                 "Name": "SettingDiameterButton",
-                "X": 126,
+                "X": 116,
                 "Y": 196,
-                "Width": 105,
+                "Width": 97,
                 "Height": 25,
                 "ButtonTrigger": {
                   "Type": "ClickButtonTrigger"
@@ -2375,7 +2324,7 @@
                 "ButtonStyles": [
                   {
                     "Type": "BoxWithBorderButtonStyle",
-                    "Width": 105,
+                    "Width": 97,
                     "Height": 25,
                     "LockToFlexButtonSize": true,
                     "BorderSize": 2,
@@ -2394,10 +2343,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textDiametervalue",
-                "X": 134,
-                "Y": 199,
-                "Width": 90,
-                "Height": 18,
+                "X": 123,
+                "Y": 200,
+                "Width": 81,
+                "Height": 20,
                 "TextId": "__SingleUse_HNZT",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2410,10 +2359,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textDiameter",
-                "X": 28,
+                "X": 24,
                 "Y": 199,
-                "Width": 90,
-                "Height": 18,
+                "Width": 85,
+                "Height": 20,
                 "TextId": "__SingleUse_0H9W",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2451,10 +2400,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textservconnect",
-                "X": 39,
-                "Y": 235,
-                "Width": 37,
-                "Height": 18,
+                "X": 23,
+                "Y": 237,
+                "Width": 80,
+                "Height": 20,
                 "TextId": "__SingleUse_CVKH",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2462,8 +2411,8 @@
               {
                 "Type": "ScrollableContainer",
                 "Name": "DriveTypeScroll",
-                "X": 290,
-                "Y": 42,
+                "X": 295,
+                "Y": 7,
                 "Width": 125,
                 "Height": 48,
                 "HorizontalScrollEnabled": true,
@@ -2474,7 +2423,7 @@
                 "Components": [
                   {
                     "Type": "Container",
-                    "Name": "TypeD_ENC",
+                    "Name": "TypeD_INC",
                     "X": 3,
                     "Y": 35,
                     "Width": 100,
@@ -2482,7 +2431,7 @@
                     "Components": [
                       {
                         "Type": "BoxWithBorder",
-                        "Name": "TypeD_ENCBox",
+                        "Name": "TypeD_INCBox",
                         "Width": 100,
                         "Height": 25,
                         "Color": {
@@ -2494,7 +2443,7 @@
                       },
                       {
                         "Type": "FlexButton",
-                        "Name": "TypeD_ENCButton",
+                        "Name": "TypeD_INCButton",
                         "Width": 100,
                         "Height": 25,
                         "Alpha": 100,
@@ -2523,11 +2472,11 @@
                       },
                       {
                         "Type": "TextArea",
-                        "Name": "textTypeD_ENC",
+                        "Name": "textTypeD_INC",
                         "X": 22,
                         "Y": 4,
-                        "Width": 52,
-                        "Height": 18,
+                        "Width": 44,
+                        "Height": 20,
                         "TextId": "__SingleUse_I5KW",
                         "TextRotation": "0",
                         "AutoSize": true
@@ -2536,7 +2485,7 @@
                   },
                   {
                     "Type": "Container",
-                    "Name": "TypeINV_ENC",
+                    "Name": "TypeINV_ABS",
                     "X": 3,
                     "Y": 67,
                     "Width": 100,
@@ -2544,7 +2493,7 @@
                     "Components": [
                       {
                         "Type": "BoxWithBorder",
-                        "Name": "TypeINV_ENCBox",
+                        "Name": "TypeINV_ABSBox",
                         "Width": 100,
                         "Height": 25,
                         "Color": {
@@ -2556,7 +2505,7 @@
                       },
                       {
                         "Type": "FlexButton",
-                        "Name": "TypeINV_ENCButton",
+                        "Name": "TypeINV_ABSButton",
                         "Width": 100,
                         "Height": 25,
                         "Alpha": 100,
@@ -2585,11 +2534,11 @@
                       },
                       {
                         "Type": "TextArea",
-                        "Name": "textTypeINV_ENC",
+                        "Name": "textTypeINV_ABS",
                         "X": 18,
                         "Y": 4,
-                        "Width": 67,
-                        "Height": 18,
+                        "Width": 62,
+                        "Height": 20,
                         "TextId": "__SingleUse_IIL6",
                         "TextRotation": "0",
                         "AutoSize": true
@@ -2650,8 +2599,8 @@
                         "Name": "textTypeE",
                         "X": 41,
                         "Y": 3,
-                        "Width": 12,
-                        "Height": 18,
+                        "Width": 11,
+                        "Height": 20,
                         "TextId": "__SingleUse_YW6M",
                         "TextRotation": "0",
                         "AutoSize": true
@@ -2663,8 +2612,8 @@
               {
                 "Type": "RadioButton",
                 "Name": "YoYoButton",
-                "X": 333,
-                "Y": 115,
+                "X": 298,
+                "Y": 80,
                 "Width": 36,
                 "Height": 36,
                 "Selected": true,
@@ -2676,21 +2625,99 @@
                 "RadioButtonGroup": "radioButtonGroup1"
               },
               {
+                "Type": "RadioButton",
+                "Name": "WireOutButton",
+                "X": 328,
+                "Y": 124,
+                "Width": 36,
+                "Height": 36,
+                "Selected": true,
+                "Deselectable": true,
+                "FileNameSelected": "__generated\\alternate_theme_images_widgets_radiobutton_check_medium_rounded_off_pressed.png",
+                "FileNameSelectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_check_medium_rounded_on_dark.png",
+                "FileNameUnselected": "__generated\\alternate_theme_images_widgets_radiobutton_check_medium_rounded_off.png",
+                "FileNameUnselectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_on_pressed.png",
+                "RadioButtonGroup": "radioButtonGroup3"
+              },
+              {
                 "Type": "TextArea",
                 "Name": "textYoYo",
-                "X": 277,
-                "Y": 124,
-                "Width": 46,
-                "Height": 18,
+                "X": 253,
+                "Y": 93,
+                "Width": 43,
+                "Height": 20,
                 "TextId": "__SingleUse_88S8",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "RadioButton",
+                "Name": "EmgBrakeButton",
+                "X": 426,
+                "Y": 80,
+                "Width": 36,
+                "Height": 36,
+                "Selected": true,
+                "Deselectable": true,
+                "FileNameSelected": "__generated\\alternate_theme_images_widgets_radiobutton_check_medium_rounded_off_pressed.png",
+                "FileNameSelectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_check_medium_rounded_on_dark.png",
+                "FileNameUnselected": "__generated\\alternate_theme_images_widgets_radiobutton_check_medium_rounded_off.png",
+                "FileNameUnselectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_on_pressed.png",
+                "RadioButtonGroup": "radioButtonGroup2"
+              },
+              {
+                "Type": "RadioButton",
+                "Name": "ParkingButton",
+                "X": 436,
+                "Y": 124,
+                "Width": 36,
+                "Height": 36,
+                "Selected": true,
+                "Deselectable": true,
+                "FileNameSelected": "__generated\\alternate_theme_images_widgets_radiobutton_check_medium_rounded_off_pressed.png",
+                "FileNameSelectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_check_medium_rounded_on_dark.png",
+                "FileNameUnselected": "__generated\\alternate_theme_images_widgets_radiobutton_check_medium_rounded_off.png",
+                "FileNameUnselectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_on_pressed.png",
+                "RadioButtonGroup": "radioButtonGroup4"
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textEmgBrake",
+                "X": 342,
+                "Y": 92,
+                "Width": 80,
+                "Height": 20,
+                "TextId": "__SingleUse_NGNR",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textParking",
+                "X": 370,
+                "Y": 134,
+                "Width": 62,
+                "Height": 20,
+                "TextId": "__SingleUse_ZSM5",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textWireOut",
+                "X": 253,
+                "Y": 134,
+                "Width": 69,
+                "Height": 20,
+                "TextId": "__SingleUse_SBYH",
                 "TextRotation": "0",
                 "AutoSize": true
               },
               {
                 "Type": "FlexButton",
                 "Name": "SettingWireButton",
-                "X": 331,
-                "Y": 160,
+                "X": 334,
+                "Y": 161,
                 "Width": 66,
                 "Height": 24,
                 "ButtonTrigger": {
@@ -2718,10 +2745,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textWirevalue",
-                "X": 340,
-                "Y": 163,
-                "Width": 40,
-                "Height": 18,
+                "X": 349,
+                "Y": 164,
+                "Width": 36,
+                "Height": 20,
                 "TextId": "__SingleUse_KM0I",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2734,10 +2761,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textWire",
-                "X": 277,
-                "Y": 163,
-                "Width": 46,
-                "Height": 18,
+                "X": 253,
+                "Y": 164,
+                "Width": 42,
+                "Height": 20,
                 "TextId": "__SingleUse_KNRI",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2745,10 +2772,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textmm4",
-                "X": 401,
+                "X": 405,
                 "Y": 165,
-                "Width": 30,
-                "Height": 18,
+                "Width": 28,
+                "Height": 20,
                 "TextId": "__SingleUse_A8KO",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2756,10 +2783,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textEncPulse",
-                "X": 277,
-                "Y": 201,
-                "Width": 99,
-                "Height": 18,
+                "X": 253,
+                "Y": 188,
+                "Width": 53,
+                "Height": 40,
                 "TextId": "__SingleUse_JDYF",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2767,7 +2794,7 @@
               {
                 "Type": "FlexButton",
                 "Name": "SettingEncPulseButton",
-                "X": 376,
+                "X": 336,
                 "Y": 197,
                 "Width": 66,
                 "Height": 24,
@@ -2796,10 +2823,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textEncPulsevalue",
-                "X": 386,
-                "Y": 201,
-                "Width": 40,
-                "Height": 18,
+                "X": 349,
+                "Y": 200,
+                "Width": 36,
+                "Height": 20,
                 "TextId": "__SingleUse_SPBS",
                 "TextRotation": "0",
                 "AutoSize": true,
@@ -2812,10 +2839,10 @@
               {
                 "Type": "TextArea",
                 "Name": "textmm5",
-                "X": 444,
+                "X": 406,
                 "Y": 202,
-                "Width": 30,
-                "Height": 18,
+                "Width": 28,
+                "Height": 20,
                 "TextId": "__SingleUse_TTS8",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -2823,13 +2850,751 @@
               {
                 "Type": "TextArea",
                 "Name": "textType",
-                "X": 244,
-                "Y": 48,
-                "Width": 43,
-                "Height": 18,
+                "X": 253,
+                "Y": 12,
+                "Width": 39,
+                "Height": 20,
                 "TextId": "__SingleUse_O7ZE",
                 "TextRotation": "0",
                 "AutoSize": true
+              },
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "IOPOPUPShowButton",
+                "X": 203,
+                "Y": 228,
+                "Width": 100,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_36_tiny_rounded_normal.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_36_tiny_rounded_inactive.png",
+                "TextId": "__SingleUse_XBNR",
+                "TextRotation": "0"
+              },
+              {
+                "Type": "Container",
+                "Name": "MC_ON",
+                "X": 119,
+                "Y": 228,
+                "Width": 75,
+                "Height": 35,
+                "Components": [
+                  {
+                    "Type": "FlexButton",
+                    "Name": "MC_ONbutton",
+                    "Width": 75,
+                    "Height": 35,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "BoxWithBorderButtonStyle",
+                        "Width": 75,
+                        "Height": 35,
+                        "LockToFlexButtonSize": true,
+                        "BorderSize": 2,
+                        "ColorReleased": {
+                          "Red": 255,
+                          "Green": 255,
+                          "Blue": 255
+                        },
+                        "ColorPressed": {
+                          "Green": 153,
+                          "Blue": 204
+                        },
+                        "ColorBorderReleased": {
+                          "Green": 51,
+                          "Blue": 102
+                        },
+                        "ColorBorderPressed": {
+                          "Red": 51,
+                          "Green": 102,
+                          "Blue": 153
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "BoxWithBorder",
+                    "Name": "MC_OnBox",
+                    "Width": 75,
+                    "Height": 35,
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "BorderSize": 2,
+                    "Alpha": 100
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textMC_ON",
+                    "X": 2,
+                    "Y": 5,
+                    "Width": 69,
+                    "Height": 24,
+                    "TextId": "__SingleUse_SBQJ",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "Type": "ModalWindow",
+            "Name": "IOState",
+            "Width": 480,
+            "Height": 272,
+            "Visible": false,
+            "FileName": "__generated\\alternate_theme_images_containers_medium_narrow_outlined_light.png",
+            "ModalX": 120,
+            "ModalY": 1,
+            "ModalWidth": 240,
+            "ModalHeight": 270,
+            "Alpha": 150,
+            "Components": [
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text01",
+                "X": 13,
+                "Y": 12,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_UQUK",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text02",
+                "X": 13,
+                "Y": 36,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_TMC5",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text03",
+                "X": 13,
+                "Y": 62,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_1G5X",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text04",
+                "X": 13,
+                "Y": 87,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_MEDN",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text05",
+                "X": 13,
+                "Y": 113,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_34WB",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text06",
+                "X": 13,
+                "Y": 139,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_YTJG",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text07",
+                "X": 13,
+                "Y": 165,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_747V",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text08",
+                "X": 13,
+                "Y": 190,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_SRW7",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text09",
+                "X": 13,
+                "Y": 216,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_TH71",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text10",
+                "X": 13,
+                "Y": 242,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_YHRV",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text11",
+                "X": 84,
+                "Y": 12,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_EHTW",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text12",
+                "X": 83,
+                "Y": 36,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_4D9J",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text13",
+                "X": 83,
+                "Y": 62,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_SQ7M",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text14",
+                "X": 82,
+                "Y": 87,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_Y59I",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text15",
+                "X": 83,
+                "Y": 113,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_NAYO",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_INPUT_text16",
+                "X": 84,
+                "Y": 140,
+                "Width": 37,
+                "Height": 20,
+                "TextId": "__SingleUse_2KKV",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box1",
+                "X": 58,
+                "Y": 14,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box11",
+                "X": 127,
+                "Y": 14,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box12",
+                "X": 127,
+                "Y": 38,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box13",
+                "X": 127,
+                "Y": 65,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box14",
+                "X": 127,
+                "Y": 88,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box15",
+                "X": 127,
+                "Y": 115,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box16",
+                "X": 127,
+                "Y": 141,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box2",
+                "X": 58,
+                "Y": 38,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box3",
+                "X": 58,
+                "Y": 64,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box4",
+                "X": 58,
+                "Y": 90,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box5",
+                "X": 58,
+                "Y": 116,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box6",
+                "X": 58,
+                "Y": 140,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box7",
+                "X": 58,
+                "Y": 168,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box8",
+                "X": 58,
+                "Y": 192,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box9",
+                "X": 58,
+                "Y": 218,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_INPUT_LAMP_Box10",
+                "X": 58,
+                "Y": 242,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text01",
+                "X": 162,
+                "Y": 42,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_0E2H",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text02",
+                "X": 162,
+                "Y": 64,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_CEQ6",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text03",
+                "X": 162,
+                "Y": 86,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_T9AF",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text04",
+                "X": 162,
+                "Y": 109,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_NGI5",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text05",
+                "X": 162,
+                "Y": 133,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_OA7A",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text06",
+                "X": 162,
+                "Y": 155,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_68ED",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text07",
+                "X": 162,
+                "Y": 177,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_J6H5",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text08",
+                "X": 162,
+                "Y": 200,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_UQ5Y",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text09",
+                "X": 162,
+                "Y": 223,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_TXKK",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "TextArea",
+                "Name": "IO_OUTPUT_text10",
+                "X": 162,
+                "Y": 247,
+                "Width": 44,
+                "Height": 20,
+                "TextId": "__SingleUse_WUYP",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box1",
+                "X": 213,
+                "Y": 44,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box2",
+                "X": 213,
+                "Y": 65,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box3",
+                "X": 213,
+                "Y": 88,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box4",
+                "X": 213,
+                "Y": 110,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box5",
+                "X": 213,
+                "Y": 134,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box6",
+                "X": 213,
+                "Y": 156,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box7",
+                "X": 213,
+                "Y": 178,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box8",
+                "X": 213,
+                "Y": 201,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box9",
+                "X": 213,
+                "Y": 223,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "Box",
+                "Name": "IO_OUTPUT_LAMP_Box10",
+                "X": 213,
+                "Y": 245,
+                "Width": 18,
+                "Height": 18,
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              },
+              {
+                "Type": "ButtonWithIcon",
+                "Name": "IOPOPUPclosebutton",
+                "X": 203,
+                "Y": 1,
+                "Width": 36,
+                "Height": 36,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_outline_pressed.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_icon_rounded_micro_outline_normal.png",
+                "IconPressed": "__generated\\icon_theme_images_content_clear_50_50_FFFFFF.svg.png",
+                "IconReleased": "__generated\\icon_theme_images_navigation_close_50_50_000000.svg.png",
+                "IconX": -7,
+                "IconY": -7,
+                "IconHeight": 50,
+                "IconWidth": 50,
+                "Preset": "alternate_theme\\presets\\button\\icon\\rounded\\micro_outline_normal.json"
               }
             ]
           },
@@ -2868,8 +3633,8 @@
                 "Name": "textArea11",
                 "X": 13,
                 "Y": 75,
-                "Width": 189,
-                "Height": 18,
+                "Width": 184,
+                "Height": 20,
                 "TextId": "__SingleUse_8LKU",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -3274,25 +4039,69 @@
             ]
           },
           {
+            "Type": "Container",
+            "Name": "STM_EMG",
+            "X": 5,
+            "Y": 164,
+            "Width": 240,
+            "Height": 103,
+            "Visible": false,
+            "Components": [
+              {
+                "Type": "BoxWithBorder",
+                "Name": "boxWithBorder5",
+                "Width": 240,
+                "Height": 103,
+                "Color": {
+                  "Red": 255,
+                  "Green": 130,
+                  "Blue": 130
+                },
+                "BorderSize": 1
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textArea12",
+                "X": 83,
+                "Y": 71,
+                "Width": 80,
+                "Height": 27,
+                "TextId": "__SingleUse_VY2I",
+                "TextRotation": "0",
+                "AutoSize": true
+              },
+              {
+                "Type": "ScalableImage",
+                "Name": "scalableImage2",
+                "X": 96,
+                "Y": 12,
+                "Width": 51,
+                "Height": 50,
+                "Filename": "free-icon-caution-sign-75243.png",
+                "ScalingAlgorithm": "Nearest-neighbor"
+              }
+            ]
+          },
+          {
             "Type": "ModalWindow",
             "Name": "RemoteAlarm",
             "Width": 480,
             "Height": 272,
             "Visible": false,
-            "FileName": "__generated\\alternate_theme_images_containers_small_wide_outlined_light.png",
-            "ModalX": 133,
-            "ModalY": 61,
-            "ModalWidth": 214,
-            "ModalHeight": 150,
+            "FileName": "__generated\\alternate_theme_images_containers_medium_wide_outlined_light.png",
+            "ModalX": 55,
+            "ModalY": 1,
+            "ModalWidth": 370,
+            "ModalHeight": 270,
             "Alpha": 150,
             "Components": [
               {
                 "Type": "TextArea",
                 "Name": "textremotealarm",
-                "X": 41,
-                "Y": 79,
-                "Width": 134,
-                "Height": 48,
+                "X": 127,
+                "Y": 12,
+                "Width": 120,
+                "Height": 20,
                 "TextId": "__SingleUse_U5E9",
                 "TextRotation": "0",
                 "AutoSize": true
@@ -3300,12 +4109,684 @@
               {
                 "Type": "ScalableImage",
                 "Name": "AlarmImage",
-                "X": 72,
-                "Y": 11,
-                "Width": 68,
-                "Height": 68,
+                "X": 81,
+                "Y": 3,
+                "Width": 37,
+                "Height": 35,
                 "Filename": "free-icon-caution-sign-75243.png",
                 "ScalingAlgorithm": "Nearest-neighbor"
+              },
+              {
+                "Type": "ScrollableContainer",
+                "Name": "TcpSTMDrivescroll",
+                "X": 7,
+                "Y": 49,
+                "Width": 171,
+                "Height": 208,
+                "HorizontalScrollEnabled": true,
+                "VerticalScrollEnabled": true,
+                "ScrollbarsVisible": true,
+                "ScrollbarsVisibleOnPressed": true,
+                "ScrollbarsAlpha": 255,
+                "Components": [
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpRemoteEnable",
+                    "X": 2,
+                    "Y": -3,
+                    "Width": 55,
+                    "Height": 40,
+                    "TextId": "__SingleUse_K6W9",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpConsoleEMG",
+                    "X": 2,
+                    "Y": 34,
+                    "Width": 93,
+                    "Height": 20,
+                    "TextId": "__SingleUse_4UTS",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpMcOn",
+                    "X": 2,
+                    "Y": 54,
+                    "Width": 46,
+                    "Height": 20,
+                    "TextId": "__SingleUse_AOLN",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMDriveType",
+                    "X": 2,
+                    "Y": 74,
+                    "Width": 75,
+                    "Height": 20,
+                    "TextId": "__SingleUse_EAE9",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMDriveTypeValue",
+                    "X": 103,
+                    "Y": 75,
+                    "Width": 56,
+                    "Height": 20,
+                    "TextId": "__SingleUse_33P2",
+                    "TextRotation": "0",
+                    "AutoSize": true,
+                    "Wildcard1": {
+                      "TextId": "__SingleUse_R20L",
+                      "UseBuffer": true,
+                      "BufferSize": 10
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMPower",
+                    "X": 2,
+                    "Y": 94,
+                    "Width": 48,
+                    "Height": 20,
+                    "TextId": "__SingleUse_G19Z",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMStart",
+                    "X": 2,
+                    "Y": 113,
+                    "Width": 38,
+                    "Height": 20,
+                    "TextId": "__SingleUse_9D1P",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMStop",
+                    "X": 2,
+                    "Y": 132,
+                    "Width": 36,
+                    "Height": 20,
+                    "TextId": "__SingleUse_ZLW9",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMReset",
+                    "X": 2,
+                    "Y": 151,
+                    "Width": 43,
+                    "Height": 20,
+                    "TextId": "__SingleUse_BPGJ",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMHomeSet",
+                    "X": 2,
+                    "Y": 171,
+                    "Width": 69,
+                    "Height": 20,
+                    "TextId": "__SingleUse_YH1I",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpHomeSetPos",
+                    "X": 2,
+                    "Y": 192,
+                    "Width": 94,
+                    "Height": 20,
+                    "TextId": "__SingleUse_YYOT",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMHomeSetPosValue",
+                    "X": 103,
+                    "Y": 192,
+                    "Width": 45,
+                    "Height": 20,
+                    "TextId": "__SingleUse_3Z1A",
+                    "TextRotation": "0",
+                    "AutoSize": true,
+                    "Wildcard1": {
+                      "TextId": "__SingleUse_BY5X",
+                      "UseBuffer": true,
+                      "BufferSize": 10
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMTargetPos",
+                    "X": 2,
+                    "Y": 212,
+                    "Width": 74,
+                    "Height": 20,
+                    "TextId": "__SingleUse_JJ4I",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMTargetPosValue",
+                    "X": 103,
+                    "Y": 212,
+                    "Width": 45,
+                    "Height": 20,
+                    "TextId": "__SingleUse_QW4A",
+                    "TextRotation": "0",
+                    "AutoSize": true,
+                    "Wildcard1": {
+                      "TextId": "__SingleUse_PW02",
+                      "UseBuffer": true,
+                      "BufferSize": 10
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMSpeed",
+                    "X": 2,
+                    "Y": 232,
+                    "Width": 46,
+                    "Height": 20,
+                    "TextId": "__SingleUse_OTJF",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMSpeedValue",
+                    "X": 103,
+                    "Y": 231,
+                    "Width": 45,
+                    "Height": 20,
+                    "TextId": "__SingleUse_JV77",
+                    "TextRotation": "0",
+                    "AutoSize": true,
+                    "Wildcard1": {
+                      "TextId": "__SingleUse_XCC8",
+                      "UseBuffer": true,
+                      "BufferSize": 10
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMDirectUp",
+                    "Y": 253,
+                    "Width": 66,
+                    "Height": 20,
+                    "TextId": "__SingleUse_CC56",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMDirectDown",
+                    "Y": 272,
+                    "Width": 66,
+                    "Height": 20,
+                    "TextId": "__SingleUse_IHSQ",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpSTMDirectStop",
+                    "Y": 291,
+                    "Width": 78,
+                    "Height": 20,
+                    "TextId": "__SingleUse_NIUL",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMRemoteEnablebox",
+                    "X": 105,
+                    "Y": 7,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMConsoleEmgbox",
+                    "X": 105,
+                    "Y": 36,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMMcOnbox",
+                    "X": 105,
+                    "Y": 57,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMPowerbox",
+                    "X": 105,
+                    "Y": 96,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMStartbox",
+                    "X": 105,
+                    "Y": 115,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMStopbox",
+                    "X": 105,
+                    "Y": 135,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMResetbox",
+                    "X": 105,
+                    "Y": 154,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMHomeSetbox",
+                    "X": 105,
+                    "Y": 174,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMDirectUpbox",
+                    "X": 105,
+                    "Y": 254,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMDirectDownbox",
+                    "X": 105,
+                    "Y": 275,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpSTMDirectStopbox",
+                    "X": 105,
+                    "Y": 295,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  }
+                ]
+              },
+              {
+                "Type": "ScrollableContainer",
+                "Name": "TcpSTMDisplayDirvescroll",
+                "X": 194,
+                "Y": 49,
+                "Width": 167,
+                "Height": 208,
+                "HorizontalScrollEnabled": true,
+                "VerticalScrollEnabled": true,
+                "ScrollbarsVisible": true,
+                "ScrollbarsVisibleOnPressed": true,
+                "ScrollbarsAlpha": 255,
+                "Components": [
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpLocalCtrlOn",
+                    "X": 2,
+                    "Y": -2,
+                    "Width": 87,
+                    "Height": 20,
+                    "TextId": "__SingleUse_TYQU",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpPowerStatus",
+                    "X": 2,
+                    "Y": 17,
+                    "Width": 92,
+                    "Height": 20,
+                    "TextId": "__SingleUse_HOO0",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpIsRunning",
+                    "X": 2,
+                    "Y": 35,
+                    "Width": 84,
+                    "Height": 20,
+                    "TextId": "__SingleUse_PH8C",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpIsArrived",
+                    "X": 2,
+                    "Y": 54,
+                    "Width": 68,
+                    "Height": 20,
+                    "TextId": "__SingleUse_MGI4",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpActPos",
+                    "X": 2,
+                    "Y": 74,
+                    "Width": 53,
+                    "Height": 20,
+                    "TextId": "__SingleUse_VGAV",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpActPosValue",
+                    "X": 106,
+                    "Y": 75,
+                    "Width": 45,
+                    "Height": 20,
+                    "TextId": "__SingleUse_47VB",
+                    "TextRotation": "0",
+                    "AutoSize": true,
+                    "Wildcard1": {
+                      "TextId": "__SingleUse_XC4D",
+                      "UseBuffer": true,
+                      "BufferSize": 10
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpIsError",
+                    "X": 2,
+                    "Y": 94,
+                    "Width": 51,
+                    "Height": 20,
+                    "TextId": "__SingleUse_SO8W",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpErrorCode",
+                    "X": 2,
+                    "Y": 112,
+                    "Width": 75,
+                    "Height": 20,
+                    "TextId": "__SingleUse_XRF0",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpErrorCodeValue",
+                    "X": 106,
+                    "Y": 114,
+                    "Width": 45,
+                    "Height": 20,
+                    "TextId": "__SingleUse_MF07",
+                    "TextRotation": "0",
+                    "AutoSize": true,
+                    "Wildcard1": {
+                      "TextId": "__SingleUse_Q8TG",
+                      "UseBuffer": true,
+                      "BufferSize": 10
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpLimitFF",
+                    "X": 2,
+                    "Y": 132,
+                    "Width": 56,
+                    "Height": 20,
+                    "TextId": "__SingleUse_R9F2",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpLimitF",
+                    "X": 2,
+                    "Y": 153,
+                    "Width": 48,
+                    "Height": 20,
+                    "TextId": "__SingleUse_CMIQ",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpLimitR",
+                    "X": 1,
+                    "Y": 172,
+                    "Width": 50,
+                    "Height": 20,
+                    "TextId": "__SingleUse_MX12",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpLimitFR",
+                    "X": 1,
+                    "Y": 192,
+                    "Width": 58,
+                    "Height": 20,
+                    "TextId": "__SingleUse_I5AX",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpWireOut",
+                    "X": 1,
+                    "Y": 212,
+                    "Width": 64,
+                    "Height": 20,
+                    "TextId": "__SingleUse_Q9DX",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textTcpBrake",
+                    "Y": 231,
+                    "Width": 75,
+                    "Height": 20,
+                    "TextId": "__SingleUse_JANO",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpIsLocalCtrlOnbox",
+                    "X": 106,
+                    "Y": 1,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpIsPowerStatusbox",
+                    "X": 106,
+                    "Y": 20,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpIsRunningbox",
+                    "X": 106,
+                    "Y": 39,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpIsArrivedbox",
+                    "X": 106,
+                    "Y": 57,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpIsErrorbox",
+                    "X": 106,
+                    "Y": 96,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpLimitFFbox",
+                    "X": 106,
+                    "Y": 135,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpLimitFbox",
+                    "X": 106,
+                    "Y": 155,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpLimitRbox",
+                    "X": 106,
+                    "Y": 175,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpLimitFRbox",
+                    "X": 106,
+                    "Y": 195,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpWireOutbox",
+                    "X": 106,
+                    "Y": 214,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "TcpEmgBrakebox",
+                    "X": 106,
+                    "Y": 234,
+                    "Width": 15,
+                    "Height": 15,
+                    "Color": {
+                      "Red": 255
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -3819,25 +5300,25 @@
             }
           },
           {
-            "InteractionName": "SetType_D_ENC_Button",
+            "InteractionName": "SetType_D_INC_Button",
             "Trigger": {
               "Type": "TriggerClicked",
-              "TriggerComponent": "TypeD_ENCButton"
+              "TriggerComponent": "TypeD_INCButton"
             },
             "Action": {
               "Type": "ActionCustom",
-              "FunctionName": "SetType_D_ENC_Button"
+              "FunctionName": "SetType_D_INC_Button"
             }
           },
           {
-            "InteractionName": "SetType_INV_ENC_Button",
+            "InteractionName": "SetType_INV_ABS_Button",
             "Trigger": {
               "Type": "TriggerClicked",
-              "TriggerComponent": "TypeINV_ENCButton"
+              "TriggerComponent": "TypeINV_ABSButton"
             },
             "Action": {
               "Type": "ActionCustom",
-              "FunctionName": "SetType_INV_ENC_Button"
+              "FunctionName": "SetType_INV_ABS_Button"
             }
           },
           {
@@ -3926,6 +5407,94 @@
             "Action": {
               "Type": "ActionCustom",
               "FunctionName": "DirectHomeSetbutton"
+            }
+          },
+          {
+            "InteractionName": "IOStateShowButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "IOPOPUPShowButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "IOStateShowButton"
+            }
+          },
+          {
+            "InteractionName": "IOStateHidButton",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "IOPOPUPclosebutton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "IOStateHidButton"
+            }
+          },
+          {
+            "InteractionName": "ParkingSelected",
+            "Trigger": {
+              "Type": "TriggerRadioButtonSelected",
+              "TriggerComponent": "ParkingButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "ParkingSelected"
+            }
+          },
+          {
+            "InteractionName": "ParkingDeselected",
+            "Trigger": {
+              "Type": "TriggerRadioButtonDeselected",
+              "TriggerComponent": "ParkingButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "ParkingDeselected"
+            }
+          },
+          {
+            "InteractionName": "WireOutSelected",
+            "Trigger": {
+              "Type": "TriggerRadioButtonSelected",
+              "TriggerComponent": "WireOutButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "WireOutSelected"
+            }
+          },
+          {
+            "InteractionName": "WireOutDeselected",
+            "Trigger": {
+              "Type": "TriggerRadioButtonDeselected",
+              "TriggerComponent": "WireOutButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "WireOutDeselected"
+            }
+          },
+          {
+            "InteractionName": "EmgBrakeSelected",
+            "Trigger": {
+              "Type": "TriggerRadioButtonSelected",
+              "TriggerComponent": "EmgBrakeButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "EmgBrakeSelected"
+            }
+          },
+          {
+            "InteractionName": "EmgBrakeDeselected",
+            "Trigger": {
+              "Type": "TriggerRadioButtonDeselected",
+              "TriggerComponent": "EmgBrakeButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "EmgBrakeDeselected"
             }
           }
         ]
