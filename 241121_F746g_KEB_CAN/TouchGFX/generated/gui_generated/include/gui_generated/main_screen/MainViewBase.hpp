@@ -281,6 +281,10 @@ public:
     {
         // Override and implement this function in Main
     }
+    virtual void DirectErrReset()
+    {
+        // Override and implement this function in Main
+    }
 
 protected:
     FrontendApplication& application() {
@@ -334,6 +338,12 @@ protected:
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  D_HomeSetButton;
     touchgfx::TextArea textD_HomeSetButton;
     touchgfx::TextArea textSubD_HomeSetting;
+    touchgfx::Container Direct_ErrReset;
+    touchgfx::BoxWithBorder D_ErrResetBox;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  D_ErrResetButton;
+    touchgfx::TextArea textD_ErrReset;
+    touchgfx::TextAreaWithOneWildcard textD_Error;
+    touchgfx::TextArea textDSub_Error;
     touchgfx::Container INVERTER;
     touchgfx::Container Homescreen;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  HomeScreenButton;
@@ -636,6 +646,8 @@ protected:
     touchgfx::Unicode::UnicodeChar textD_PosDownSetValueBuffer[TEXTD_POSDOWNSETVALUE_SIZE];
     static const uint16_t TEXTD_HOMESETVALUE_SIZE = 10;
     touchgfx::Unicode::UnicodeChar textD_HomeSetValueBuffer[TEXTD_HOMESETVALUE_SIZE];
+    static const uint16_t TEXTD_ERROR_SIZE = 25;
+    touchgfx::Unicode::UnicodeChar textD_ErrorBuffer[TEXTD_ERROR_SIZE];
     static const uint16_t TEXTERRORVALUE_SIZE = 30;
     touchgfx::Unicode::UnicodeChar textErrorValueBuffer[TEXTERRORVALUE_SIZE];
     static const uint16_t TEXTSTATEVALUE_SIZE = 30;

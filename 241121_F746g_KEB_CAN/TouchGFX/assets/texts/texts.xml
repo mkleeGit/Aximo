@@ -6,6 +6,18 @@
   <Texts>
     <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_H2SE" Alignment="Left" TypographyId="Small">
+        <Translation Language="GB">xxxxxxxxxxxxxxxxxxxx</Translation>
+      </Text>
+      <Text Id="__SingleUse_LXG9" Alignment="Left" TypographyId="Small">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_RR50" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">에러:</Translation>
+      </Text>
+      <Text Id="__SingleUse_5OSN" Alignment="Left" TypographyId="Typography_03">
+        <Translation Language="GB">리셋</Translation>
+      </Text>
       <Text Id="__SingleUse_ZSM5" Alignment="Left" TypographyId="Setting_Text">
         <Translation Language="GB">Parking :</Translation>
       </Text>
@@ -629,7 +641,7 @@
   <Typographies>
     <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" />
-    <Typography Id="Small" Font="verdana.ttf" Size="14" Bpp="4" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Small" Font="arial.ttf" Size="14" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789 :APM" WildcardCharacterRanges="0x00-0x7F" />
     <Typography Id="Typography_00" Font="calibri.ttf" Size="17" Bpp="4" Direction="RTL" FallbackCharacter="?" />
     <Typography Id="Typography_01" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="address_text" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789" WildcardCharacterRanges="0-9" />

@@ -540,12 +540,12 @@ void MainView::Num1Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
@@ -941,11 +941,12 @@ void MainView::Num2Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
+
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
@@ -1078,12 +1079,12 @@ void MainView::Num3Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
@@ -1213,12 +1214,12 @@ void MainView::Num4Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
@@ -1350,12 +1351,12 @@ void MainView::Num5Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
@@ -1489,12 +1490,12 @@ void MainView::Num6Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
@@ -1628,12 +1629,12 @@ void MainView::Num7Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
@@ -1768,12 +1769,12 @@ void MainView::Num8Button()
 		break;
 
 	case KEYPAD_Direct_Up_POS:
-		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Direct.s32DirectActPos, g_st_Setting.s32MaxPosValue);
+		UpdateInputValue(g_s32Direct_input_UpPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_UpPosvalue, false, 0);
 		break;
 
 	case KEYPAD_Direct_Down_POS:
-		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Direct.s32DirectActPos);
+		UpdateInputValue(g_s32Direct_input_DownPosvalue, g_st_Setting.s32MinPosValue, g_st_Setting.s32MaxPosValue);
 		UpdateKeypadDisplay(g_s32Direct_input_DownPosvalue, false, 0);
 		break;
 
@@ -2456,7 +2457,6 @@ void MainView::Resetbutton()
 {
 	g_st_controlword.fault_reset = 128;
 	g_u16Errorcode = 0;
-	g_st_IO.OUTError = false;
 }
 void MainView::EableButtonOn()
 {
@@ -2653,6 +2653,10 @@ void MainView::DirectHomeSetbutton()
 		g_st_Direct.bHoming = true;
 	}
 }
+void MainView::DirectErrReset()
+{
+	g_u16Errorcode = 0;
+}
 
 void MainView::handleTickEvent()
 {
@@ -2699,12 +2703,20 @@ void MainView::handleTickEvent()
 		STM_EMG.setVisible(false);
 	STM_EMG.invalidate();
 
+
 	//STM ERROR Box
 	if(g_bError == true)
+	{
 		ResetBox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+		D_ErrResetBox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
+	}
 	else
+	{
 		ResetBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+		D_ErrResetBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+	}
 	ResetBox.invalidate();
+	D_ErrResetBox.invalidate();
 
 	//Gear Denominator, Numberator
 	Unicode::snprintfFloat(textGearDeno_valueBuffer,TEXTGEARDENO_VALUE_SIZE, "%.2f", oldtemp_SetGearDen);
@@ -2744,9 +2756,13 @@ void MainView::handleTickEvent()
 	Unicode :: snprintf(textStateValueBuffer,TEXTSTATEVALUE_SIZE,g_st_inverter.cStateStringDisplay);
 	textStateValue.invalidate();
 
+	//Inverter Error Display
 	Unicode :: snprintf(textErrorValueBuffer,TEXTERRORVALUE_SIZE,g_st_inverter.cErrorStringDisplay);
 	textErrorValue.invalidate();
 
+	//Direct Error Display
+	Unicode :: snprintf(textD_ErrorBuffer,TEXTD_ERROR_SIZE,g_st_Direct.cErrorStringDisplay);
+	textD_Error.invalidate();
 
 	Unicode :: snprintf(textMODEStateBuffer,TEXTMODESTATE_SIZE, g_st_inverter.cModeStringDisplay);
 	textMODEState.invalidate();
@@ -3270,19 +3286,19 @@ void MainView::handleTickEvent()
 		textTcpSTMHomeSetPosValue.invalidate();
 
 		//Tcp Power
-		if(g_Tcp_Power)
+		if(g_Tcp_InvPower)
 			TcpSTMPowerbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
 		else
 			TcpSTMPowerbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
 		TcpSTMPowerbox.invalidate();
 		//Tcp Start
-		if(g_Tcp_Start)
+		if(g_Tcp_InvStart)
 			TcpSTMStartbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
 		else
 			TcpSTMStartbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
 		TcpSTMStartbox.invalidate();
 		//Tcp Stop
-		if(g_Tcp_Stop)
+		if(g_Tcp_InvStop)
 			TcpSTMStopbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
 		else
 			TcpSTMStopbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
@@ -3337,7 +3353,7 @@ void MainView::handleTickEvent()
 			TcpIsRunningbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));
 		TcpIsRunningbox.invalidate();
 
-		if(g_Tcp_Arrived)
+		if(g_Tcp_IsArrived)
 			TcpIsArrivedbox.setColor(touchgfx::Color::getColorFromRGB(0, 255, 0));
 		else
 			TcpIsArrivedbox.setColor(touchgfx::Color::getColorFromRGB(255, 0, 0));

@@ -29,6 +29,7 @@
 #include "usb_host.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+//#include "bootloader.h"
 #include <stm32746g_discovery.h>
 #include <stm32746g_discovery_qspi.h>
 //#include "global.h"
@@ -104,7 +105,7 @@ KEB_CAN_FUNC KEB_CAN;
 
 //Flash memory test
 #define FLASH_USER_START_ADDR	ADDR_FLASH_SECTOR_6
-#define FLASH_USER_END_ADDR		ADDR_FLASH_SECTOR_7 + GetSectorSize(ADDR_FLAH_SECTOR_7)
+#define FLASH_USER_END_ADDR		ADDR_FLASH_SECTOR_7 + GetSectorSize(ADDR_FLASH_SECTOR_7)
 
 /* USER CODE END PD */
 
@@ -142,7 +143,6 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim5;
 TIM_HandleTypeDef htim8;
-TIM_HandleTypeDef htim12;
 TIM_HandleTypeDef htim13;
 TIM_HandleTypeDef htim14;
 
@@ -319,7 +319,7 @@ uint32_t NDTR,oldNDTR;
 
 uint8_t RxBuf[DATA_BUF_SIZE] = {0, };
 
-uint16_t uiADCresult[5] = {0,};
+uint32_t uiADCresult[5] = {0,};
 
 int flashtest;
 
@@ -338,19 +338,23 @@ uint8_t u8Modestep;
 
 uint8_t Tcp_ReceiveData[17];
 
-uint8_t testtxarry[4] = {0};
-uint8_t testrxcmd[3] = {0};
+uint8_t FRAMTxCMD[4] = {0};
+uint8_t FRAMRxCMD[3] = {0};
 
-uint8_t testrxData = 0;
+uint8_t FRAMRXData[4] = {0};
 uint8_t testrxarry[3] = {0};
 
+uint32_t FRAMEncoderData = 0;
+
 Logic logic;
+
+uint8_t testttttt;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void PeriphCommonClock_Config(void);
-static void MPU_Initialize(void);
+//static void MPU_Initialize(void);
 static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
@@ -368,7 +372,6 @@ static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM5_Init(void);
 static void MX_TIM8_Init(void);
-static void MX_TIM12_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART6_UART_Init(void);
 static void MX_ADC3_Init(void);
@@ -381,9 +384,9 @@ void StartTask03(void const * argument);
 
 /* USER CODE BEGIN PFP */
 void variableinit();
-void HAL_receive(UART_HandleTypeDef *huart);
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
-void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart);
+//void HAL_receive(UART_HandleTypeDef *huart);
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+//void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart);
 void disconnectstate();
 
 //void StateControlword(StatecontrolwordTypedef *p, int value);
@@ -403,6 +406,8 @@ static void Encoder_ReadTTL(void);
 static void Canopen_Comm_StartStop(void);
 
 static void FRAM_Write(void);
+void FRAM_Read(void);
+void DirectHome(uint32_t value, GPIO_TypeDef* Port, uint16_t Pin);
 
 static void DirectUpDown(void);
 
@@ -541,7 +546,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 
   if(CANRxHeader.StdId == TXPDO3 + CAN_ID)		//KEB 3rd transmit PDO Mapping + CANopen Node ID
   {
-	  memcpy(&g_st_PDOBuffer.u8TPDO3statusword, &rcvd_msg, 2);	// 2byte controlword
+	  memcpy(&g_st_PDOBuffer.u8TPDO3statusword, &rcvd_msg, 2);	// 2byte controlworda
 	  KEB_CAN.KEB_CAN_Func_reverse_array(g_st_PDOBuffer.u8TPDO3statusword, 2);//KEB_CAN_Func_reverse_array(TPDO3statusword, 2);
 
 	  memcpy(&g_st_PDOBuffer.u8TPDO3Modes, &rcvd_msg[2], 1);		// 1byte Modes of operation
@@ -627,6 +632,13 @@ void variableinit()
 	g_st_Setting.bUsingMcIn = false;
 	g_st_Setting.bUsingMcOut = false;
 	g_st_Setting.bUsingDoubleBrake = false;
+
+	HAL_GPIO_WritePin(ARDUINO_D6_GPIO_Port, ARDUINO_D6_Pin, GPIO_PIN_SET);
+
+
+	FRAM_Read();
+
+	DirectHome(FRAMEncoderData, ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin);
 
 	binit = true;
 }
@@ -792,11 +804,11 @@ static void IO_ReadInputs_MCP23S17(void)
 {
 	/*g_bIO_Input[0]~[9]까지 INPUT 10개*/
 	//Local(Remote = false, Local = true) //1번 INPUT
-	if(g_bIO_Input[0] == true)
+	/*if(g_bIO_Input[0] == true)
 	 g_st_IO.IN_Local = true;
 	 else
-	 g_st_IO.IN_Local = false;
-
+	 g_st_IO.IN_Local = false;*/
+	g_st_IO.IN_Local = true;
 	//EMG Input Status		// 2번 Input
 	if (g_bIO_Input[1] == true)
 		g_st_IO.IN_EMG = true;
@@ -1097,37 +1109,38 @@ static void IO_WriteOutputs_MCP23S17(void)
 	/*if(g_st_IO.OUT_InvSTO == g_bIO_Output[0]) //STO
 		;
 	else
-		g_st_IO.OUTError = true;
+		g_st_IO.ICError = true;
 
 	if(g_st_IO.OUT_Local == g_bIO_Output[1]) //Local
 		;
 	else
-		g_st_IO.OUTError = true;
+		g_st_IO.ICError = true;
 
 	if(g_st_IO.OUT_McIn == g_bIO_Output[2]) //MC IN
 		;
 	else
-		g_st_IO.OUTError = true;
+		g_st_IO.ICError = true;
 
 	if(g_st_IO.OUT_McOut == g_bIO_Output[3])//MC OUT
 		;
 	else
-		g_st_IO.OUTError = true;
+		g_st_IO.ICError = true;
 
 	if(g_st_IO.OUT_DoubleBrake == g_bIO_Output[4]) //Double Brake
 		;
 	else
-		g_st_IO.OUTError = true;
+		g_st_IO.ICError = true;
 
 	if(g_st_IO.OUT_DirectUp == g_bIO_Output[5]) // Direct Up
 		;
 	else
-		g_st_IO.OUTError = true;
+		g_st_IO.ICError = true;
 
 	if(g_st_IO.OUT_DirectDown == g_bIO_Output[6]) // Direct Down
 		;
 	else
-		g_st_IO.OUTError = true;*/
+		g_st_IO.ICError = true;*/
+
 	//g_bIO_Output[7] = spare
 
 	SPITxData[0] = 0x43;
@@ -1147,54 +1160,203 @@ static void IO_WriteOutputs_MCP23S17(void)
 	if(g_st_IO.OUT_PDOon == g_bIO_Output[8])	//PDO on
 		;
 	else
-		g_st_IO.OUTError = true;
+		g_st_IO.ICError = true;
+
 
 	if(g_st_IO.OUT_PDOoff == g_bIO_Output[9])	//PDO off
 		;
 	else
-		g_st_IO.OUTError = true;
+		g_st_IO.ICError = true;
 
+}
+void FRAM_Read(void)
+{
+	//READ
+	FRAMRxCMD[0] = 0x03;	// READ : 0x03
+	FRAMRxCMD[1] = 0x00;	// Address[0]
+	FRAMRxCMD[2] = 0x00;	// Address[1]
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMRxCMD, 3, 500);
+	HAL_SPI_Receive(&hspi2, &FRAMRXData[0], 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	FRAMRxCMD[0] = 0x03;	//READ : 0x03
+	FRAMRxCMD[1] = 0x00;	// Address[0]
+	FRAMRxCMD[2] = 0x01;	// Address[1]
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMRxCMD, 3, 500);
+	HAL_SPI_Receive(&hspi2, &FRAMRXData[1], 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	FRAMRxCMD[0] = 0x03;	//READ : 0x03;
+	FRAMRxCMD[1] = 0x00;	// Address[0]
+	FRAMRxCMD[2] = 0x02;	// Address[1]
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMRxCMD, 3, 500);
+	HAL_SPI_Receive(&hspi2, &FRAMRXData[2], 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	FRAMRxCMD[0] = 0x03;	//READ : 0x03
+	FRAMRxCMD[1] = 0x00;	// Address[0]
+	FRAMRxCMD[2] = 0x03;	// Address[1]
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMRxCMD, 3, 500);
+	HAL_SPI_Receive(&hspi2, &FRAMRXData[3], 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	FRAMEncoderData = 0;
+	FRAMEncoderData |= ((uint32_t)FRAMRXData[0] << 24);
+	FRAMEncoderData |= ((uint32_t)FRAMRXData[1] << 16);
+	FRAMEncoderData |= ((uint32_t)FRAMRXData[2] << 8);
+	FRAMEncoderData |= ((uint32_t)FRAMRXData[3] << 0);
 }
 static void FRAM_Write(void)
 {
 	/* FRAM Code begin*/
-	uint8_t wren = 0x06;	//Write Enable
+	uint8_t wren = 0x06; //Write Enable Register
+	uint8_t rdwren = 0x05;	//Read Status Register
+	uint8_t testredwren;
 
+	//Write Eanble
 	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
 	HAL_SPI_Transmit(&hspi2, &wren, 1, 500);
 	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
 
-	uint8_t rdwren = 0x05;	//Read Status Register
-	uint8_t testredwren;
+	//Readd Status
 	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
 	HAL_SPI_Transmit(&hspi2, &rdwren, 1, 500);
 	HAL_SPI_Receive(&hspi2, &testredwren, 1, 500);
 	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
 
-	testtxarry[0] = 0x02;	// WRITE
-	testtxarry[1] = 0x00;
-	testtxarry[2] = 0x00;
-	//testtxarry[3] = 0x05;
-
-	testtxarry[3] = testtxarry[3] + 0x01;
-
-	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
-	HAL_SPI_Transmit(&hspi2, testtxarry, 4, 500);
-	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
-
-	if (testtxarry[3] == 0xFF)
-		testtxarry[3] = 0x01;
-
-	testrxcmd[0] = 0x03;	//READ
-	testrxcmd[1] = 0x00;
-	testrxcmd[2] = 0x00;
+	// WRITE
+	FRAMTxCMD[0] = 0x02;	// WRITE : 0x02
+	FRAMTxCMD[1] = 0x00;	// Address[0]
+	FRAMTxCMD[2] = 0x00;	// Address[1]
+	FRAMTxCMD[3] = SPIEncoderRxData[1];	//Write Data
 
 	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
-	HAL_SPI_Transmit(&hspi2, testrxcmd, 3, 500);
-	HAL_SPI_Receive(&hspi2, &testrxData, 1, 500);
+	HAL_SPI_Transmit(&hspi2, FRAMTxCMD, 4, 500);
 	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	//READ
+	/*FRAMRxCMD[0] = 0x03;	// READ : 0x03
+	FRAMRxCMD[1] = 0x00;	// Address[0]
+	FRAMRxCMD[2] = 0x00;	// Address[1]
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMRxCMD, 3, 500);
+	HAL_SPI_Receive(&hspi2, &FRAMRXData[0], 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);*/
+
+	//Write Enable
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, &wren, 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, &rdwren, 1, 500);
+	HAL_SPI_Receive(&hspi2, &testredwren, 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	FRAMTxCMD[0] = 0x02;	// WRITE : 0x02
+	FRAMTxCMD[1] = 0x00;	// Address[0]
+	FRAMTxCMD[2] = 0x01;	// Address[1]
+	FRAMTxCMD[3] = SPIEncoderRxData[2];//Write Data
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMTxCMD, 4, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	/*FRAMRxCMD[0] = 0x03;	//READ : 0x03
+	FRAMRxCMD[1] = 0x00;	// Address[0]
+	FRAMRxCMD[2] = 0x01;	// Address[1]
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMRxCMD, 3, 500);
+	HAL_SPI_Receive(&hspi2, &FRAMRXData[1], 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);*/
+
+	//Write Enable
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, &wren, 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, &rdwren, 1, 500);
+	HAL_SPI_Receive(&hspi2, &testredwren, 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	FRAMTxCMD[0] = 0x02;	// WRITE 0x02
+	FRAMTxCMD[1] = 0x00;	// Address[0]
+	FRAMTxCMD[2] = 0x02;	// Address[1]
+	FRAMTxCMD[3] = SPIEncoderRxData[3];//Write Data
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMTxCMD, 4, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	/*FRAMRxCMD[0] = 0x03;	//READ : 0x03;
+	FRAMRxCMD[1] = 0x00;	// Address[0]
+	FRAMRxCMD[2] = 0x02;	// Address[1]
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMRxCMD, 3, 500);
+	HAL_SPI_Receive(&hspi2, &FRAMRXData[2], 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);*/
+
+	//Write Enable
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, &wren, 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, &rdwren, 1, 500);
+	HAL_SPI_Receive(&hspi2, &testredwren, 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	FRAMTxCMD[0] = 0x02;	// WRITE : 0x02
+	FRAMTxCMD[1] = 0x00;	// Address[0]
+	FRAMTxCMD[2] = 0x03;	// Address[1]
+	FRAMTxCMD[3] = SPIEncoderRxData[4];//Write Data
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMTxCMD, 4, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);
+
+	/*FRAMRxCMD[0] = 0x03;	//READ : 0x03
+	FRAMRxCMD[1] = 0x00;	// Address[0]
+	FRAMRxCMD[2] = 0x03;	// Address[1]
+
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, FRAMRxCMD, 3, 500);
+	HAL_SPI_Receive(&hspi2, &FRAMRXData[3], 1, 500);
+	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_SET);*/
+
 	/* FRAM Code End*/
 }
+
+void DirectHome(uint32_t value, GPIO_TypeDef* Port, uint16_t Pin)
+{
+	uint8_t TxData[5] = {0};
+	TxData[0] = 0x98;
+	TxData[1] = ((uint8_t)(value >> 24));
+	TxData[2] = ((uint8_t)(value >> 16));
+	TxData[3] = ((uint8_t)(value >> 8));
+	TxData[4] = ((uint8_t)(value >> 0));
+	HAL_GPIO_WritePin(Port, Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, TxData, 5, 500);
+	HAL_GPIO_WritePin(Port, Pin, GPIO_PIN_SET);
+
+	TxData[0] = 0xE0;
+	HAL_GPIO_WritePin(Port, Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi2, TxData, 1, 500);
+	HAL_GPIO_WritePin(Port, Pin, GPIO_PIN_SET);
+}
+
 void DirectUpDown(void)
 {
 	//monitor Direct Type Limit Status And Position. if Limit status is false, g_st_Direct.bUp, g_st_Direct.bDown variable change false
@@ -1273,7 +1435,6 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM5_Init();
   MX_TIM8_Init();
-  MX_TIM12_Init();
   MX_USART1_UART_Init();
   MX_USART6_UART_Init();
   MX_FATFS_Init();
@@ -1285,7 +1446,6 @@ int main(void)
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
   /* USER CODE BEGIN 2 */
-
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -2160,48 +2320,6 @@ static void MX_TIM8_Init(void)
 }
 
 /**
-  * @brief TIM12 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_TIM12_Init(void)
-{
-
-  /* USER CODE BEGIN TIM12_Init 0 */
-
-  /* USER CODE END TIM12_Init 0 */
-
-  TIM_OC_InitTypeDef sConfigOC = {0};
-
-  /* USER CODE BEGIN TIM12_Init 1 */
-
-  /* USER CODE END TIM12_Init 1 */
-  htim12.Instance = TIM12;
-  htim12.Init.Prescaler = 199;
-  htim12.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim12.Init.Period = 999;
-  htim12.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim12.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_PWM_Init(&htim12) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 499;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim12, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM12_Init 2 */
-
-  /* USER CODE END TIM12_Init 2 */
-  HAL_TIM_MspPostInit(&htim12);
-
-}
-
-/**
   * @brief TIM13 Initialization Function
   * @param None
   * @retval None
@@ -2499,7 +2617,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(LCD_DISP_GPIO_Port, LCD_DISP_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(DCMI_PWR_EN_GPIO_Port, DCMI_PWR_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOH, DCMI_PWR_EN_Pin|ARDUINO_D6_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(ARDUINO_D10_GPIO_Port, ARDUINO_D10_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, ARDUINO_D4_Pin|ARDUINO_D2_Pin|EXT_RST_Pin, GPIO_PIN_RESET);
@@ -2619,12 +2740,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : DCMI_PWR_EN_Pin */
-  GPIO_InitStruct.Pin = DCMI_PWR_EN_Pin;
+  /*Configure GPIO pins : DCMI_PWR_EN_Pin ARDUINO_D6_Pin */
+  GPIO_InitStruct.Pin = DCMI_PWR_EN_Pin|ARDUINO_D6_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(DCMI_PWR_EN_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
   /*Configure GPIO pins : DCMI_D4_Pin DCMI_D3_Pin DCMI_D0_Pin DCMI_D2_Pin
                            DCMI_D1_Pin */
@@ -2714,16 +2835,15 @@ void StartDefaultTask(void const * argument)
 {
   /* init code for USB_HOST */
   MX_USB_HOST_Init();
-
   /* init code for LWIP */
   //MX_LWIP_Init();
   /* USER CODE BEGIN 5 */
   MX_TouchGFX_Process();
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+    /* Infinite loop */
+    for(;;)
+    {
+  	  osDelay(1);
+    }
   /* USER CODE END 5 */
 }
 
@@ -2737,8 +2857,6 @@ void StartDefaultTask(void const * argument)
 void StartTask02(void const * argument)
 {
   /* USER CODE BEGIN StartTask02 */
-  uint8_t Localchange = 0;
-  int Uartreconnect = 0;
 
   float rated;
   float Poscount;
@@ -2757,39 +2875,29 @@ void StartTask02(void const * argument)
 
   can_filter_config();
 
-  SPIEncoderTxData[0] = 0x88;			//MDR0 WRITE ADDRESS 0x88
-  SPIEncoderTxData[1] = 0x01;			//B7
-  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 2, 500);
-  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
-
+  /*Encoder TTL Setting begin*/
   SPIEncoderTxData[0] = 0x88;			//MDR0 WRITE ADDRESS 0x88
   SPIEncoderTxData[1] = 0x01;			//
   HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 2, 500);
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 2, 1000);
   HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
 
   SPIEncoderTxData[0] = 0x90;				//
-  SPIEncoderTxData[1] = 0x10;
+  SPIEncoderTxData[1] = 0x00;
   HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 2, 500);
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 2, 1000);
   HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
 
   SPIEncoderTxData[0] = 0x20;
   HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 1, 500);
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 1, 1000);
   HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
 
   SPIEncoderTxData[0] = 0x30;
   HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 1, 500);
+  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 1, 1000);
   HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
   /*Encoder TTL Setting end*/
-
-
-  /*RELAY I/O WATCHDOG TIMER BEGIN*/
-  HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_1);//Watchdog 사용 안함
-  /*RELAY I/O WATCHDOG TIMER END */
 
   /* Infinite loop */
   for(;;)
@@ -2797,16 +2905,13 @@ void StartTask02(void const * argument)
 	  if (binit == false)
 	  {
 		  variableinit();
+		  /*Canopen Start,Stop*/
+		  Canopen_Comm_StartStop();
 	  }
 	  else
 	  {
 		  /* flash memory */
 		  App_LoadSettingsFromFlash();
-
-		  /*Canopen Start,Stop*/
-		  Canopen_Comm_StartStop();
-
-		  htim12.Instance -> CCR1 = 499;
 
 		  g_Tcp_LocalCtrlOn = g_st_IO.IN_Local;
 		  g_Tcp_LimitFF = g_st_IO.IN_FinalPosLimit;
@@ -2819,7 +2924,10 @@ void StartTask02(void const * argument)
 		  g_Tcp_IsError = g_bError;
 		  g_Tcp_ErrorCode = g_u16Errorcode;
 		  g_Tcp_ErrorType = g_u8ErrorType;
-		  g_Tcp_ActPos = (int)g_st_inverter.PosActPosvalue;
+		  if(g_st_Setting.s32DriveSettingType == Direct_ABS || Direct_INC)
+			  g_Tcp_ActPos = (int)g_st_Direct.s32DirectActPos;
+		  else
+			  g_Tcp_ActPos = (int)g_st_inverter.PosActPosvalue;
 
 		  if(g_st_Setting.s32DriveSettingType == Direct_No_Enc|| g_st_Setting.s32DriveSettingType == Direct_INC || g_st_Setting.s32DriveSettingType == Direct_ABS)
 			  g_Tcp_PowerStatus = g_st_IO.IN_MCCB;
@@ -2828,32 +2936,106 @@ void StartTask02(void const * argument)
 		  else
 			  g_Tcp_PowerStatus = false;
 
-		  if(g_st_Setting.s32DriveSettingType == Direct_No_Enc && (g_st_IO.OUT_DirectUp || g_st_IO.OUT_DirectDown))
+		  if(g_Tcp_DriveType == Direct_No_Enc)
 		  {
-			  g_Tcp_Running = true;
-			  g_Tcp_Arrived = false;
-		  }
-		  else if((g_st_Setting.s32DriveSettingType == Direct_INC || g_st_Setting.s32DriveSettingType == Direct_ABS) && (g_st_IO.OUT_DirectUp || g_st_IO.OUT_DirectDown))
-		  {
-			  g_Tcp_Running = true;
-			  g_Tcp_Arrived = false;
-		  }
-		  else if(g_st_Setting.s32DriveSettingType == Inverter_INC || g_st_Setting.s32DriveSettingType == Inverter_ABS)
-		  {
-			  if(g_st_inverter.ActRpmvalue != 0 && g_st_Statusword.target_reached == false)
+			  if(g_Tcp_DirectUp)
 			  {
-				  g_Tcp_IsRunning = true;
-				  g_Tcp_Arrived = false;
+				  if(g_Tcp_LimitFF && g_Tcp_LimitF)
+				  {
+					  g_Tcp_IsRunning = true;
+					  g_Tcp_IsArrived = false;
+				  }
+				  else
+				  {
+					  g_Tcp_IsRunning = false;
+					  g_Tcp_IsArrived = true;
+				  }
 			  }
-			  else if(g_st_inverter.ActRpmvalue == 0 && g_st_Statusword.target_reached == true)
+			  else if(g_Tcp_DirectDown)
 			  {
-				  g_Tcp_IsRunning = false;
-				  g_Tcp_Arrived = true;
+				  if(g_Tcp_LimitFR && g_Tcp_LimitR)
+				  {
+					  g_Tcp_IsRunning = true;
+					  g_Tcp_IsArrived = false;
+				  }
+				  else
+				  {
+					  g_Tcp_IsRunning = false;
+					  g_Tcp_IsArrived = true;
+				  }
 			  }
 			  else
 			  {
 				  g_Tcp_IsRunning = false;
-				  g_Tcp_Arrived = false;
+				  g_Tcp_IsArrived = false;
+			  }
+		  }
+		  else if(g_Tcp_DriveType == Direct_INC || g_Tcp_DriveType == Direct_ABS)
+		  {
+			  if(g_Tcp_DirectUp)
+			  {
+				  if(g_Tcp_LimitFF && g_Tcp_LimitF)
+				  {
+					  if(g_Tcp_TargetPos > g_Tcp_ActPos)
+					  {
+						  g_Tcp_IsRunning = true;
+						  g_Tcp_IsArrived = false;
+					  }
+					  else if(g_Tcp_TargetPos <= g_Tcp_ActPos)
+					  {
+						  g_Tcp_IsRunning = false;
+						  g_Tcp_IsArrived = true;
+					  }
+				  }
+				  else
+				  {
+					  g_Tcp_IsRunning = false;
+					  g_Tcp_IsArrived = true;
+				  }
+			  }
+			  else if(g_Tcp_DirectDown)
+			  {
+				  if(g_Tcp_LimitFR && g_Tcp_LimitR)
+				  {
+					  if(g_Tcp_TargetPos < g_Tcp_ActPos)
+					  {
+						  g_Tcp_IsRunning = true;
+						  g_Tcp_IsArrived = false;
+					  }
+					  else if(g_Tcp_TargetPos >= g_Tcp_ActPos)
+					  {
+						  g_Tcp_IsRunning = false;
+						  g_Tcp_IsArrived = true;
+					  }
+				  }
+				  else
+				  {
+					  g_Tcp_IsRunning = false;
+					  g_Tcp_IsArrived = true;
+				  }
+			  }
+			  else
+			  {
+				  g_Tcp_IsRunning = false;
+				  g_Tcp_IsArrived = false;
+			  }
+		  }
+		  else if(g_Tcp_DriveType == Inverter_INC || g_Tcp_DriveType == Inverter_ABS)
+		  {
+			  if(g_st_inverter.ActRpmvalue != 0 && g_st_Statusword.target_reached == false)
+			  {
+				  g_Tcp_IsRunning = true;
+				  g_Tcp_IsArrived = false;
+			  }
+			  else if(g_st_inverter.ActRpmvalue == 0 && g_st_Statusword.target_reached == true)
+			  {
+				  g_Tcp_IsRunning = false;
+				  g_Tcp_IsArrived = true;
+			  }
+			  else
+			  {
+				  g_Tcp_IsRunning = false;
+				  g_Tcp_IsArrived = false;
 			  }
 		  }
 
@@ -2898,6 +3080,9 @@ void StartTask02(void const * argument)
 		  /*Encoder TTL Count Begin */
 		  SPIEncoderTxData[0] = 0x60;
 		  SPIEncoderTxData[1] = 0x00;
+		  SPIEncoderTxData[2] = 0x00;
+		  SPIEncoderTxData[3] = 0x00;
+		  SPIEncoderTxData[4] = 0x00;
 		  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
 		  HAL_SPI_TransmitReceive(&hspi2, SPIEncoderTxData, SPIEncoderRxData, 5, 500);
 		  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
@@ -2935,20 +3120,7 @@ void StartTask02(void const * argument)
 
 		  if(g_st_Direct.bHoming == true)
 		  {
-			  SPIEncoderTxData[0] = 0x98;
-			  SPIEncoderTxData[1] = ((uint8_t)(g_st_Direct.s32HomeCountvalue >> 24));
-			  SPIEncoderTxData[2] = ((uint8_t)(g_st_Direct.s32HomeCountvalue >> 16));
-			  SPIEncoderTxData[3] = ((uint8_t)(g_st_Direct.s32HomeCountvalue >> 8));
-			  SPIEncoderTxData[4] = ((uint8_t)(g_st_Direct.s32HomeCountvalue >> 0));
-			  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
-			  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 5, 500);
-			  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
-
-			  SPIEncoderTxData[0] = 0xE0;
-			  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
-			  HAL_SPI_Transmit(&hspi2, SPIEncoderTxData, 1, 500);
-			  HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_SET);
-
+			  DirectHome(g_st_Direct.s32HomeCountvalue, ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin);
 			  g_st_Direct.bHoming = false;
 		  }
 
@@ -2983,8 +3155,10 @@ void StartTask02(void const * argument)
 		  //KEB_CAN.KEB_CAN_errorcode(g_st_PDOBuffer.u8TPDO3Errorcode, g_st_inverter.cErrorStringDisplay);
 
 		  //TCP Errorcode
-		  logic.InvError(g_st_PDOBuffer.u8TPDO3Errorcode, g_st_inverter.cErrorStringDisplay);
+		  if(g_st_Setting.s32DriveSettingType == Inverter_ABS || g_st_Setting.s32DriveSettingType == Inverter_INC || g_st_Setting.s32DriveSettingType == Inverter_No_Enc)
+			  logic.InvError(g_st_PDOBuffer.u8TPDO3Errorcode, g_st_inverter.cErrorStringDisplay);
 		  logic.IOError(g_st_inverter.cErrorStringDisplay);
+		  logic.IOError(g_st_Direct.cErrorStringDisplay);
 		   g_u8ErrorType = logic.ErrorType;
 
 		  //TPDO Stateword(READ)
@@ -3010,10 +3184,10 @@ void StartTask02(void const * argument)
 		  DirectUpDown();
 
 		  // Analog RPM setting
-		  /*if(GVLLocal)
+		  if(g_st_IO.IN_Local)
 		  {
 			  HAL_ADC_Start_DMA(&hadc3, &uiADCresult[0], 5);
-			  if(GVLiMode == Velocity)
+			  /*if(GVLiMode == Velocity)
 			  {
 				  if(GVLVel_RPM_direction == false)
 				  {
@@ -3025,20 +3199,20 @@ void StartTask02(void const * argument)
 					  iTempAnalog = (float)uiADCresult[0] / 4090 * 100;
 					  GVLinverter[GVLAddnumber].VelsetRpmvalue = -GVLinverter[GVLAddnumber].minmaxRpmvalue * iTempAnalog / 100;
 				  }
-			  }
-			  else if(GVLiMode == Position)
+			  }*/
+			  if(g_st_Setting.s32DriveSettingType == Inverter_No_Enc || g_st_Setting.s32DriveSettingType == Inverter_INC || g_st_Setting.s32DriveSettingType == Inverter_ABS)
 			  {
-				  if(uiADCresult[0] >= 0 && uiADCresult[0] <= 4096)
+				  if(uiADCresult[2] >= 0 && uiADCresult[2] <= 4096)
 				  {
-					  iTempAnalog = (float)uiADCresult[0] / 4090 * 100;
-					  GVLinverter[GVLAddnumber].PossetRpmvalue = GVLinverter[GVLAddnumber].minmaxRpmvalue * iTempAnalog / 100;
+					  iTempAnalog = (float)uiADCresult[2] / 4090 * 100;
+					  g_st_inverter.PosSetRpmvalue = g_st_inverter.MinMaxRpmvalue * iTempAnalog / 100;
 				  }
 			  }
 		  }
 		  else
 		  {
 			  HAL_ADC_Stop_DMA(&hadc3);
-		  }*/
+		  }
 
 		  //Axis Actual Position
 		  if(g_st_Setting.s32DriveSettingType == Direct_INC)//Direct Encoder Actual Position
@@ -3088,22 +3262,13 @@ void StartTask03(void const * argument)
 {
   /* USER CODE BEGIN StartTask03 */
   MX_LWIP_Init();
-  /*if THe TCP Server is used
-  MX_IP_check(&GVL_IP);
-  tcp_echoserver_init();*/
+
   /* Infinite loop */
   for(;;)
   {
-	//if(GVLTCP_connection == 0)
-	//{
-	  //if(g_u8Ethernet_TcpStatus == 0 || g_u8Ethernet_TcpStatus == 1)
 	  tcp_echoclient_connect();
-	  //tcp_loop_send();
-	//}
-	//sys_check_timeouts();
-	//tcp_serial_inf(RxBuf, DATA_BUF_SIZE);
-	//tcp_timeout_check();
-    osDelay(1);
+
+	  osDelay(1);
   }
   /* USER CODE END StartTask03 */
 }

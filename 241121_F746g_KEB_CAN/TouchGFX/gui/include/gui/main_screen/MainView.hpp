@@ -87,6 +87,7 @@ public:
 	virtual void DirectPosUpSetPadShowButton();
 	virtual void DirectPosDownSetPadShowButton();
 	virtual void DirectHomeSetPadShow();
+	virtual void DirectErrReset();
 
 
 

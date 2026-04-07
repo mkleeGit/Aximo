@@ -97,10 +97,11 @@ void NMI_Handler(void)
   * @brief This function handles Hard fault interrupt.
   */
 void HardFault_Handler(void)
-{
+ {
   /* USER CODE BEGIN HardFault_IRQn 0 */
 	HAL_GPIO_WritePin(ARDUINO_D2_GPIO_Port, ARDUINO_D2_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(ARDUINO_D4_GPIO_Port, ARDUINO_D4_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(ARDUINO_D6_GPIO_Port, ARDUINO_D6_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(ARDUINO_D7_GPIO_Port, ARDUINO_D7_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(ARDUINO_D8_GPIO_Port, ARDUINO_D8_Pin, GPIO_PIN_RESET);
   /* USER CODE END HardFault_IRQn 0 */

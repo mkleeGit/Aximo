@@ -103,50 +103,50 @@ MainViewBase::MainViewBase() :
 
     Direct.add(DownButton);
 
-    Limit.setPosition(159, 0, 117, 118);
-    D_FDN_LimitBox.setPosition(79, 93, 25, 25);
+    Limit.setPosition(73, 0, 112, 231);
+    D_FDN_LimitBox.setPosition(79, 201, 25, 25);
     D_FDN_LimitBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     D_FDN_LimitBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     D_FDN_LimitBox.setBorderSize(2);
     Limit.add(D_FDN_LimitBox);
 
-    D_DN_LimitBox.setPosition(79, 63, 25, 25);
+    D_DN_LimitBox.setPosition(79, 166, 25, 25);
     D_DN_LimitBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     D_DN_LimitBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     D_DN_LimitBox.setBorderSize(2);
     Limit.add(D_DN_LimitBox);
 
-    D_UP_LimitBox.setPosition(79, 33, 25, 25);
+    D_UP_LimitBox.setPosition(79, 43, 25, 25);
     D_UP_LimitBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     D_UP_LimitBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     D_UP_LimitBox.setBorderSize(2);
     Limit.add(D_UP_LimitBox);
 
-    D_FUP_LimitBox.setPosition(79, 3, 25, 25);
+    D_FUP_LimitBox.setPosition(79, 8, 25, 25);
     D_FUP_LimitBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     D_FUP_LimitBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     D_FUP_LimitBox.setBorderSize(2);
     Limit.add(D_FUP_LimitBox);
 
-    textD_FDNLimit.setXY(7, 93);
+    textD_FDNLimit.setXY(9, 201);
     textD_FDNLimit.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_FDNLimit.setLinespacing(0);
     textD_FDNLimit.setTypedText(touchgfx::TypedText(T___SINGLEUSE_5EPH));
     Limit.add(textD_FDNLimit);
 
-    textD_DNLimit.setXY(26, 63);
+    textD_DNLimit.setXY(28, 164);
     textD_DNLimit.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_DNLimit.setLinespacing(0);
     textD_DNLimit.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ECTN));
     Limit.add(textD_DNLimit);
 
-    textD_UPLimit.setXY(29, 33);
+    textD_UPLimit.setXY(29, 43);
     textD_UPLimit.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_UPLimit.setLinespacing(0);
     textD_UPLimit.setTypedText(touchgfx::TypedText(T___SINGLEUSE_RNO7));
     Limit.add(textD_UPLimit);
 
-    textD_FUPLimit.setXY(10, 3);
+    textD_FUPLimit.setXY(10, 8);
     textD_FUPLimit.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_FUPLimit.setLinespacing(0);
     textD_FUPLimit.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PLYC));
@@ -154,14 +154,14 @@ MainViewBase::MainViewBase() :
 
     Direct.add(Limit);
 
-    Direct_PosSetting.setPosition(263, 0, 215, 233);
-    textD_PosUpSet.setXY(0, 145);
+    Direct_PosSetting.setPosition(264, 33, 215, 200);
+    textD_PosUpSet.setXY(0, 113);
     textD_PosUpSet.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_PosUpSet.setLinespacing(0);
     textD_PosUpSet.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ZDMR));
     Direct_PosSetting.add(textD_PosUpSet);
 
-    textD_PosUpSetValue.setXY(107, 146);
+    textD_PosUpSetValue.setXY(107, 114);
     textD_PosUpSetValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_PosUpSetValue.setLinespacing(0);
     Unicode::snprintf(textD_PosUpSetValueBuffer, TEXTD_POSUPSETVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_E8KK).getText());
@@ -170,13 +170,13 @@ MainViewBase::MainViewBase() :
     textD_PosUpSetValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_UGWZ));
     Direct_PosSetting.add(textD_PosUpSetValue);
 
-    textD_PosAct.setXY(0, 177);
+    textD_PosAct.setXY(0, 145);
     textD_PosAct.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_PosAct.setLinespacing(0);
     textD_PosAct.setTypedText(touchgfx::TypedText(T___SINGLEUSE_8LY0));
     Direct_PosSetting.add(textD_PosAct);
 
-    textD_PosActValue.setXY(107, 178);
+    textD_PosActValue.setXY(107, 146);
     textD_PosActValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_PosActValue.setLinespacing(0);
     Unicode::snprintf(textD_PosActValueBuffer, TEXTD_POSACTVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_NDHK).getText());
@@ -185,13 +185,13 @@ MainViewBase::MainViewBase() :
     textD_PosActValue.setTypedText(touchgfx::TypedText(T___SINGLEUSE_QC77));
     Direct_PosSetting.add(textD_PosActValue);
 
-    textD_PosDownSet.setXY(0, 208);
+    textD_PosDownSet.setXY(0, 176);
     textD_PosDownSet.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_PosDownSet.setLinespacing(0);
     textD_PosDownSet.setTypedText(touchgfx::TypedText(T___SINGLEUSE_AINL));
     Direct_PosSetting.add(textD_PosDownSet);
 
-    textD_PosDownSetValue.setXY(108, 207);
+    textD_PosDownSetValue.setXY(108, 175);
     textD_PosDownSetValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_PosDownSetValue.setLinespacing(0);
     Unicode::snprintf(textD_PosDownSetValueBuffer, TEXTD_POSDOWNSETVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_OJIW).getText());
@@ -205,7 +205,7 @@ MainViewBase::MainViewBase() :
     D_PosUpSetPadShowButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
     D_PosUpSetPadShowButton.setAlpha(0);
     D_PosUpSetPadShowButton.setAction(flexButtonCallback);
-    D_PosUpSetPadShowButton.setPosition(0, 142, 216, 31);
+    D_PosUpSetPadShowButton.setPosition(0, 110, 216, 31);
     Direct_PosSetting.add(D_PosUpSetPadShowButton);
 
     D_PosDownSetPadShowButton.setBoxWithBorderPosition(0, 0, 216, 29);
@@ -213,16 +213,16 @@ MainViewBase::MainViewBase() :
     D_PosDownSetPadShowButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
     D_PosDownSetPadShowButton.setAlpha(0);
     D_PosDownSetPadShowButton.setAction(flexButtonCallback);
-    D_PosDownSetPadShowButton.setPosition(0, 203, 216, 29);
+    D_PosDownSetPadShowButton.setPosition(0, 171, 216, 29);
     Direct_PosSetting.add(D_PosDownSetPadShowButton);
 
-    textD_HomeSet.setXY(0, 70);
+    textD_HomeSet.setXY(0, 47);
     textD_HomeSet.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_HomeSet.setLinespacing(0);
     textD_HomeSet.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ARZ6));
     Direct_PosSetting.add(textD_HomeSet);
 
-    textD_HomeSetValue.setXY(107, 69);
+    textD_HomeSetValue.setXY(107, 47);
     textD_HomeSetValue.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textD_HomeSetValue.setLinespacing(0);
     Unicode::snprintf(textD_HomeSetValueBuffer, TEXTD_HOMESETVALUE_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_UKIH).getText());
@@ -236,16 +236,16 @@ MainViewBase::MainViewBase() :
     D_HomeSetPadShowButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
     D_HomeSetPadShowButton.setAlpha(0);
     D_HomeSetPadShowButton.setAction(flexButtonCallback);
-    D_HomeSetPadShowButton.setPosition(0, 70, 215, 22);
+    D_HomeSetPadShowButton.setPosition(0, 49, 215, 22);
     Direct_PosSetting.add(D_HomeSetPadShowButton);
 
-    textSubD_TargetSetting.setXY(32, 115);
+    textSubD_TargetSetting.setXY(32, 83);
     textSubD_TargetSetting.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textSubD_TargetSetting.setLinespacing(0);
     textSubD_TargetSetting.setTypedText(touchgfx::TypedText(T___SINGLEUSE_M4FP));
     Direct_PosSetting.add(textSubD_TargetSetting);
 
-    HomingButton.setPosition(40, 25, 120, 32);
+    HomingButton.setPosition(91, 4, 120, 32);
     D_HomeSetBox.setPosition(0, 0, 120, 32);
     D_HomeSetBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     D_HomeSetBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -268,13 +268,51 @@ MainViewBase::MainViewBase() :
 
     Direct_PosSetting.add(HomingButton);
 
-    textSubD_HomeSetting.setXY(63, 0);
+    textSubD_HomeSetting.setXY(16, 8);
     textSubD_HomeSetting.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textSubD_HomeSetting.setLinespacing(0);
     textSubD_HomeSetting.setTypedText(touchgfx::TypedText(T___SINGLEUSE_NMGD));
     Direct_PosSetting.add(textSubD_HomeSetting);
 
     Direct.add(Direct_PosSetting);
+
+    Direct_ErrReset.setPosition(185, 4, 78, 33);
+    D_ErrResetBox.setPosition(0, 0, 78, 33);
+    D_ErrResetBox.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    D_ErrResetBox.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    D_ErrResetBox.setBorderSize(2);
+    Direct_ErrReset.add(D_ErrResetBox);
+
+    D_ErrResetButton.setBoxWithBorderPosition(0, 0, 78, 33);
+    D_ErrResetButton.setBorderSize(2);
+    D_ErrResetButton.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(41, 119, 255), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    D_ErrResetButton.setAlpha(100);
+    D_ErrResetButton.setAction(flexButtonCallback);
+    D_ErrResetButton.setPosition(0, 0, 78, 33);
+    Direct_ErrReset.add(D_ErrResetButton);
+
+    textD_ErrReset.setXY(17, 5);
+    textD_ErrReset.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_ErrReset.setLinespacing(0);
+    textD_ErrReset.setTypedText(touchgfx::TypedText(T___SINGLEUSE_5OSN));
+    Direct_ErrReset.add(textD_ErrReset);
+
+    Direct.add(Direct_ErrReset);
+
+    textD_Error.setXY(314, 6);
+    textD_Error.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textD_Error.setLinespacing(0);
+    Unicode::snprintf(textD_ErrorBuffer, TEXTD_ERROR_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_H2SE).getText());
+    textD_Error.setWildcard(textD_ErrorBuffer);
+    textD_Error.resizeToCurrentText();
+    textD_Error.setTypedText(touchgfx::TypedText(T___SINGLEUSE_LXG9));
+    Direct.add(textD_Error);
+
+    textDSub_Error.setXY(263, 4);
+    textDSub_Error.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textDSub_Error.setLinespacing(0);
+    textDSub_Error.setTypedText(touchgfx::TypedText(T___SINGLEUSE_RR50));
+    Direct.add(textDSub_Error);
 
     add(Direct);
 
@@ -2113,7 +2151,7 @@ void MainViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonConta
         //When Settingshowbutton clicked show Setting
         //Show Setting
         Setting.setVisible(true);
-        Setting.invalidate();
+        Setting.invalidate();
         //SettingShowButton
         //When Settingshowbutton clicked call virtual function
         //Call SettingShowButton
@@ -2279,6 +2317,13 @@ void MainViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonConta
         //When D_HomeSetButton clicked call virtual function
         //Call DirectHomeSetbutton
         DirectHomeSetbutton();
+    }
+    if (&src == &D_ErrResetButton)
+    {
+        //DirectErrReset
+        //When D_ErrResetButton clicked call virtual function
+        //Call DirectErrReset
+        DirectErrReset();
     }
 }
 

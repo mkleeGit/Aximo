@@ -115,9 +115,9 @@ int16_t g_Tcp_ActWeight;
 
 //Tcp Drive Operation
 bool g_Tcp_STM_RemoteEnable;
-bool g_Tcp_Power;
-bool g_Tcp_Start;
-bool g_Tcp_Stop;
+bool g_Tcp_InvPower;
+bool g_Tcp_InvStart;
+bool g_Tcp_InvStop;
 bool g_Tcp_Reset;
 bool g_Tcp_McOn;
 bool g_Tcp_HomeSet;
@@ -128,8 +128,6 @@ bool g_Tcp_DirectUp;
 bool g_Tcp_DirectDown;
 bool g_Tcp_DirectStop;
 bool g_Tcp_ConsoleEMG;
-bool g_Tcp_Running;
-bool g_Tcp_Arrived;
 uint8_t g_Tcp_DriveType;
 long long g_Tcp_Timestamp;
 

@@ -236,15 +236,15 @@
               {
                 "Type": "Container",
                 "Name": "Limit",
-                "X": 159,
-                "Width": 117,
-                "Height": 118,
+                "X": 73,
+                "Width": 112,
+                "Height": 231,
                 "Components": [
                   {
                     "Type": "BoxWithBorder",
                     "Name": "D_FDN_LimitBox",
                     "X": 79,
-                    "Y": 93,
+                    "Y": 201,
                     "Width": 25,
                     "Height": 25,
                     "Color": {
@@ -258,7 +258,7 @@
                     "Type": "BoxWithBorder",
                     "Name": "D_DN_LimitBox",
                     "X": 79,
-                    "Y": 63,
+                    "Y": 166,
                     "Width": 25,
                     "Height": 25,
                     "Color": {
@@ -272,7 +272,7 @@
                     "Type": "BoxWithBorder",
                     "Name": "D_UP_LimitBox",
                     "X": 79,
-                    "Y": 33,
+                    "Y": 43,
                     "Width": 25,
                     "Height": 25,
                     "Color": {
@@ -286,7 +286,7 @@
                     "Type": "BoxWithBorder",
                     "Name": "D_FUP_LimitBox",
                     "X": 79,
-                    "Y": 3,
+                    "Y": 8,
                     "Width": 25,
                     "Height": 25,
                     "Color": {
@@ -299,8 +299,8 @@
                   {
                     "Type": "TextArea",
                     "Name": "textD_FDNLimit",
-                    "X": 7,
-                    "Y": 93,
+                    "X": 9,
+                    "Y": 201,
                     "Width": 65,
                     "Height": 24,
                     "TextId": "__SingleUse_5EPH",
@@ -310,8 +310,8 @@
                   {
                     "Type": "TextArea",
                     "Name": "textD_DNLimit",
-                    "X": 26,
-                    "Y": 63,
+                    "X": 28,
+                    "Y": 164,
                     "Width": 46,
                     "Height": 24,
                     "TextId": "__SingleUse_ECTN",
@@ -322,7 +322,7 @@
                     "Type": "TextArea",
                     "Name": "textD_UPLimit",
                     "X": 29,
-                    "Y": 33,
+                    "Y": 43,
                     "Width": 43,
                     "Height": 24,
                     "TextId": "__SingleUse_RNO7",
@@ -333,7 +333,7 @@
                     "Type": "TextArea",
                     "Name": "textD_FUPLimit",
                     "X": 10,
-                    "Y": 3,
+                    "Y": 8,
                     "Width": 62,
                     "Height": 24,
                     "TextId": "__SingleUse_PLYC",
@@ -345,14 +345,15 @@
               {
                 "Type": "Container",
                 "Name": "Direct_PosSetting",
-                "X": 263,
+                "X": 264,
+                "Y": 33,
                 "Width": 215,
-                "Height": 233,
+                "Height": 200,
                 "Components": [
                   {
                     "Type": "TextArea",
                     "Name": "textD_PosUpSet",
-                    "Y": 145,
+                    "Y": 113,
                     "Width": 99,
                     "Height": 27,
                     "TextId": "__SingleUse_ZDMR",
@@ -363,7 +364,7 @@
                     "Type": "TextArea",
                     "Name": "textD_PosUpSetValue",
                     "X": 107,
-                    "Y": 146,
+                    "Y": 114,
                     "Width": 104,
                     "Height": 24,
                     "TextId": "__SingleUse_UGWZ",
@@ -378,7 +379,7 @@
                   {
                     "Type": "TextArea",
                     "Name": "textD_PosAct",
-                    "Y": 177,
+                    "Y": 145,
                     "Width": 99,
                     "Height": 27,
                     "TextId": "__SingleUse_8LY0",
@@ -389,7 +390,7 @@
                     "Type": "TextArea",
                     "Name": "textD_PosActValue",
                     "X": 107,
-                    "Y": 178,
+                    "Y": 146,
                     "Width": 104,
                     "Height": 24,
                     "TextId": "__SingleUse_QC77",
@@ -404,7 +405,7 @@
                   {
                     "Type": "TextArea",
                     "Name": "textD_PosDownSet",
-                    "Y": 208,
+                    "Y": 176,
                     "Width": 99,
                     "Height": 27,
                     "TextId": "__SingleUse_AINL",
@@ -415,7 +416,7 @@
                     "Type": "TextArea",
                     "Name": "textD_PosDownSetValue",
                     "X": 108,
-                    "Y": 207,
+                    "Y": 175,
                     "Width": 104,
                     "Height": 24,
                     "TextId": "__SingleUse_LLLH",
@@ -430,7 +431,7 @@
                   {
                     "Type": "FlexButton",
                     "Name": "D_PosUpSetPadShowButton",
-                    "Y": 142,
+                    "Y": 110,
                     "Width": 216,
                     "Height": 31,
                     "Alpha": 0,
@@ -467,7 +468,7 @@
                   {
                     "Type": "FlexButton",
                     "Name": "D_PosDownSetPadShowButton",
-                    "Y": 203,
+                    "Y": 171,
                     "Width": 216,
                     "Height": 29,
                     "Alpha": 0,
@@ -504,7 +505,7 @@
                   {
                     "Type": "TextArea",
                     "Name": "textD_HomeSet",
-                    "Y": 70,
+                    "Y": 47,
                     "Width": 99,
                     "Height": 27,
                     "TextId": "__SingleUse_ARZ6",
@@ -515,7 +516,7 @@
                     "Type": "TextArea",
                     "Name": "textD_HomeSetValue",
                     "X": 107,
-                    "Y": 69,
+                    "Y": 47,
                     "Width": 104,
                     "Height": 24,
                     "TextId": "__SingleUse_X66B",
@@ -530,7 +531,7 @@
                   {
                     "Type": "FlexButton",
                     "Name": "D_HomeSetPadShowButton",
-                    "Y": 70,
+                    "Y": 49,
                     "Width": 215,
                     "Height": 22,
                     "Alpha": 0,
@@ -568,7 +569,7 @@
                     "Type": "TextArea",
                     "Name": "textSubD_TargetSetting",
                     "X": 32,
-                    "Y": 115,
+                    "Y": 83,
                     "Width": 134,
                     "Height": 27,
                     "TextId": "__SingleUse_M4FP",
@@ -578,8 +579,8 @@
                   {
                     "Type": "Container",
                     "Name": "HomingButton",
-                    "X": 40,
-                    "Y": 25,
+                    "X": 91,
+                    "Y": 4,
                     "Width": 120,
                     "Height": 32,
                     "Components": [
@@ -640,7 +641,8 @@
                   {
                     "Type": "TextArea",
                     "Name": "textSubD_HomeSetting",
-                    "X": 63,
+                    "X": 16,
+                    "Y": 8,
                     "Width": 67,
                     "Height": 27,
                     "TextId": "__SingleUse_NMGD",
@@ -648,6 +650,95 @@
                     "AutoSize": true
                   }
                 ]
+              },
+              {
+                "Type": "Container",
+                "Name": "Direct_ErrReset",
+                "X": 185,
+                "Y": 4,
+                "Width": 78,
+                "Height": 33,
+                "Components": [
+                  {
+                    "Type": "BoxWithBorder",
+                    "Name": "D_ErrResetBox",
+                    "Width": 78,
+                    "Height": 33,
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "BorderSize": 2
+                  },
+                  {
+                    "Type": "FlexButton",
+                    "Name": "D_ErrResetButton",
+                    "Width": 78,
+                    "Height": 33,
+                    "Alpha": 100,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "BoxWithBorderButtonStyle",
+                        "Width": 78,
+                        "Height": 33,
+                        "LockToFlexButtonSize": true,
+                        "BorderSize": 2,
+                        "ColorReleased": {
+                          "Red": 255,
+                          "Green": 255,
+                          "Blue": 255
+                        },
+                        "ColorPressed": {
+                          "Red": 41,
+                          "Green": 119,
+                          "Blue": 255
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textD_ErrReset",
+                    "X": 17,
+                    "Y": 5,
+                    "Width": 40,
+                    "Height": 27,
+                    "TextId": "__SingleUse_5OSN",
+                    "TextRotation": "0",
+                    "AutoSize": true
+                  }
+                ]
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textD_Error",
+                "X": 314,
+                "Y": 6,
+                "Width": 140,
+                "Height": 16,
+                "TextId": "__SingleUse_LXG9",
+                "TextRotation": "0",
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_H2SE",
+                  "UseBuffer": true,
+                  "BufferSize": 25
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "textDSub_Error",
+                "X": 263,
+                "Y": 4,
+                "Width": 45,
+                "Height": 27,
+                "TextId": "__SingleUse_RR50",
+                "TextRotation": "0",
+                "AutoSize": true
               }
             ]
           },
@@ -5496,6 +5587,17 @@
               "Type": "ActionCustom",
               "FunctionName": "EmgBrakeDeselected"
             }
+          },
+          {
+            "InteractionName": "DirectErrReset",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "D_ErrResetButton"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "DirectErrReset"
+            }
           }
         ]
       }
@@ -5548,7 +5650,7 @@
     "SubFamily": "STM32F7x6",
     "Toolchain": "STM32CubeIDE",
     "Platform": "m7",
-    "ProjectFile": "../240127_KEB.ioc",
+    "ProjectFile": "../241121_F746g_KEB_CAN.ioc",
     "OptionalComponentsRoot": "../Middlewares/ST/touchgfx_components",
     "OptionalComponents": [],
     "AdditionalFeatures": []

@@ -638,8 +638,8 @@ void send_tlv_response_to_csharp(struct tcp_pcb *tpcb)
 	cJSON_AddNumberToObject(JSONpayload,"ErrorCode",g_Tcp_ErrorCode);
 	cJSON_AddNumberToObject(JSONpayload, "ErrorType", g_Tcp_ErrorType);
 	cJSON_AddNumberToObject(JSONpayload, "ActPos", g_Tcp_ActPos);
-	cJSON_AddBoolToObject(JSONpayload, "IsRunning",g_Tcp_Running);
-	cJSON_AddBoolToObject(JSONpayload, "IsArrived",g_Tcp_Arrived);
+	cJSON_AddBoolToObject(JSONpayload, "IsRunning",g_Tcp_IsRunning);
+	cJSON_AddBoolToObject(JSONpayload, "IsArrived",g_Tcp_IsArrived);
 
 	char *jsonstr = cJSON_PrintUnformatted(JSONpayload);
 
@@ -698,9 +698,9 @@ static void parse_write_Json(char *jsonstr){
 	//Tcpvariableinit();
 
 	if (cJSON_IsBool(jSTM_RemoteEnable))g_Tcp_STM_RemoteEnable = cJSON_IsTrue(jSTM_RemoteEnable);
-	if (cJSON_IsBool(jPower))g_Tcp_Power = cJSON_IsTrue(jPower);
-	if (cJSON_IsBool(jStart))g_Tcp_Start = cJSON_IsTrue(jStart);
-	if (cJSON_IsBool(jStop))g_Tcp_Stop = cJSON_IsTrue(jStop);
+	if (cJSON_IsBool(jPower))g_Tcp_InvPower = cJSON_IsTrue(jPower);
+	if (cJSON_IsBool(jStart))g_Tcp_InvStart = cJSON_IsTrue(jStart);
+	if (cJSON_IsBool(jStop))g_Tcp_InvStop = cJSON_IsTrue(jStop);
 	if (cJSON_IsBool(jReset))g_Tcp_Reset = cJSON_IsTrue(jReset);
 	if (cJSON_IsBool(jMcOn))g_Tcp_McOn = cJSON_IsTrue(jMcOn);
 	if (cJSON_IsNumber(jDriveType))g_Tcp_DriveType = jDriveType ->valueint;//g_Tcp_DriveType = jDriveType->valueint;
@@ -720,9 +720,9 @@ static void parse_write_Json(char *jsonstr){
 void Tcpvariableinit()
 {
 	g_Tcp_STM_RemoteEnable = false;
-	g_Tcp_Power = false;
-	g_Tcp_Start = false;
-	g_Tcp_Stop = false;
+	g_Tcp_InvPower = false;
+	g_Tcp_InvStart = false;
+	g_Tcp_InvStop = false;
 	g_Tcp_Reset = false;
 	g_Tcp_McOn = false;
 	g_Tcp_DriveType = 0;

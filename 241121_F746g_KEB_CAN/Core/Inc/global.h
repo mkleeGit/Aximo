@@ -15,7 +15,7 @@
 //Serial Number
 #define TCP_SERIAL_NUMBER_DEFAULT "C224404491"//"C241701976"
 //Version
-#define FirmwareVersion "1.0.0.0"
+#define FirmwareVersion "1.0.0.1"
 
 typedef enum TcpPingPongTypdef{
 	Disconnect = 0,
@@ -175,7 +175,7 @@ typedef struct InputOutputTypedef{
 	bool OUT_PDOoff;					// Inverter PDO Off								Pin 8
 	bool OUT_PDOon;						// Inverter PDO On;								Pin 9
 
-	bool OUTError;
+	bool ICError;
 }InputOutputTypedef;
 
 //typedef struct
@@ -244,6 +244,8 @@ typedef struct DirectTypedef{
 	float fHomePoscount;				//Direct Position count
 	float fHomeFeedconstant;			//Direct Feedconstant
 	int32_t s32HomeCountvalue;			//Direct Home Count
+
+	char cErrorStringDisplay[25];
 }DirectTypedef;
 
 typedef struct inverterTypedef{
@@ -464,9 +466,9 @@ extern uint8_t GVL_cModevalue[4]; // Serial Mode
 
 //Tcp Drive Status
 extern bool g_Tcp_STM_RemoteEnable;
-extern bool g_Tcp_Power;
-extern bool g_Tcp_Start;
-extern bool g_Tcp_Stop;
+extern bool g_Tcp_InvPower;
+extern bool g_Tcp_InvStart;
+extern bool g_Tcp_InvStop;
 extern bool g_Tcp_Reset;
 extern bool g_Tcp_McOn;
 extern bool g_Tcp_HomeSet;
@@ -477,8 +479,6 @@ extern bool g_Tcp_DirectUp;
 extern bool g_Tcp_DirectDown;
 extern bool g_Tcp_DirectStop;
 extern bool g_Tcp_ConsoleEMG;
-extern bool g_Tcp_Running;
-extern bool g_Tcp_Arrived;
 extern uint8_t g_Tcp_DriveType;
 extern long long g_Tcp_Timestamp;
 
